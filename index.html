@@ -21,17 +21,78 @@
                 <aside>
                     <section>
                         <h2>Хувийн мэдээлэл</h2>
-                        <img src="profile.jpg" alt="Profile zurag">
+                        <img src="profile.jpg" alt="Profile zurag"/>
                         <p class="name">Овог нэр: Бат Сараа</p>
                         <p class="gmail">Имэйл: abs@gmail.com</p>
-                        <p>Утас: 88889999</p>
-                        <p>Хүйс: Эмэгтэй</p>
-                        <p>Нас: 20</p>
+                        <p class="phone">Утас: 88889999</p>
+                        <p class="gender">Хүйс: Эмэгтэй</p>
+                        <p class="age">Нас: 20</p>
                     </section>
-                    <section>
+                    <section class="work-history">
                         <h2>Өмнө хийсэн ажил</h2>
+                        <article class="job-card">
+                            <p>Ажлын тайлбар: Англи хэлний цагийн багш</p>
+                            <p>Ажилласан хугацаа: <time datetime="2025-07-20">2025/07/20</time> - 
+                                <time datetime="2025-08-01">2025/08/01</time></p>
+                            <p class="rating" data-score="5">Үнэлгээ:*****</p>
+                        </article>
+                        <article class="job-card">
+                            <p>Ажлын тайлбар: Англи хэлний цагийн багш</p>
+                            <p>Ажилласан хугацаа: <time datetime="2025-07-20">2025/07/20</time> - 
+                                <time datetime="2025-08-01">2025/08/01</time></p>
+                            <p class="rating" data-score="5">Үнэлгээ:*****</p>
+                        </article>
                     </section>
                 </aside>
+                <section>
+                    <form class="searchbar">
+                        <label for="q" class="sr-only">Хайх</label>
+                        <input id="q" name="q" type="search" placeholder="Ажлын нэр, төрөл..." />
+                        <h3>Ангилах</h3>
+                            <label>Байршил
+                                <select id="location">
+                                    <option value="">Бүгд</option>
+                                    <option value="chingeltei">Чингэлтэй</option>
+                                    <option value="suhbaatar">Сүхбаатар</option>
+                                    <option value="bayanzurkh">Баянзүрх</option>
+                                    <option value="bayangol">Баянгол</option>
+                                    <option value="nalaikh">Налайх</option>
+                                    <option value="khan-uul">Хан-Уул</option>
+                                    <option value="songinokhairkhan">Сонгинохайрхан</option>
+                                    <option value="baganuur">Багануур</option>
+                                </select>
+                            </label>
+
+                            <label>Өдөр
+                                <input id="day" type="date">
+                            </label>
+
+                        <h3>Эрэмбэлэх</h3>
+                            <select id="sort">
+                                <option value="newest">Шинэ эхэнд</option>
+                                <option value="oldest">Хуучин эхэнд</option>
+                                <option value="highest-salary">Өндөр цалинтай эхэнд</option>
+                            </select>
+                    </form>
+                    <div id="jobs">
+                        <article class="job">
+                            <header>
+                                <strong>Агуулахын цагийн ажилтан</strong>
+                            </header>
+                            <p>Байршил: Чингэлтэй</p><time>Хэзээ: 2025-01-24</time>
+                            <p class="description">Ажлын тайлбар: Бараа бүртгэх, сав баглах, хүргэлтэнд бэлдэх.</p>
+                            <button>Хүсэлт илгээх</button>
+                        </article>
+                        <article class="job">
+                            <header>
+                                <strong>Агуулахын цагийн ажилтан</strong>
+                            </header>
+                            <p>Байршил: Чингэлтэй</p><time>Хэзээ: 2025-01-24</time>
+                            <p class="description">Ажлын тайлбар: Бараа бүртгэх, сав баглах, хүргэлтэнд бэлдэх.</p>
+                            <button>Хүсэлт илгээх</button>
+                        </article>
+                    </div>  
+                </section>
             </main>
         </div>
     </body>
