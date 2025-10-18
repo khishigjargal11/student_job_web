@@ -15,7 +15,7 @@ body {
 .topbar {
   background: #2b2b2b;
   color: #fff;
-  padding: 10px 40px;
+  padding: 12px 40px;
 }
 
 .nav-container {
@@ -34,21 +34,22 @@ body {
 }
 
 .logo img {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
 }
 
 .menu {
   list-style: none;
   display: flex;
-  gap: 20px;
+  gap: 24px;
 }
 
 .menu a {
   color: white;
   text-decoration: none;
   font-weight: 500;
+  transition: 0.2s;
 }
 
 .menu a:hover {
@@ -63,44 +64,58 @@ body {
 
 /* ===== Sidebar ===== */
 .sidebar {
-  width: 25%;
+  width: 24%;
   background: #b9c6d3;
-  padding: 30px;
+  padding: 40px 25px;
   text-align: center;
+  align-items: center;
 }
 
 .sidebar h3 {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  font-size: 20px;
 }
 
+/* Profile */
 .profile img {
-  width: 130px;
-  height: 130px;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
   background: #ddd;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  border: 3px solid #fff;
 }
 
 .profile figcaption h2 {
-  font-size: 20px;
-  margin-bottom: 5px;
+  font-size: 22px;
+  margin-bottom: 4px;
+  font-weight: 600;
 }
 
 .email {
   font-size: 14px;
   color: #444;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+}
+
+/* Sidebar buttons */
+.sidebar-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .sidebar-actions button {
-  display: block;
-  width: 100%;
+  width: 75%;
+  max-width: 180px;
   border: none;
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 5px;
+  padding: 8px 0;
+  border-radius: 8px;
   font-weight: 600;
+  font-size: 15px;
   cursor: pointer;
+  transition: 0.25s;
 }
 
 .add-btn {
@@ -108,19 +123,28 @@ body {
   color: #fff;
 }
 
+.add-btn:hover {
+  background: #333;
+}
+
 .delete-btn {
   background: #a75c5c;
   color: #fff;
 }
 
+.delete-btn:hover {
+  background: #914a4a;
+}
+
 /* ===== Main Content ===== */
 .content {
   flex: 1;
-  padding: 30px;
+  padding: 40px;
 }
 
 .content h2 {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  font-size: 22px;
 }
 
 /* ===== Ad Card ===== */
@@ -128,42 +152,45 @@ body {
   background: #f2f2f2;
   border: 1.5px solid #000;
   border-radius: 10px;
-  padding: 15px 20px;
-  margin-bottom: 15px;
+  padding: 20px 25px;
+  margin-bottom: 20px;
 }
 
 .ad-card header h3 {
   margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .ad-info {
   list-style: none;
-  font-size: 14px;
-  margin-bottom: 10px;
+  font-size: 15px;
+  margin-bottom: 12px;
+  line-height: 1.4;
 }
 
 .ad-info li {
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 }
 
 .ad-footer {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 12px;
 }
 
 .rating {
   background: #000;
   color: #fff;
-  padding: 3px 8px;
+  padding: 4px 10px;
   border-radius: 10px;
-  font-size: 12px;
+  font-size: 13px;
   margin-right: auto;
 }
 
 .gray-btn, .black-btn {
-  padding: 6px 15px;
+  padding: 7px 16px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -174,9 +201,17 @@ body {
   background: #c4c4c4;
 }
 
+.gray-btn:hover {
+  background: #b0b0b0;
+}
+
 .black-btn {
   background: #000;
   color: #fff;
+}
+
+.black-btn:hover {
+  background: #333;
 }
 
 /* ===== Footer ===== */
@@ -187,3 +222,25 @@ body {
   padding: 15px 0;
   font-size: 14px;
 }
+
+/* ===== Responsive ===== */
+@media (max-width: 992px) {
+  .sidebar {
+    width: 100%;
+  }
+  .container {
+    flex-direction: column;
+  }
+  .profile img {
+    width: 120px;
+    height: 120px;
+  }
+  .sidebar-actions button {
+    width: 60%;
+  }
+}
+
+
+
+
+
