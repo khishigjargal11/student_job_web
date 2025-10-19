@@ -1,66 +1,96 @@
 <!DOCTYPE html>
 <html lang="mn">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ажилд орох хүсэлтүүд</title>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ажилд орох хүсэлтүүд</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 
-  <body>
-    <header>
-      <nav>
-        <ul>
-          <li><a href="home.html">Нүүр</a></li>
-          <li><a href="contact.html">Холбогдох</a></li>
-          <li><a href="about.html">Бидний тухай</a></li>
+<body>
+  <!-- ===== Header ===== -->
+  <header class="topbar">
+    <nav class="nav-container">
+      <a href="#" class="logo">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" alt="user icon">
+        <span>Гарах</span>
+      </a>
+      <ul class="menu">
+        <li><a href="#">Нүүр</a></li>
+        <li><a href="#">Холбогдох</a></li>
+        <li><a href="#">Бидний тухай</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ===== Back Bar ===== -->
+  <section class="back-bar">
+    <button onclick="history.back()">←</button>
+    <h2>Ажилд орох хүсэлтүүд</h2>
+  </section>
+
+  <!-- ===== Main Content ===== -->
+  <main class="request-container">
+    
+    <!-- Left side (Job info) -->
+    <section class="request-job">
+      <article class="ad-card">
+        <header>
+          <h3>БОРЛУУЛАЛТЫН АЖИЛТАН</h3>
+        </header>
+        <ul class="ad-info">
+          <li>📍 Байршил: УЛААНБААТАР, СҮХБААТАР ДҮҮРЭГ</li>
+          <li>⏰ Ажлын цаг: 09:00–19:00</li>
+          <li>💰 Цалин: 1,200,000₮ (САРЫН)</li>
+          <li>🧾 Тайлбар: ДЭЛГҮҮРИЙН БОРЛУУЛАЛТЫН АЖИЛТАН — ҮЙЛЧЛҮҮЛЭГЧДЭД ТУСЛАХ, БАРАА БАЙРЛУУЛАХ</li>
         </ul>
-      </nav>
-    </header>
+        <footer class="ad-footer">
+          <span class="rating">4.8★</span>
+        </footer>
+      </article>
+    </section>
 
-    <main>
-      <section>
-        <h2>Ажилд орох хүсэлтүүд</h2>
-        <div class="requests">
-          <div class="request">
-            <p>1.24 10:10-18:10</p>
-            <p>Нэр: Хүсэлт 1</p>
-            <p>Ажлын талбар: АЛБАН ТУШААЛЫН ЦЭГИЙН АЖИЛТАН – БАРАА БИРТГЭЛ, САВ БАГЛАА ХҮН, ХҮРГЭЛТИЙГ БҮРТГЭХ</p>
-          </div>
+    <!-- Right side (Students list) -->
+    <aside class="student-section">
+      <header>
+        <h3>Хүсэлт илгээсэн оюутнууд</h3>
+        <span class="student-count">3 оюутан</span>
+      </header>
 
-          <div class="request">
-            <p>1.24 10:10-18:10</p>
-            <p>Нэр: Хүсэлт 2</p>
-            <p>Ажлын талбар: ХҮРГЭЛТ, САВ БАГЛАА, ХҮН, ХҮРГЭЛТИЙГ БҮРТГЭХ</p>
-          </div>
-
-          <div class="request">
-            <p>1.24 10:10-18:10</p>
-            <p>Нэр: Хүсэлт 3</p>
-            <p>Ажлын талбар: ҮЙЛЧИЛГЭЭНИЙ ЦЭГИЙН АЖИЛТАН – БАРАА БИРТГЭЛ, САВ БАГЛАА, ХҮН, ХҮРГЭЛТИЙГ БҮРТГЭХ</p>
+      <div class="student-list">
+        <div class="student-card">
+          <img src="pics/profile.jpg" alt="Oyutnaa1">
+          <div class="student-info">
+            <h4>Oyutnaa1</h4>
+            <p>Oyutnaa1@gmail.com</p>
+            <p class="student-phone">0444 4444</p>
           </div>
         </div>
-      </section>
 
-      <aside>
-        <section>
-          <h2>Хүсэлт гаргагчид</h2>
-          <div class="profile">
-            <p>Нэр: Oyutan1</p>
-            <p>Имэйл: Oyutan1@gmail.com</p>
-            <p>Утас: 9444 4444</p>
+        <div class="student-card">
+          <img src="pics/profile.jpg" alt="Oyutnaa2">
+          <div class="student-info">
+            <h4>Oyutnaa2</h4>
+            <p>Oyutnaa2@gmail.com</p>
+            <p class="student-phone">0444 4444</p>
           </div>
-          <div class="profile">
-            <p>Нэр: Oyutan2</p>
-            <p>Имэйл: Oyutan2@gmail.com</p>
-            <p>Утас: 9444 4444</p>
+        </div>
+
+        <div class="student-card">
+          <img src="pics/profile.jpg" alt="Oyutnaa3">
+          <div class="student-info">
+            <h4>Oyutnaa3</h4>
+            <p>Oyutnaa3@gmail.com</p>
+            <p class="student-phone">0444 4444</p>
           </div>
-          <div class="profile">
-            <p>Нэр: Oyutan3</p>
-            <p>Имэйл: Oyutan3@gmail.com</p>
-            <p>Утас: 9444 4444</p>
-          </div>
-        </section>
-      </aside>
-    </main>
-  </body>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <p>© 2025 Хүний нөөцийн систем</p>
+  </footer>
+</body>
 </html>

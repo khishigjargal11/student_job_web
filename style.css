@@ -6,7 +6,10 @@
   font-family: "Poppins", sans-serif;
 }
 
-body {
+html, body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   background-color: #e5e5e5;
   color: #222;
 }
@@ -216,11 +219,16 @@ body {
 
 /* ===== Footer ===== */
 .footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   background: #2b2b2b;
   color: white;
   text-align: center;
   padding: 15px 0;
   font-size: 14px;
+  margin-bottom: 0px;
 }
 
 /* ===== Responsive ===== */
@@ -240,6 +248,133 @@ body {
   }
 }
 
+/* ===== Job Requests Page ===== */
+.request-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 40px;
+  background-color: #e5e5e5;
+}
+
+/* Left side (Job info) */
+.request-job {
+  flex: 1;
+}
+
+.request-job .ad-card {
+  max-width: 100%;
+}
+
+/* Right side (Students) */
+.student-section {
+  width: 35%;
+}
+
+.student-section header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.student-section h3 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.student-count {
+  background: #000;
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+/* Student Cards */
+.student-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.student-card {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
+  background: #cfe5f6;
+  padding: 15px 20px;
+  border-radius: 15px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 140px;
+}
+
+.student-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.student-card img {
+  width: 80px;
+  height: 70px;
+  border-radius: 50%;
+  background: #d9d9d9;
+}
+
+.student-info {
+  flex: 1;
+}
+
+.student-info h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 15px;
+}
+
+.student-info p {
+  font-size: 14px;
+  color: #333;
+  margin-top: 15px;
+}
+
+.student-phone {
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+}
+
+/* ===== Back Section ===== */
+.back-bar {
+  background: #cfe5f6;
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-bar button {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.back-bar h2 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .request-container {
+    flex-direction: column;
+  }
+  .student-section {
+    width: 100%;
+  }
+}
 
 
 
