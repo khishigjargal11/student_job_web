@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Зар нэмэх</title>
+  <link rel="stylesheet" href="style2.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="topbar">
+    <nav class="nav-container">
+      <a href="#" class="logo">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" alt="Logo" />
+        <span>Гарах</span>
+      </a>
+      <ul class="menu">
+        <li><a href="#">Нүүр</a></li>
+        <li><a href="#">Холбогдох</a></li>
+        <li><a href="#">Бидний тухай</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="back-bar">
+    <button onclick="history.back()">←</button>
+  </section>
+  <!-- Main -->
+  <main class="form-section">
+    <form class="job-form">
+      <h2>Зар нэмэх</h2>
+
+      <label>Ажлын нэр <span>*</span></label>
+      <input type="text" placeholder="Жишээ: Агуулахын ажилтан" required />
+
+      <label>Ажлын байршил <span>*</span></label>
+      <input type="text" placeholder="Жишээ: Улаанбаатар, Чингэлтэй дүүрэг" required />
+
+      <label>Ажлын газрын байршил (google map link)</label>
+      <input type="url" placeholder="Google Map хаяг холбоос авна уу" />
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Хүйс <span>*</span></label>
+          <select>
+            <option>Сонгох</option>
+            <option>Эр</option>
+            <option>Эм</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Он сар <span>*</span></label>
+          <input type="date" required />
+        </div>
+      </div>
+
+      <label>Ажлын тайлбар <span>*</span></label>
+      <textarea placeholder="Ажлын дэлгэрэнгүй тайлбар бичнэ үү..." required></textarea>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Цалин (₮) <span>*</span></label>
+          <input type="number" placeholder="Жишээ: 10000" required />
+        </div>
+        <div class="form-group">
+          <label>Цалингийн төрөл <span>*</span></label>
+          <select required>
+            <option>Сонгох</option>
+            <option>Сард</option>
+            <option>7 хоногт</option>
+            <option>Өдөрт</option>
+          </select>
+        </div>
+      </div>
+
+      <label>Зураг оруулах</label>
+      <div class="upload-box">
+        <img src="camera-icon.png" alt="camera" />
+        <p>Зураг оруулах бол энд дарна уу<br />PNG, JPG хэлбэрээр (хамгийн ихдээ 5MB)</p>
+      </div>
+
+      <div class="button-row">
+        <button type="reset" class="gray-btn">Цуцлах</button>
+        <button type="submit" class="black-btn">Нэмэх</button>
+      </div>
+    </form>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Student Portal. All rights reserved.</p>
+  </footer>
+</body>
+</html>

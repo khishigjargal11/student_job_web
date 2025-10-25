@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ажилд орох хүсэлтүүд</title>
   <link rel="stylesheet" href="style.css">
-</head>
 
+</head>
 <body>
-  <!-- ===== Header ===== -->
+  <!-- Header -->
   <header class="topbar">
     <nav class="nav-container">
       <a href="#" class="logo">
@@ -23,21 +23,18 @@
     </nav>
   </header>
 
-  <!-- ===== Back Bar ===== -->
+  <!-- Back bar -->
   <section class="back-bar">
     <button onclick="history.back()">←</button>
     <h2>Ажилд орох хүсэлтүүд</h2>
   </section>
 
-  <!-- ===== Main Content ===== -->
+  <!-- Main content -->
   <main class="request-container">
-    
-    <!-- Left side (Job info) -->
+    <!-- Left: job info -->
     <section class="request-job">
       <article class="ad-card">
-        <header>
-          <h3>БОРЛУУЛАЛТЫН АЖИЛТАН</h3>
-        </header>
+        <header><h3>БОРЛУУЛАЛТЫН АЖИЛТАН</h3></header>
         <ul class="ad-info">
           <li>📍 Байршил: УЛААНБААТАР, СҮХБААТАР ДҮҮРЭГ</li>
           <li>⏰ Ажлын цаг: 09:00–19:00</li>
@@ -50,7 +47,7 @@
       </article>
     </section>
 
-    <!-- Right side (Students list) -->
+    <!-- Right: students -->
     <aside class="student-section">
       <header>
         <h3>Хүсэлт илгээсэн оюутнууд</h3>
@@ -58,39 +55,122 @@
       </header>
 
       <div class="student-list">
-        <div class="student-card">
+        
+        <div class="student-card" data-name="Oyutnaa1" data-email="oyutnaa1@gmail.com" data-phone="0444 1111">
           <img src="pics/profile.jpg" alt="Oyutnaa1">
           <div class="student-info">
             <h4>Oyutnaa1</h4>
-            <p>Oyutnaa1@gmail.com</p>
-            <p class="student-phone">0444 4444</p>
+            <p>oyutnaa1@gmail.com</p>
+            <p class="student-phone">0444 1111</p>
           </div>
         </div>
 
-        <div class="student-card">
+        <div class="student-card" data-name="Oyutnaa2" data-email="oyutnaa2@gmail.com" data-phone="0444 2222">
           <img src="pics/profile.jpg" alt="Oyutnaa2">
           <div class="student-info">
             <h4>Oyutnaa2</h4>
-            <p>Oyutnaa2@gmail.com</p>
-            <p class="student-phone">0444 4444</p>
+            <p>oyutnaa2@gmail.com</p>
+            <p class="student-phone">0444 2222</p>
           </div>
         </div>
 
-        <div class="student-card">
+        <div class="student-card" data-name="Oyutnaa3" data-email="oyutnaa3@gmail.com" data-phone="0444 3333">
           <img src="pics/profile.jpg" alt="Oyutnaa3">
           <div class="student-info">
             <h4>Oyutnaa3</h4>
-            <p>Oyutnaa3@gmail.com</p>
-            <p class="student-phone">0444 4444</p>
+            <p>oyutnaa3@gmail.com</p>
+            <p class="student-phone">0444 3333</p>
           </div>
         </div>
       </div>
     </aside>
   </main>
 
-  <!-- ===== Footer ===== -->
   <footer class="footer">
     <p>© 2025 Хүний нөөцийн систем</p>
   </footer>
+  <!-- Popup -->
+<div class="popup-overlay" id="studentPopup">
+  <div class="popup">
+    <button class="popup-close" onclick="closePopup()">✕</button>
+
+    <div class="popup-header-large">
+      <img src="pics/profile.jpg" id="popupImg" alt="profile">
+      <div class="popup-info">
+        <h2 id="popupName">Oyutnaa3</h2>
+        <p><strong>И-мэйл:</strong> <span id="popupEmail">oyutnaa3@gmail.com</span></p>
+        <p><strong>Утас:</strong> <span id="popupPhone">0444 4444</span></p>
+        <p><strong>Хүйс:</strong> Эрэгтэй</p>
+        <p><strong>Нас:</strong> 20</p>
+      </div>
+    </div>
+
+    <div class="popup-stats-large">
+      <div>
+        <h3>4</h3>
+        <p>Нийт туршлага</p>
+      </div>
+      <div>
+        <h3>4.5★</h3>
+        <p>Дундаж үнэлгээ</p>
+      </div>
+      <div>
+        <h3>100%</h3>
+        <p>Ажил дүүргэлт</p>
+      </div>
+    </div>
+
+    <div class="popup-work-history-large">
+      <h4>🧳 Өмнө хийсэн ажил</h4>
+      <div class="job-grid">
+        <div class="job-card-large">
+          <h5>Агуулахын цагийн ажилтан</h5>
+          <p>⏱ Хугацаа: 2 сар</p>
+          <p>⭐⭐⭐⭐⭐</p>
+        </div>
+        <div class="job-card-large">
+          <h5>Агуулахын цагийн ажилтан</h5>
+          <p>⏱ Хугацаа: 1 сар</p>
+          <p>⭐⭐⭐⭐⭐</p>
+        </div>
+        <div class="job-card-large">
+          <h5>Зөөгч</h5>
+          <p>⏱ Хугацаа: 3 сар</p>
+          <p>⭐⭐⭐⭐⭐</p>
+        </div>
+        <div class="job-card-large">
+          <h5>Борлуулагч</h5>
+          <p>⏱ Хугацаа: 2 сар</p>
+          <p>⭐⭐⭐⭐⭐</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="popup-actions">
+      <button class="approve-btn">✓ Хүлээж авах</button>
+      <button class="reject-btn">✕ Татгалзах</button>
+    </div>
+  </div>
+</div>
+  <script>
+    const popup = document.getElementById("studentPopup");
+
+    document.querySelectorAll(".student-card").forEach(card => {
+      card.addEventListener("click", () => {
+        document.getElementById("popupName").textContent = card.dataset.name;
+        document.getElementById("popupEmail").textContent = card.dataset.email;
+        document.getElementById("popupPhone").textContent = card.dataset.phone;
+        popup.style.display = "flex";
+      });
+    });
+
+    function closePopup() {
+      popup.style.display = "none";
+    }
+
+    popup.addEventListener("click", e => {
+      if (e.target === popup) closePopup();
+    });
+  </script>
 </body>
 </html>

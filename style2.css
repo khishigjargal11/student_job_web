@@ -1,0 +1,218 @@
+/* ===== Base Reset ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: #f3f8fc;
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ===== Header ===== */
+.topbar {
+  background: #2b2b2b;
+  color: #fff;
+  padding: 12px 40px;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: white;
+}
+
+.logo img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.menu {
+  display: flex;
+  list-style: none;
+  gap: 24px;
+}
+
+.menu a {
+  color: white;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.menu a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Form Section ===== */
+.form-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px 100px;
+}
+
+.job-form {
+  background: #fff;
+  padding: 40px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 550px;
+  border: 2px solid #ccc;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.job-form h2 {
+  margin-bottom: 25px;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.job-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.job-form span {
+  color: red;
+}
+
+.job-form input,
+.job-form textarea,
+.job-form select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  margin-bottom: 18px;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.job-form input:focus,
+.job-form textarea:focus,
+.job-form select:focus {
+  border-color: #000;
+}
+
+/* Form rows */
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+.form-group {
+  flex: 1;
+}
+
+/* Textarea */
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+/* Upload Box */
+.upload-box {
+  border: 1.5px dashed #aaa;
+  border-radius: 10px;
+  text-align: center;
+  padding: 25px;
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 25px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.upload-box:hover {
+  border-color: #000;
+  background-color: #f8f8f8;
+}
+
+.upload-box img {
+  width: 50px;
+  margin-bottom: 10px;
+}
+
+/* Buttons */
+.button-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.gray-btn, .black-btn {
+  flex: 1;
+  padding: 10px 0;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.25s;
+  font-weight: 600;
+}
+
+.gray-btn {
+  background: #c4c4c4;
+}
+
+.gray-btn:hover {
+  background: #b0b0b0;
+}
+
+.black-btn {
+  background: #000;
+  color: white;
+}
+
+.black-btn:hover {
+  background: #333;
+}
+
+/* ===== Footer ===== */
+footer {
+  background: #2b2b2b;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  font-size: 14px;
+}
+
+
+.back-bar {
+  background: #cfe5f6;
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-bar button {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.back-bar h2 {
+  font-size: 22px;
+  font-weight: 600;
+}
