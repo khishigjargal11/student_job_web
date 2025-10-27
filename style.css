@@ -263,7 +263,7 @@ html, body {
   align-items: flex-start;
   gap: 40px;
   padding: 40px;
-  background-color: #e5e5e5;
+  background-color: white;
 }
 
 /* Left side (Job info) */
