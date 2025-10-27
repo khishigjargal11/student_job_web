@@ -3,55 +3,54 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="stud.home.css">
         <title>Оюутан Нүүрхуудас</title>
     </head>
 
     <body>
-        <div class="maincontainer">
-            <header>
+        <header id="header">
+                <div class="logo">
+                    <div class="user-icon">👤</div>
+                    <span>Гаргах</span>
+                </div>
                 <nav>
-                    <ul>
-                        <li><a href="logout.html">Гарах</a></li>
-                        <li><a href="studhome.html">Нүүр хуудас</a></li>
-                        <li><a href="contact.html">Холбогдох</a></li>
-                        <li><a href="about.html">Бидний тухай</a></li>
-                    </ul>
+                    <a href="#">Нүүр</a>
+                    <a href="#">Холбогдох</a>
+                    <a href="#">Бидний тухай</a>
                 </nav>
-            </header>
-            <main>
-                <aside>
-                    <section>
-                        <h2>Хувийн мэдээлэл</h2>
-                        <img src="profile.jpg" alt="Profile zurag"/>
-                        <p class="name">Овог нэр: Бат Сараа</p>
-                        <p class="gmail">Имэйл: abs@gmail.com</p>
-                        <p class="phone">Утас: 88889999</p>
-                        <p class="gender">Хүйс: Эмэгтэй</p>
-                        <p class="age">Нас: 20</p>
-                    </section>
-                    <section class="work-history">
-                        <h2>Өмнө хийсэн ажил</h2>
-                        <article class="job-card">
-                            <p>Ажлын тайлбар: Англи хэлний цагийн багш</p>
-                            <p>Ажилласан хугацаа: <time datetime="2025-07-20">2025/07/20</time> - 
-                                <time datetime="2025-08-01">2025/08/01</time></p>
-                            <p class="rating" data-score="5">Үнэлгээ:*****</p>
-                        </article>
-                        <article class="job-card">
-                            <p>Ажлын тайлбар: Англи хэлний цагийн багш</p>
-                            <p>Ажилласан хугацаа: <time datetime="2025-07-20">2025/07/20</time> - 
-                                <time datetime="2025-08-01">2025/08/01</time></p>
-                            <p class="rating" data-score="5">Үнэлгээ:*****</p>
-                        </article>
-                    </section>
-                </aside>
-                <section>
-                    <form class="searchbar">
-                        <label for="q" class="sr-only">Хайх</label>
-                        <input id="q" name="q" type="search" placeholder="Ажлын нэр, төрөл..." />
-                        <h3>Ангилах</h3>
-                            <label>Байршил
-                                <select id="location">
+        </header>
+        <div class="container">
+            <aside class="sidebar">
+                <div class="profile-header">
+                    <div class="profile-title">ХУВИЙН МЭДЭЭЛЭЛ</div>
+                    <img class="profile-image" src="pics/profile.jpg" alt="Profile zurag"/>
+                        <div class="camera-icon">📷</div>
+                    <div class="profile-name">Cараа</div>
+                </div>
+                <section class="info-card" >   
+                        <p ><strong> Овог нэр:</strong> Бат Сараа</p>
+                        <p><strong>УТАС:</strong> 88998899</p>
+                        <p><strong>GMAIL:</strong> 123@GMAIL.COM</p>
+                        <p><strong>ХҮЙС:</strong> ЭРЭГТЭЙ</p>
+                        <p><strong>НАС:</strong> 20</p>
+                </section>
+                        
+                <section class="info-card">
+                        <p><strong>Өмнө хийсэн ажил</strong></p>
+                        <p>Ажлын тайлбар: Англи хэлний цагийн багш</p>
+                        <p>Ажилласан хугацаа: <time datetime="2025-07-20">2025/07/20</time> - 
+                            <time datetime="2025-08-01">2025/08/01</time></p>
+                        <p class="rating" data-score="5">Үнэлгээ:⭐⭐⭐⭐⭐</p>
+
+                </section>
+
+                    
+            </aside>
+            <section class="main-content">
+                    <div class="search-bar">
+                        <input type="text" class="search-input" placeholder="🔍 Ажил хайх...">
+                                <select class="dropdown">
+                                    <option value="">Ангилах</option>
                                     <option value="">Бүгд</option>
                                     <option value="chingeltei">Чингэлтэй</option>
                                     <option value="suhbaatar">Сүхбаатар</option>
@@ -62,39 +61,37 @@
                                     <option value="songinokhairkhan">Сонгинохайрхан</option>
                                     <option value="baganuur">Багануур</option>
                                 </select>
-                            </label>
 
-                            <label>Өдөр
-                                <input id="day" type="date">
-                            </label>
-
-                        <h3>Эрэмбэлэх</h3>
-                            <select id="sort">
+                            <select class="dropdown">
+                                <option value="">Эрэмбэлэх</option>
                                 <option value="newest">Шинэ эхэнд</option>
                                 <option value="oldest">Хуучин эхэнд</option>
                                 <option value="highest-salary">Өндөр цалинтай эхэнд</option>
                             </select>
-                    </form>
-                    <div id="jobs">
-                        <article class="job">
-                            <header>
-                                <strong>Агуулахын цагийн ажилтан</strong>
-                            </header>
-                            <p>Байршил: Чингэлтэй</p><time>Хэзээ: 2025-01-24</time>
-                            <p class="description">Ажлын тайлбар: Бараа бүртгэх, сав баглах, хүргэлтэнд бэлдэх.</p>
-                            <button>Хүсэлт илгээх</button>
-                        </article>
-                        <article class="job">
-                            <header>
-                                <strong>Агуулахын цагийн ажилтан</strong>
-                            </header>
-                            <p>Байршил: Чингэлтэй</p><time>Хэзээ: 2025-01-24</time>
-                            <p class="description">Ажлын тайлбар: Бараа бүртгэх, сав баглах, хүргэлтэнд бэлдэх.</p>
-                            <button>Хүсэлт илгээх</button>
-                        </article>
-                    </div>  
-                </section>
-            </main>
+                        </div>
+                        <div class="job">
+                            <div class="job-badge">4.5⭐</div>
+                            <p class="job-title">Агуулахын цагийн ажилтан</p>
+                            <div job-details>
+                                <strong>📍 Байршил:</strong> УЛААНБААТАР, ЧИНГЭЛТЭЙ ДҮҮРЭГ<br>
+                                <strong>⏰ Ажлын цаг:</strong> 10:00-18:00<br>
+                                <strong>💰 Цалин:</strong> 10,000₮ (ЦАГИЙН)<br>
+                                <strong>📋 Тайлбар:</strong> АГУУЛАХЫН ЦАГИЙН АЖИЛТАН — БАРКА БҮРТГЭХ, САВ БАГЛАА ХИЙХ, ХҮРГЭЛТЭНД БЭЛДЭХ
+                            </div>  
+                            <button class="apply-btn">Хүсэлт илгээх</button>
+                        </div>
+                        <div class="job">
+                            <div class="job-badge">4.5⭐</div>
+                            <p class="job-title">Агуулахын цагийн ажилтан</p>
+                            <div job-details>
+                                <strong>📍 Байршил:</strong> УЛААНБААТАР, ЧИНГЭЛТЭЙ ДҮҮРЭГ<br>
+                                <strong>⏰ Ажлын цаг:</strong> 10:00-18:00<br>
+                                <strong>💰 Цалин:</strong> 10,000₮ (ЦАГИЙН)<br>
+                                <strong>📋 Тайлбар:</strong> АГУУЛАХЫН ЦАГИЙН АЖИЛТАН — БАРКА БҮРТГЭХ, САВ БАГЛАА ХИЙХ, ХҮРГЭЛТЭНД БЭЛДЭХ
+                            </div>  
+                            <button class="apply-btn">Хүсэлт илгээх</button>
+                        </div>
+            </section>
         </div>
     </body>
 </html>
