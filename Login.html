@@ -3,15 +3,15 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="stud.home.css">
+        <link rel="stylesheet" href="login.css">
         <title>Нэвтрэх</title>
     </head>
 
     <body>
-        <header id="header">
+        <header class="header">
             <div class="logo">
                 <div class="user-icon">👤</div>
-                <span>Гаргах</span>
+                <span>Гарах</span>
             </div>
             <nav>
                 <a href="#">Нүүр</a>
@@ -20,24 +20,37 @@
            </nav>
         </header>
         <main class="container">
-                <h2>Нэвтрэх</h2>
-                <form>
-                    <label for="username">Хэрэглэгчийн нэр:</label>
-                    <input type="text" id="username" name="username" required>
-                    <label for="password">Нууц үг:</label>
-                    <input type="password" id="password" name="password" required>
-
-                    <div class="options">
-                        <label><input type="checkbox" name="remember">Намайг сана</label>
-                        <a href="">Нууц үг мартсан</a>
+                <section class="login-box">
+                    <p>Нэвтрэх</p>
+                    <div class="form">
+                        <label class="username">Хэрэглэгчийн нэр:</label>
+                        <input type="text" id="username" name="username" placeholder="Хэрэглэгчийн нэр" required>
                     </div>
-                    <button type="submit">Нэвтрэх</button>
-                </form>
-                <div>
-                    <li><a href="CreateAccComp.html">Компаниар бүртгүүлэх</a></li>
-                    <li><a href="CreateAccStud.html">Оюутнаар бүртгүүлэх</a></li>   
+                    <div class="form">
+                        <label class="password">Нууц үг:</label>
+                        <input type="password" id="password" name="password" placeholder="********" required>
+                    </div>
+                    <div class="options">
+                        <label class="remember"><input type="checkbox" id="remember">Намайг сана</label>
+                        <a href="#" class="forgot-password">Нууц үг мартсан?</a>
+                    </div>
+                    <button class="login-btn" type="submit">Нэвтрэх</button>
+
+                    <div class="divider">
+                        <span class="divider-text">эсвэл</span>
+                    </div>
+                <div class="signup-links">
+                    <a href="CreateAccComp.html" class="signup-link">
+                        <span class="signup-link-icon">🏢</span>
+                        <span>Байгууллагаар бүртгүүлэх</span>
+                    </a>
+                    <a href="CreateAccStud.html" class="signup-link">
+                        <span class="signup-link-icon">🎓</span>
+                        <span>Оюутнаар бүртгүүлэх</span>
+                        </a> 
                 </div>
-            </main>
-        </div>
+                 </section>
+
+        </main>
     </body>
 </html>

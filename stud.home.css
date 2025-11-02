@@ -68,10 +68,6 @@
             transition: width 0.3s ease;
         }
 
-        nav a:hover {
-            color: white;
-        }
-
         nav a:hover:after {
             width: 100%;
         }

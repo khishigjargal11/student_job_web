@@ -1,0 +1,295 @@
+* {margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+
+    body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+    }
+    header {
+        background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+        padding: 1rem 3rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        backdrop-filter: blur(10px);
+    }
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .user-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+    }
+    .logo span {
+        color: white;
+        font-weight: 600;
+        font-size: 1.2rem;
+    }
+    nav{
+        display: flex;
+        gap: 1rem;
+    }
+    a{
+        text-decoration: none;
+        color: rgba(255,255,255,0.85);
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 1rem 0;
+        position: relative;
+    }
+       nav a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #00ff88;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover:after {
+            width: 100%;
+        }
+    .container {
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 5vw;
+
+        }
+    .login-box {
+        background: white;  
+        padding: 30px;
+        border-radius: 7px;
+        border:#000000 1px solid;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width:100%;
+        max-width: 480px;
+        transition: all 0.3s ease;
+    }
+    .login-box p {
+        font-weight: 600;
+        margin-bottom: 2rem;
+        color: #000000;
+        text-align: center;
+        font-size: 1.5rem;
+    }
+    .form {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+    }
+    .form label {
+        margin-bottom: 0.5rem;
+        color: #555;
+        font-weight: 600;
+    }
+    .form input {
+        padding: 0.75rem;
+        border: 0.01rem solid #ccc;
+        border-radius: 0.7rem;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+
+    .form input:focus {
+        border-color: #000000;
+    }
+     .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .remember input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #000;
+        }
+        .forgot-password {
+            color: #000;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-password:hover {
+            color: #a5a5a5;
+        }
+
+        
+        .login-btn {
+            width: 100%;
+            padding: 18px;
+            background: #000;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+        }
+
+        .login-btn:hover {
+            background: #00ff88;
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,255,136,0.3);
+        }
+        .divider {
+            text-align: center;
+            margin: 35px 0;
+            position: relative;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 42%;
+            height: 2px;
+            background: #f0f0f0;
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        .divider-text {
+            background: white;
+            padding: 0 15px;
+            color: #999;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .signup-links {
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+        }
+
+        .signup-link {
+            text-align: center;
+            padding: 18px;
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #000;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #fafafa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .signup-link:hover {
+            border-color:  #000 ;
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .signup-link-icon {
+            font-size: 20px;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+
+            nav {
+                gap: 20px;
+            }
+
+            nav a {
+                font-size: 14px;
+            }
+
+            .login-card {
+                padding: 40px 30px;
+            }
+
+            .login-title {
+                font-size: 28px;
+            }
+
+            .main-content {
+                padding: 40px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo span {
+                font-size: 18px;
+            }
+
+            .user-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 16px;
+            }
+
+            nav {
+                gap: 15px;
+            }
+
+            nav a {
+                font-size: 13px;
+            }}
+    .login-link {
+        text-align: center;
+        font-size: 14px;
+        color: #666;
+    }
+    .login-link a {
+        color: #000;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+    .login-link a:hover {
+        color: #00ff88;
+    }
+    .form-select {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+    }
+   
+    .form-select select {
+        padding: 0.75rem;
+        border: 0.01rem solid #ccc;
+        border-radius: 0.7rem;
+       
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
