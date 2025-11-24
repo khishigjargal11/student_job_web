@@ -1,0 +1,160 @@
+/* RESET */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #f8f9fa;
+}
+
+/* ===== HEADER  ===== */
+header {
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+    padding: 1rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(10px);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.logo span {
+    color: white;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+nav {
+    display: flex;
+    gap: 1rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: rgba(255,255,255,0.85);
+    font-weight: 500;
+    position: relative;
+    padding: 1rem 0;
+    transition: 0.3s ease;
+}
+
+nav a:after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: #00ff88;
+    transition: 0.3s ease;
+}
+
+nav a:hover:after {
+    width: 100%;
+}
+
+/* ===== LAYOUT ===== */
+.layout {
+    display: flex;
+    height: calc(100vh - 80px);
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+    width: 24%;
+    background: linear-gradient(to bottom, #b8daf5 0%, #a5cde8 100%);
+    padding: 30px;
+    text-align: center;
+}
+
+.profile img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    margin-bottom: 10px;
+}
+
+.profile h2 {
+    font-size: 22px;
+    margin-top: 8px;
+}
+
+.email {
+    color: #444;
+    font-size: 14px;
+}
+
+/* ===== CALENDAR SECTION ===== */
+.calendar {
+    width: 76%;
+    padding: 40px;
+    position: relative;
+}
+
+.save-btn-container {
+    width: 100%;
+    text-align: right;
+    margin-bottom: 15px;
+}
+
+.save-btn {
+    padding: 10px 25px;
+    background: #000;
+    color: white;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* GRID */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: 70px repeat(7, 1fr);
+    border: 1px solid #ddd;
+    background: white;
+}
+
+.calendar-grid div {
+    border: 1px solid #eee;
+    padding: 10px;
+    min-height: 60px;
+}
+
+/* Clickable hour cells */
+.cell {
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.cell.active {
+    background: #000;
+    border-radius: 8px;
+}
+
+/* Add lesson button */
+.add-lesson-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 40px;
+    padding: 15px 25px;
+    background: #000;
+    color: white;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цагийн хуваарь</title>
+    <link rel="stylesheet" href="calendar.css">
+</head>
+<body>
+<!-- ===== HEADER (from login page) ===== -->
+<header class="header">
+    <div class="logo">
+        <div class="user-icon">👤</div>
+        <span onclick="location.href='Login.html'" style="cursor:pointer;">Гарах</span>
+    </div>
+
+    <nav>
+        <a href="#">Нүүр</a>
+        <a href="#">Холбогдох</a>
+        <a href="#">Бидний тухай</a>
+    </nav>
+</header>
+<div class="layout">
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+        <div class="profile">
+            <img src="https://via.placeholder.com/150" alt="">
+            <figcaption>
+                <h2>Taivna</h2>
+            </figcaption>
+            <p class="email">taivna@gmail.com</p>
+        </div>
+    </aside>
+    <!-- ===== MAIN CALENDAR ===== -->
+    <main class="calendar">
+        <div class="save-btn-container">
+            <button class="save-btn" onclick="saveCalendar()">Хадгалах</button>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+    </main>
+
+</div>
+
+<script src="calendar.js"></script>
+
+</body>
+</html>

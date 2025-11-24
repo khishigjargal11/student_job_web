@@ -6,12 +6,11 @@
         <link rel="stylesheet" href="login.css">
         <title>Нэвтрэх</title>
     </head>
-
     <body>
         <header class="header">
             <div class="logo">
                 <div class="user-icon">👤</div>
-                <span>Гарах</span>
+                <span onclick="location.href='Calendar.html'">Гарах</span>
             </div>
             <nav>
                 <a href="#">Нүүр</a>
@@ -52,5 +51,23 @@
                  </section>
 
         </main>
+    <script>
+window.onload = function () {
+    document.querySelector(".login-btn").addEventListener("click", function () {
+        const username = document.getElementById("username").value.trim();
+
+        if (username === "Company") {
+            window.location.href = "Main_Company.html";
+        }
+        else if (username === "Student") {
+            window.location.href = "studhome.html";
+        }
+        else {
+            alert("invalid username");
+        }
+    });
+};
+</script>
+
     </body>
 </html>
