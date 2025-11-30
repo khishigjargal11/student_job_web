@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таны зар</title>
+    <link rel="stylesheet" href="../Css/style.css">
+    <script src="../comp/main-header2.js" defer></script> <!-- main-header.js -->
+    <script src="../comp/sidebar-component.js" defer></script> <!-- side-bar.js -->
+    <script src="../comp/ad-card.js" defer></script> <!-- ad-card-box.js -->
+    <script src="../comp/main-footer.js" defer></script> <!-- main-footer.js -->
+</head>
+<body>
+
+    <!-- ===== Header Component ===== -->
+    <main-header></main-header>
+
+    <!-- ===== Main Content ===== -->
+    <main class="container">
+
+        <!-- Sidebar Component -->
+        <side-bar></side-bar>
+
+        <!-- User Ads -->
+        <section class="content">
+            <header>
+                <h2>Таны зар:</h2>
+            </header>
+
+            <!-- 3 Ad Cards -->
+            <ad-card-box
+                title="Борлуулалтын ажилтан"
+                location="Улаанбаатар, Сүхбаатар дүүрэг"
+                time="09:00–19:00"
+                salary="1,200,000₮"
+                desc="Дэлгүүрт бараа байршуулж борлуулалт хийх ажилтан."
+                rate="4.8★"
+                request-url="">
+            </ad-card-box>
+
+            <ad-card-box
+                title="Кассын ажилтан"
+                location="Улаанбаатар, Баянзүрх дүүрэг"
+                time="10:00–18:00"
+                salary="1,000,000₮"
+                desc="Хүнсний дэлгүүрийн касс дээр ажиллах туршлагатай хүн."
+                rate="4.5★"
+                request-url="">
+            </ad-card-box>
+
+            <ad-card-box
+                title="Хүргэлтийн жолооч"
+                location="Улаанбаатар, Хан-Уул дүүрэг"
+                time="08:30–17:30"
+                salary="1,500,000₮"
+                desc="Хүргэлтийн үйлчилгээний жолооч, автомашинтай бол давуу тал."
+                rate="4.7★"
+                request-url="">
+            </ad-card-box>
+
+        </section>
+    </main>
+
+    <!-- ===== Footer Component ===== -->
+    <main-footer></main-footer>
+
+</body>
+</html>

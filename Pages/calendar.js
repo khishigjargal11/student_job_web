@@ -8,30 +8,34 @@ days.forEach(d => schedule[d.toLowerCase()] = {});
 // ===== BUILD GRID =====
 function buildCalendar() {
     const grid = document.getElementById("calendarGrid");
+    grid.innerHTML = ""; // clear grid first
 
-    // Top row
+    // Top row: empty cell + day headers
     grid.innerHTML += `<div></div>`;
     days.forEach(d => grid.innerHTML += `<div class="day-header">${d}</div>`);
 
-    // Hours
-    for (let hour = startHour; hour < endHour; hour++) {
+    // Start and end times
+    const startTime = new Date();
+    startTime.setHours(startHour, 0, 0, 0); 
+    const endTime = new Date();
+    endTime.setHours(endHour, 0, 0, 0); 
+
+    // Iterate through hours using Date
+    for (let time = new Date(startTime); time < endTime; time.setHours(time.getHours() + 1)) {
+        const hour = time.getHours();
         grid.innerHTML += `<div class="hour-label">${hour}:00</div>`;
 
         days.forEach(day => {
-            const id = `${day}-${hour}-${hour+1}`;
-
-            grid.innerHTML += `
-                <div class="cell" id="${id}" onclick="toggleCell('${day}', ${hour})"></div>
-            `;
+            const id = `${day}_${hour}-${hour+1}`;
+            grid.innerHTML += `<div class="cell" id="${id}" onclick="toggleCell('${day}', ${hour})"></div>`;
         });
     }
 }
 
 buildCalendar();
-
 // ===== CLICK TO TOGGLE =====
 function toggleCell(day, hour) {
-    const cellId = `${day}-${hour}-${hour+1}`;
+    const cellId = `${day}_${hour}-${hour+1}`;
     const cell = document.getElementById(cellId);
 
     const key = `${hour}-${hour+1}`;
@@ -41,7 +45,7 @@ function toggleCell(day, hour) {
         delete schedule[day.toLowerCase()][key];
     } else {
         cell.classList.add("active");
-        schedule[day.toLowerCase()][key] = 1; // your “1-1”, “3-1” logic goes here
+        schedule[day.toLowerCase()][key] = 1; 
     }
 }
 

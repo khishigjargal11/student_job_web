@@ -70,6 +70,7 @@ nav a:hover:after {
 .layout {
     display: flex;
     height: calc(100vh - 80px);
+    width: 100%;
 }
 
 /* ===== SIDEBAR ===== */
@@ -100,7 +101,7 @@ nav a:hover:after {
 
 /* ===== CALENDAR SECTION ===== */
 .calendar {
-    width: 76%;
+    width: 100%;
     padding: 40px;
     position: relative;
 }

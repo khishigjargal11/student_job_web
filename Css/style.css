@@ -96,6 +96,11 @@ html, body {
 }
 
 /* ===== Sidebar ===== */
+
+side-bar {
+    display: contents;
+}
+
 .sidebar {
   width: 24%;
   background: linear-gradient(to bottom, #b8daf5 0%, #a5cde8 100%);

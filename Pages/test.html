@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Css/login.css">
+    <title>Нэвтрэх</title>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="user-icon">👤</div>
+            <span onclick="location.href='Calendar.html'">Гарах</span>
+        </div>
+        <nav>
+            <a href="#">Нүүр</a>
+            <a href="#">Холбогдох</a>
+            <a href="#">Бидний тухай</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="login-box">
+            <p>Нэвтрэх</p>
+
+            <div class="form">
+                <label class="username">Хэрэглэгчийн нэр:</label>
+                <input type="text" id="username" name="username" placeholder="Хэрэглэгчийн нэр" required>
+            </div>
+
+            <div class="form">
+                <label class="password">Нууц үг:</label>
+                <input type="password" id="password" name="password" placeholder="********" required>
+            </div>
+
+            <div class="options">
+                <label class="remember">
+                    <input type="checkbox" id="remember">Намайг сана
+                </label>
+                <a href="#" class="forgot-password">Нууц үг мартсан?</a>
+            </div>
+
+            <button class="login-btn" type="submit">Нэвтрэх</button>
+
+            <div class="divider">
+                <span class="divider-text">эсвэл</span>
+            </div>
+
+            <div class="signup-links">
+                <a href="CreateAccComp.html" class="signup-link">
+                    <span class="signup-link-icon">🏢</span>
+                    <span>Байгууллагаар бүртгүүлэх</span>
+                </a>
+                <a href="CreateAccStud.html" class="signup-link">
+                    <span class="signup-link-icon">🎓</span>
+                    <span>Оюутнаар бүртгүүлэх</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        window.onload = function () {
+            document.querySelector(".login-btn").addEventListener("click", function () {
+                const username = document.getElementById("username").value.trim();
+                
+                if (username === "Company") {
+                    window.location.href = "Main_Company.html";
+                } else if (username === "Student") {
+                    window.location.href = "studhome.html";
+                } else {
+                    alert("invalid username");
+                }
+            });
+        };
+    </script>
+</body>
+</html>
