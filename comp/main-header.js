@@ -1,7 +1,7 @@
 class MainHeader extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
-        <header class="header">
+        <header class="topbar">
             <div class="logo">
                 <div class="user-icon">👤</div>
                 <span id="logout-btn">Гарах</span>
@@ -15,7 +15,7 @@ class MainHeader extends HTMLElement {
         `;
 
         this.querySelector("#logout-btn").onclick = () => {
-            window.location.href = "Calendar.html";
+            window.location.href = "Login.html";
         };
     }
 }

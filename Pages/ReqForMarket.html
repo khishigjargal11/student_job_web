@@ -5,171 +5,56 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ажилд орох хүсэлтүүд</title>
   <link rel="stylesheet" href="../Css/style.css">
+  <script src="../comp/main-header.js" defer></script> <!-- main-header.js -->
+  <script src="../comp/ad-card.js" defer></script>
+  <script src="../comp/main-footer.js" defer></script>
+  <script src="../comp/student-section.js" defer></script>
+  <script src="../comp/back-bar.js" defer></script>
+  <script src="../comp/student-popup.js" defer></script>
 
 </head>
 <body>
   <!-- Header -->
-  <header class="topbar">
-    <nav class="nav-container">
-      <a href="#" class="logo">
-        <div class="user-icon">👤</div>
-        <span onclick="location.href='Login.html'">Гарах</span>
-      </a>
-      <ul class="menu">
-        <li><a href="#">Нүүр</a></li>
-        <li><a href="#">Холбогдох</a></li>
-        <li><a href="#">Бидний тухай</a></li>
-      </ul>
-    </nav>
-  </header>
+  <main-header></main-header>
   <!-- Back bar -->
-  <section class="back-bar">
-    <button onclick="history.back()">←</button>
-    <h2>Ажилд орох хүсэлтүүд</h2>
-  </section>
-
+  <back-bar title="Ажилд орох хүсэлтүүд"></back-bar>
   <!-- Main content -->
   <main class="request-container">
     <!-- Left: job info -->
-    <section class="request-job">
-      <article class="ad-card">
-        <header><h3>БОРЛУУЛАЛТЫН АЖИЛТАН</h3></header>
-        <ul class="ad-info">
-          <li>📍 Байршил: УЛААНБААТАР, СҮХБААТАР ДҮҮРЭГ</li>
-          <li>⏰ Ажлын цаг: 09:00–19:00</li>
-          <li>💰 Цалин: 1,200,000₮ (САРЫН)</li>
-          <li>🧾 Тайлбар: ДЭЛГҮҮРИЙН БОРЛУУЛАЛТЫН АЖИЛТАН — ҮЙЛЧЛҮҮЛЭГЧДЭД ТУСЛАХ, БАРАА БАЙРЛУУЛАХ</li>
-        </ul>
-        <footer class="ad-footer">
-          <span class="rating">4.8★</span>
-        </footer>
-      </article>
+     <section class="accepted-users-wrapper">
+    <ad-card-box
+    title="Борлуулалтын ажилтан"
+    location="Улаанбаатар, Сүхбаатар дүүрэг"
+    time="09:00–19:00"
+    salary="1,200,000₮"
+    desc="Дэлгүүрт бараа байршуулж борлуулалт хийх ажилтан."
+    rate="4.8★"
+    request-url="">
+    </ad-card-box>
+     <div class="accepted-users-title">
+      <h3>Хүлээн авсан хэрэглэгчид</h3>
+    </div>
+     <student-section no-title>
+    [
+      { "name": "Ананд", "email": "anand@gmail.com", "phone": "8822 1122", "gender":"Эрэгтэй", "age":"21", "img":"../pics/profile.jpg" },
+      { "name": "Зулаа", "email": "zulaa@gmail.com", "phone": "9911 2233", "gender":"Эмэгтэй", "age":"22", "img":"../pics/profile.jpg" }
+    ]
+    </student-section>
     </section>
-
     <!-- Right: students -->
-    <aside class="student-section">
-      <header>
-        <h3>Хүсэлт илгээсэн оюутнууд</h3>
-        <span class="student-count">3 оюутан</span>
-      </header>
+    <student-section>
+    [
+     { "name": "Oyutnaa1", "email": "oyutnaa1@gmail.com", "phone": "0444 1111" },
+     { "name": "Oyutnaa2", "email": "oyutnaa2@gmail.com", "phone": "0444 2222" },
+     { "name": "Oyutnaa3", "email": "oyutnaa3@gmail.com", "phone": "0444 3333" }
+    ]
+    </student-section>
 
-      <div class="student-list">
-        
-        <div class="student-card" data-name="Oyutnaa1" data-email="oyutnaa1@gmail.com" data-phone="0444 1111">
-          <img src="pics/profile.jpg" alt="Oyutnaa1">
-          <div class="student-info">
-            <h4>Oyutnaa1</h4>
-            <p>oyutnaa1@gmail.com</p>
-            <p class="student-phone">0444 1111</p>
-          </div>
-        </div>
-
-        <div class="student-card" data-name="Oyutnaa2" data-email="oyutnaa2@gmail.com" data-phone="0444 2222">
-          <img src="pics/profile.jpg" alt="Oyutnaa2">
-          <div class="student-info">
-            <h4>Oyutnaa2</h4>
-            <p>oyutnaa2@gmail.com</p>
-            <p class="student-phone">0444 2222</p>
-          </div>
-        </div>
-
-        <div class="student-card" data-name="Oyutnaa3" data-email="oyutnaa3@gmail.com" data-phone="0444 3333">
-          <img src="pics/profile.jpg" alt="Oyutnaa3">
-          <div class="student-info">
-            <h4>Oyutnaa3</h4>
-            <p>oyutnaa3@gmail.com</p>
-            <p class="student-phone">0444 3333</p>
-          </div>
-        </div>
-      </div>
-    </aside>
   </main>
-
-  <footer class="footer">
-    <p>© 2025 Хүний нөөцийн систем</p>
-  </footer>
+      
+  <student-popup></student-popup>
+  <main-footer></main-footer>
   <!-- Popup -->
-<div class="popup-overlay" id="studentPopup">
-  <div class="popup">
-    <button class="popup-close" onclick="closePopup()">✕</button>
 
-    <div class="popup-header-large">
-      <img src="pics/profile.jpg" id="popupImg" alt="profile">
-      <div class="popup-info">
-        <h2 id="popupName">Oyutnaa3</h2>
-        <p><strong>И-мэйл:</strong> <span id="popupEmail">oyutnaa3@gmail.com</span></p>
-        <p><strong>Утас:</strong> <span id="popupPhone">0444 4444</span></p>
-        <p><strong>Хүйс:</strong> Эрэгтэй</p>
-        <p><strong>Нас:</strong> 20</p>
-      </div>
-    </div>
-
-    <div class="popup-stats-large">
-      <div>
-        <h3>4</h3>
-        <p>Нийт туршлага</p>
-      </div>
-      <div>
-        <h3>4.5★</h3>
-        <p>Дундаж үнэлгээ</p>
-      </div>
-      <div>
-        <h3>100%</h3>
-        <p>Ажил дүүргэлт</p>
-      </div>
-    </div>
-
-    <div class="popup-work-history-large">
-      <h4>🧳 Өмнө хийсэн ажил</h4>
-      <div class="job-grid">
-        <div class="job-card-large">
-          <h5>Агуулахын цагийн ажилтан</h5>
-          <p>⏱ Хугацаа: 2 сар</p>
-          <p>⭐⭐⭐⭐⭐</p>
-        </div>
-        <div class="job-card-large">
-          <h5>Агуулахын цагийн ажилтан</h5>
-          <p>⏱ Хугацаа: 1 сар</p>
-          <p>⭐⭐⭐⭐⭐</p>
-        </div>
-        <div class="job-card-large">
-          <h5>Зөөгч</h5>
-          <p>⏱ Хугацаа: 3 сар</p>
-          <p>⭐⭐⭐⭐⭐</p>
-        </div>
-        <div class="job-card-large">
-          <h5>Борлуулагч</h5>
-          <p>⏱ Хугацаа: 2 сар</p>
-          <p>⭐⭐⭐⭐⭐</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="popup-actions">
-      <button class="approve-btn">✓ Хүлээж авах</button>
-      <button class="reject-btn">✕ Татгалзах</button>
-    </div>
-  </div>
-</div>
-  <script>
-    const popup = document.getElementById("studentPopup");
-
-    document.querySelectorAll(".student-card").forEach(card => {
-      card.addEventListener("click", () => {
-        document.getElementById("popupName").textContent = card.dataset.name;
-        document.getElementById("popupEmail").textContent = card.dataset.email;
-        document.getElementById("popupPhone").textContent = card.dataset.phone;
-        popup.style.display = "flex";
-      });
-    });
-
-    function closePopup() {
-      popup.style.display = "none";
-    }
-
-    popup.addEventListener("click", e => {
-      if (e.target === popup) closePopup();
-    });
-  </script>
 </body>
 </html>

@@ -18,17 +18,9 @@ body {
     background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
     padding: 1rem 3rem;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     backdrop-filter: blur(10px);
-}
-
-/* Wrapper for left + right menus */
-.nav-container {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 /* Logo section */
@@ -36,11 +28,9 @@ body {
     display: flex;
     align-items: center;
     gap: 1rem;
-    text-decoration: none;
-    color: white;
 }
 
-/* User icon - copy from login */
+/* User icon */
 .user-icon {
     width: 2.5rem;
     height: 2.5rem;
@@ -52,31 +42,30 @@ body {
     font-size: 1.2rem;
 }
 
-/* Logout / text next to icon */
+/* Logout text */
 .logo span {
     color: white;
     font-weight: 600;
     font-size: 1.2rem;
 }
 
-/* ===== Menu links ===== */
-.menu {
-    list-style: none;
+/* Navigation menu */
+nav {
     display: flex;
     gap: 1rem;
 }
 
-.menu a {
+nav a {
     text-decoration: none;
     color: rgba(255,255,255,0.85);
     font-weight: 500;
-    transition: all 0.3s ease;
-    padding: 1rem 0;
     position: relative;
+    padding: 1rem 0;
+    transition: 0.3s ease;
 }
 
-/* Hover underline (same as login) */
-.menu a:after {
+/* Hover underline */
+nav a:after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -87,7 +76,7 @@ body {
     transition: width 0.3s ease;
 }
 
-.menu a:hover:after {
+nav a:hover:after {
     width: 100%;
 }
 /* ===== Form Section ===== */

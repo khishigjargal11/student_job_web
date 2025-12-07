@@ -17,17 +17,9 @@ html, body {
     background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
     padding: 1rem 3rem;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     backdrop-filter: blur(10px);
-}
-
-/* Wrapper for left + right menus */
-.nav-container {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 /* Logo section */
@@ -35,11 +27,9 @@ html, body {
     display: flex;
     align-items: center;
     gap: 1rem;
-    text-decoration: none;
-    color: white;
 }
 
-/* User icon - copy from login */
+/* User icon */
 .user-icon {
     width: 2.5rem;
     height: 2.5rem;
@@ -51,31 +41,30 @@ html, body {
     font-size: 1.2rem;
 }
 
-/* Logout / text next to icon */
+/* Logout text */
 .logo span {
     color: white;
     font-weight: 600;
     font-size: 1.2rem;
 }
 
-/* ===== Menu links ===== */
-.menu {
-    list-style: none;
+/* Navigation menu */
+nav {
     display: flex;
     gap: 1rem;
 }
 
-.menu a {
+nav a {
     text-decoration: none;
     color: rgba(255,255,255,0.85);
     font-weight: 500;
-    transition: all 0.3s ease;
-    padding: 1rem 0;
     position: relative;
+    padding: 1rem 0;
+    transition: 0.3s ease;
 }
 
-/* Hover underline (same as login) */
-.menu a:after {
+/* Hover underline */
+nav a:after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -86,9 +75,10 @@ html, body {
     transition: width 0.3s ease;
 }
 
-.menu a:hover:after {
+nav a:hover:after {
     width: 100%;
 }
+
 /* ===== Layout ===== */
 .container {
   display: flex;
@@ -116,12 +106,16 @@ side-bar {
 
 /* Profile */
 .profile img {
-  width: 170px;
-  height: 160px;
-  border-radius: 50%;
-  background: #ddd;
-  margin-bottom: 15px;
-  border: 1px solid #fff;
+              width: 150px;
+            height: 150px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
 }
 
 .profile figcaption h2 {
@@ -311,11 +305,11 @@ side-bar {
 /* ===== Job Requests Page ===== */
 .request-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: flex-start;
-  gap: 40px;
+  gap: 150px;
   padding: 40px;
-  background-color: white;
+  background-color: #f8f9fa;
 }
 
 /* Left side (Job info) */
@@ -583,4 +577,10 @@ side-bar {
   to { opacity: 1; transform: translateY(0); }
 }
 
+.accepted-users-title h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
 
