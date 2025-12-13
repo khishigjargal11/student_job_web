@@ -305,9 +305,9 @@ side-bar {
 /* ===== Job Requests Page ===== */
 .request-container {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: flex-start;
-  gap: 150px;
+  gap: 40px;
   padding: 40px;
   background-color: #f8f9fa;
 }
@@ -582,5 +582,20 @@ side-bar {
   margin-bottom: 10px;
   font-size: 1.3rem;
   font-weight: 600;
+}
+
+.accepted-users-wrapper {
+  flex: 0 0 auto;
+  width: 1000px;
+}
+
+.accepted-users-wrapper .ad-card {
+  width: 100%;
+  max-width: 100%;
+}
+
+.accepted-users-wrapper .student-section {
+  width: auto;
+  max-width: 450px;
 }
 
