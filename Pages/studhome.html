@@ -1,98 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../Css/stud.home.css">
-        <title>Оюутан Нүүрхуудас</title>
-    </head>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оюутан – Нүүр хуудас</title>
+    <link rel="stylesheet" href="../Css/stud.home.css">
+</head>
 
-    <body>
-        <header class="header">
-                <div class="logo">
-                    <div class="user-icon">👤</div>
-                    <span onclick="location.href='Login.html'">Гарах</span>
-                </div>
-                <nav>
-                    <a href="#">Нүүр</a>
-                    <a href="#">Холбогдох</a>
-                    <a href="#">Бидний тухай</a>
-                </nav>
-        </header>
-        <div class="container">
-            <aside class="sidebar">
-                <div class="profile-header">
-                    <div class="profile-title">ХУВИЙН МЭДЭЭЛЭЛ</div>
-                    <img class="profile-image" src="pics/profile.jpg" alt="Profile zurag"/>
-                        <div class="camera-icon">📷</div>
-                    <div class="profile-name">Cараа</div>
-                </div>
-                <section class="info-card" >   
-                        <p ><strong> Овог нэр:</strong> Бат Сараа</p>
-                        <p><strong>УТАС:</strong> 88998899</p>
-                        <p><strong>GMAIL:</strong> 123@GMAIL.COM</p>
-                        <p><strong>ХҮЙС:</strong> ЭРЭГТЭЙ</p>
-                        <p><strong>НАС:</strong> 20</p>
-                </section>
-                        
-                <section class="info-card">
-                        <p><strong>Өмнө хийсэн ажил</strong></p>
-                        <p>Ажлын тайлбар: Англи хэлний цагийн багш</p>
-                        <p>Ажилласан хугацаа: <time datetime="2025-07-20">2025/07/20</time> - 
-                            <time datetime="2025-08-01">2025/08/01</time></p>
-                        <p class="rating" data-score="5">Үнэлгээ:⭐⭐⭐⭐⭐</p>
+<body>
 
-                </section>
-                <button class="calendar-btn" onclick="location.href='Calendar.html'">
-                     Хуваарь өөрчлөх
-                </button>            
-            </aside>
-            <section class="main-content">
-                    <div class="search-bar">
-                        <input type="text" class="search-input" placeholder="🔍 Ажил хайх...">
-                                <select class="dropdown">
-                                    <option value="">Ангилах</option>
-                                    <option value="">Бүгд</option>
-                                    <option value="chingeltei">Чингэлтэй</option>
-                                    <option value="suhbaatar">Сүхбаатар</option>
-                                    <option value="bayanzurkh">Баянзүрх</option>
-                                    <option value="bayangol">Баянгол</option>
-                                    <option value="nalaikh">Налайх</option>
-                                    <option value="khan-uul">Хан-Уул</option>
-                                    <option value="songinokhairkhan">Сонгинохайрхан</option>
-                                    <option value="baganuur">Багануур</option>
-                                </select>
+    <main-header></main-header>
 
-                            <select class="dropdown">
-                                <option value="">Эрэмбэлэх</option>
-                                <option value="newest">Шинэ эхэнд</option>
-                                <option value="oldest">Хуучин эхэнд</option>
-                                <option value="highest-salary">Өндөр цалинтай эхэнд</option>
-                            </select>
-                        </div>
-                        <div class="job">
-                            <div class="job-badge">4.5⭐</div>
-                            <p class="job-title">Агуулахын цагийн ажилтан</p>
-                            <div job-details>
-                                <strong>📍 Байршил:</strong> УЛААНБААТАР, ЧИНГЭЛТЭЙ ДҮҮРЭГ<br>
-                                <strong>⏰ Ажлын цаг:</strong> 10:00-18:00<br>
-                                <strong>💰 Цалин:</strong> 10,000₮ (ЦАГИЙН)<br>
-                                <strong>📋 Тайлбар:</strong> АГУУЛАХЫН ЦАГИЙН АЖИЛТАН — БАРКА БҮРТГЭХ, САВ БАГЛАА ХИЙХ, ХҮРГЭЛТЭНД БЭЛДЭХ
-                            </div>  
-                            <button class="apply-btn">Хүсэлт илгээх</button>
-                        </div>
-                        <div class="job">
-                            <div class="job-badge">4.5⭐</div>
-                            <p class="job-title">Агуулахын цагийн ажилтан</p>
-                            <div job-details>
-                                <strong>📍 Байршил:</strong> УЛААНБААТАР, ЧИНГЭЛТЭЙ ДҮҮРЭГ<br>
-                                <strong>⏰ Ажлын цаг:</strong> 10:00-18:00<br>
-                                <strong>💰 Цалин:</strong> 10,000₮ (ЦАГИЙН)<br>
-                                <strong>📋 Тайлбар:</strong> АГУУЛАХЫН ЦАГИЙН АЖИЛТАН — БАРКА БҮРТГЭХ, САВ БАГЛАА ХИЙХ, ХҮРГЭЛТЭНД БЭЛДЭХ
-                            </div>  
-                            <button class="apply-btn">Хүсэлт илгээх</button>
-                        </div>
-            </section>
-        </div>
-    </body>
+    <div class="container">
+
+        <student-profile 
+            name="Бат Сараа"
+            phone="88998899"
+            email="123@gmail.com">
+
+            <info-card title="Өмнө хийсэн ажил">
+                Англи хэлний цагийн багш<br>
+                <small>2025/07/20 – 2025/08/01</small><br>
+                ⭐⭐⭐⭐⭐
+            </info-card>
+
+        </student-profile>
+
+       
+        <section class="main-content">
+
+            <job-search></job-search>
+
+            <job-card
+                title="Агуулахын цагийн ажилтан"
+                location="Чингэлтэй дүүрэг"
+                time="10:00 – 18:00"
+                salary="10,000₮ / цаг"
+                rating="4.5">
+            </job-card>
+
+            <job-card
+                title="Кофе шопын ажилтан"
+                location="Сүхбаатар дүүрэг"
+                time="09:00 – 17:00"
+                salary="9,000₮ / цаг"
+                rating="4.2">
+            </job-card>
+
+        </section>
+    </div>
+
+    <script src="../comp/main-header.js"></script>
+    <script src="../comp/student-profile.js"></script>
+    <script src="../comp/info-card.js"></script>
+    <script src="../comp/job-search.js"></script>
+    <script src="../comp/job-card.js"></script>
+
+</body>
 </html>
