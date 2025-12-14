@@ -1,8 +1,30 @@
 class InfoCard extends HTMLElement {
     connectedCallback() {
-        const title = this.getAttribute("title") || "Тодорхойгүй";
-        const period = this.getAttribute("period") || "Тодорхойгүй";
+        this.render();
+        
+        // Set up a MutationObserver to watch for attribute changes
+        this.observer = new MutationObserver(() => {
+            this.render();
+        });
+        
+        this.observer.observe(this, {
+            attributes: true,
+            attributeFilter: ['title', 'period', 'rating']
+        });
+    }
+
+    disconnectedCallback() {
+        if (this.observer) {
+            this.observer.disconnect();
+        }
+    }
+
+    render() {
+        const title = this.getAttribute("title") || "Ажлын туршлага байхгүй";
+        const period = this.getAttribute("period") || "";
         const rating = parseInt(this.getAttribute("rating")) || 0;
+
+        console.log('Info card rendering with:', { title, period, rating });
 
         this.innerHTML = `
             <section class="info-card">
@@ -13,14 +35,14 @@ class InfoCard extends HTMLElement {
                     ${title}
                 </p>
 
-                <p>
+                ${period ? `<p>
                     <strong>Хугацаа:</strong><br>
                     ${period}
-                </p>
+                </p>` : ''}
 
-                <p class="rating">
+                ${rating > 0 ? `<p class="rating">
                     <strong>Үнэлгээ:</strong> ${"⭐".repeat(rating)}
-                </p>
+                </p>` : ''}
             </section>
         `;
     }

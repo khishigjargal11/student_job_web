@@ -5,10 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Таны зар</title>
     <link rel="stylesheet" href="../Css/style.css">
-    <script src="../comp/main-header.js" defer></script> <!-- main-header.js -->
-    <script src="../comp/sidebar-component.js" defer></script> <!-- side-bar.js -->
-    <script src="../comp/ad-card.js" defer></script> <!-- ad-card-box.js -->
-    <script src="../comp/main-footer.js" defer></script> <!-- main-footer.js -->
+    <link rel="stylesheet" href="../Css/components.css">
+    <script src="../js/data-manager.js"></script>
+    <script src="../js/route-guard.js"></script>
+    <script src="../data/sampleData.js"></script>
+    <script src="../models/Student.js"></script>
+    <script src="../models/Company.js"></script>
+    <script src="../models/Job.js"></script>
+    <script src="../comp/main-header.js" defer></script>
+    <script src="../comp/sidebar-component.js" defer></script>
+    <script src="../comp/ad-card.js" defer></script>
+    <script src="../comp/main-footer.js" defer></script>
+    <script>
+        // Load company jobs when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            DataManager.initializeData();
+            loadCompanyJobs();
+        });
+
+        function loadCompanyJobs() {
+            const currentUser = DataManager.getCurrentUser();
+            const jobContainer = document.getElementById('company-jobs');
+            
+            if (!currentUser || currentUser.type !== 'company') {
+                jobContainer.innerHTML = '<p class="no-jobs">Компанийн хэрэглэгч нэвтрэх шаардлагатай</p>';
+                return;
+            }
+
+            try {
+                console.log('Current user:', currentUser);
+                const companyJobs = DataManager.getJobsByCompanyId(currentUser.id);
+                console.log('Company jobs:', companyJobs);
+                console.log('All jobs in storage:', DataManager.getJobs());
+                
+                if (companyJobs.length === 0) {
+                    jobContainer.innerHTML = '<p class="no-jobs">Та одоогоор ажлын зар нэмээгүй байна. <a href="AddNews.html">Зар нэмэх</a></p>';
+                    return;
+                }
+
+                jobContainer.innerHTML = '';
+                companyJobs.forEach((job, index) => {
+                    console.log(`Creating ad card ${index} for job:`, job);
+                    const adCard = document.createElement('ad-card-box');
+                    adCard.setAttribute('job-id', job.id);
+                    jobContainer.appendChild(adCard);
+                });
+            } catch (error) {
+                console.error('Error loading company jobs:', error);
+                jobContainer.innerHTML = '<p class="no-jobs">Ажил ачаалахад алдаа гарлаа</p>';
+            }
+        }
+    </script>
 </head>
 <body>
 
@@ -27,36 +74,9 @@
                 <h2>Таны зар:</h2>
             </header>
 
-            <!-- 3 Ad Cards -->
-            <ad-card-box
-                title="Борлуулалтын ажилтан"
-                location="Улаанбаатар, Сүхбаатар дүүрэг"
-                time="09:00–19:00"
-                salary="1,200,000₮"
-                desc="Дэлгүүрт бараа байршуулж борлуулалт хийх ажилтан."
-                rate="4.8★"
-                request-url="">
-            </ad-card-box>
-
-            <ad-card-box
-                title="Кассын ажилтан"
-                location="Улаанбаатар, Баянзүрх дүүрэг"
-                time="10:00–18:00"
-                salary="1,000,000₮"
-                desc="Хүнсний дэлгүүрийн касс дээр ажиллах туршлагатай хүн."
-                rate="4.5★"
-                request-url="">
-            </ad-card-box>
-
-            <ad-card-box
-                title="Хүргэлтийн жолооч"
-                location="Улаанбаатар, Хан-Уул дүүрэг"
-                time="08:30–17:30"
-                salary="1,500,000₮"
-                desc="Хүргэлтийн үйлчилгээний жолооч, автомашинтай бол давуу тал."
-                rate="4.7★"
-                request-url="">
-            </ad-card-box>
+            <div id="company-jobs">
+                <!-- Company jobs will be loaded dynamically -->
+            </div>
 
         </section>
     </main>

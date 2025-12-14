@@ -1,109 +1,218 @@
 class CalendarComponent extends HTMLElement {
     constructor() {
         super();
+        this.schedule = {};
     }
 
     connectedCallback() {
         this.innerHTML = `
         <main class="calendar">
+            <div class="calendar-header">
+                <h2 id="calendarTitle">Цагийн хуваарь</h2>
+                <div class="calendar-info">
+                    <p id="calendarInfo">Та ажиллах боломжтой цагуудаа сонгоно уу</p>
+                </div>
+            </div>
             <div class="save-btn-container">
                 <button class="save-btn" id="saveBtn">Хадгалах</button>
+                <button class="clear-btn" id="clearBtn">Цэвэрлэх</button>
             </div>
             <div class="calendar-grid" id="calendarGrid"></div>
+            <div class="schedule-conflicts" id="scheduleConflicts"></div>
         </main>
         `;
 
-        this.buildCalendar();
-        this.querySelector("#saveBtn").addEventListener("click", () => this.saveCalendar());
+        this.initializeCalendar();
+        this.addEventListeners();
     }
 
-    // ===========================
-    // Calendar variables
-    // ===========================
-    days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-    startHour = 8;
-    endHour = 20;
-    schedule = {};
-
-    // ===========================
-    // Build Calendar Grid
-    // ===========================
-    buildCalendar() {
-        const grid = this.querySelector("#calendarGrid");
-        this.days.forEach(d => this.schedule[d.toLowerCase()] = {});
-
-        grid.innerHTML = "";
-        grid.innerHTML += `<div></div>`;   // Empty top-left cell
-
-        this.days.forEach(d => grid.innerHTML += `<div class="day-header">${d}</div>`);
-
-        for (let hour = this.startHour; hour < this.endHour; hour++) {
-            grid.innerHTML += `<div class="hour-label">${hour}:00</div>`;
-
-            this.days.forEach(day => {
-                const cellId = `${day}_${hour}-${hour+1}`;
-
-                grid.innerHTML += `
-                <div class="cell" id="${cellId}" data-day="${day}" data-hour="${hour}"></div>
-                `;
-            });
+    initializeCalendar() {
+        // Check if this is for job creation
+        const returnToJobForm = sessionStorage.getItem('returnToJobForm');
+        
+        if (returnToJobForm === 'true') {
+            // Load existing job schedule if any
+            const jobSchedule = sessionStorage.getItem('jobSchedule');
+            if (jobSchedule) {
+                this.schedule = JSON.parse(jobSchedule);
+            }
+            
+            // Update UI for job creation
+            document.getElementById('calendarTitle').textContent = 'Ажлын цагийн хуваарь';
+            document.getElementById('calendarInfo').textContent = 'Ажлын цагийн хуваарьг тодорхойлно уу';
+        } else {
+            // Load user's existing schedule for students
+            const currentUser = DataManager.getCurrentUser();
+            if (currentUser && currentUser.type === 'student') {
+                const student = DataManager.getStudentById(currentUser.id);
+                if (student && student.schedule) {
+                    this.schedule = { ...student.schedule };
+                }
+            }
         }
 
-        // Attach click event
-        this.enableCellClicks();
+        // Build calendar with existing schedule
+        CalendarUtils.buildCalendarGrid('calendarGrid', this.schedule);
+        
+        // Set global schedule for CalendarUtils
+        window.currentSchedule = this.schedule;
+
+        // Check for conflicts (only for students)
+        if (returnToJobForm !== 'true') {
+            this.checkScheduleConflicts();
+        }
     }
 
-    // ===========================
-    // Click behavior
-    // ===========================
-    enableCellClicks() {
-        const cells = this.querySelectorAll(".cell");
+    addEventListeners() {
+        // Save button
+        this.querySelector("#saveBtn").addEventListener("click", () => this.saveCalendar());
+        
+        // Clear button
+        this.querySelector("#clearBtn").addEventListener("click", () => this.clearSchedule());
 
-        cells.forEach(cell => {
-            cell.addEventListener("click", () => {
-                const day = cell.dataset.day;
-                const hour = cell.dataset.hour;
-                const key = `${hour}-${parseInt(hour)+1}`;
-
-                if (cell.classList.contains("active")) {
-                    cell.classList.remove("active");
-                    delete this.schedule[day.toLowerCase()][key];
-                } else {
-                    cell.classList.add("active");
-                    this.schedule[day.toLowerCase()][key] = 1;
-                }
-            });
+        // Listen for schedule changes from CalendarUtils
+        window.addEventListener('scheduleChanged', (event) => {
+            this.schedule = event.detail.schedule;
+            this.checkScheduleConflicts();
         });
+
+        // Override CalendarUtils toggle function to use our instance
+        const originalToggle = CalendarUtils.toggleCell;
+        CalendarUtils.toggleCell = (day, hour) => {
+            const cellId = `${day}_${hour}-${hour+1}`;
+            const cell = document.getElementById(cellId);
+            if (!cell) return;
+
+            const dayKey = day.toLowerCase();
+            const timeKey = `${hour}-${hour+1}`;
+
+            // Initialize day if not exists
+            if (!this.schedule[dayKey]) {
+                this.schedule[dayKey] = {};
+            }
+
+            if (cell.classList.contains("active")) {
+                cell.classList.remove("active");
+                delete this.schedule[dayKey][timeKey];
+            } else {
+                cell.classList.add("active");
+                this.schedule[dayKey][timeKey] = 1;
+            }
+
+            // Update global schedule
+            window.currentSchedule = this.schedule;
+
+            // Check conflicts
+            this.checkScheduleConflicts();
+
+            // Trigger custom event
+            window.dispatchEvent(new CustomEvent('scheduleChanged', {
+                detail: { schedule: this.schedule }
+            }));
+        };
     }
 
-    // ===========================
-    // Save (monday - sunday(1-7) 8h-9h (1) 9h-10h(2)...)
-    // ===========================
-     saveCalendar() {
-    const grid = document.getElementById("calendarGrid");
-    const activeCells = grid.querySelectorAll(".cell.active");
+    saveCalendar() {
+        const currentUser = DataManager.getCurrentUser();
+        
+        // Check if returning to job form
+        const returnToJobForm = sessionStorage.getItem('returnToJobForm');
+        
+        if (returnToJobForm === 'true') {
+            // Save as job schedule
+            sessionStorage.setItem('jobSchedule', JSON.stringify(this.schedule));
+            sessionStorage.removeItem('returnToJobForm');
+            alert('Ажлын цагийн хуваарь хадгалагдлаа');
+            window.location.href = 'AddNews.html';
+            return;
+        }
+        
+        // Regular student schedule save
+        if (!currentUser || currentUser.type !== 'student') {
+            alert('Зөвхөн оюутан хэрэглэгч цагийн хуваарь хадгалах боломжтой');
+            return;
+        }
 
-    const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
-    const startHour = 8; // your calendar start
+        const student = DataManager.getStudentById(currentUser.id);
+        if (!student) {
+            alert('Оюутны мэдээлэл олдсонгүй');
+            return;
+        }
 
-    let saved = [];
+        // Update student schedule
+        student.schedule = this.schedule;
+        student.updatedAt = new Date().toISOString();
 
-    activeCells.forEach(cell => {
-        const dayName = cell.dataset.day.toLowerCase();  // monday, tuesday...
-        const hour = parseInt(cell.dataset.hour); // 8, 9, 10...
+        // Save to storage
+        DataManager.saveStudent(student);
 
-        // convert to index
-        const dayIndex = days.indexOf(dayName) + 1;
-        const hourIndex = (hour - startHour) + 1;
+        // Update current user session
+        DataManager.setCurrentUser({ ...currentUser, schedule: student.schedule });
 
-        saved.push(`${dayIndex}-${hourIndex}`);
-    });
+        alert('Цагийн хуваарь амжилттай хадгалагдлаа');
+        
+        // Show updated conflicts
+        this.checkScheduleConflicts();
+    }
 
-    console.log("📌 Saved:", saved);
-    alert("Saved! Check console.");
+    clearSchedule() {
+        if (confirm('Та цагийн хуваарьаа бүрэн цэвэрлэхийг хүсэж байна уу?')) {
+            this.schedule = {};
+            window.currentSchedule = {};
+            
+            // Clear all active cells
+            const activeCells = this.querySelectorAll('.cell.active');
+            activeCells.forEach(cell => cell.classList.remove('active'));
+            
+            // Clear conflicts
+            this.querySelector('#scheduleConflicts').innerHTML = '';
+            
+            alert('Цагийн хуваарь цэвэрлэгдлээ');
+        }
+    }
 
-    return saved; 
-}
+    checkScheduleConflicts() {
+        const currentUser = DataManager.getCurrentUser();
+        if (!currentUser || currentUser.type !== 'student') return;
+
+        const conflictsContainer = this.querySelector('#scheduleConflicts');
+        const activeJobs = DataManager.getActiveJobs();
+        const conflictingJobs = [];
+
+        activeJobs.forEach(job => {
+            if (DataManager.hasScheduleConflict(this.schedule, job.schedule)) {
+                const company = DataManager.getCompanyById(job.companyId);
+                conflictingJobs.push({
+                    job: job,
+                    companyName: company ? company.companyName : 'Тодорхойгүй'
+                });
+            }
+        });
+
+        if (conflictingJobs.length > 0) {
+            conflictsContainer.innerHTML = `
+                <div class="conflicts-warning">
+                    <h4>⚠️ Цагийн хуваарийн давхцал</h4>
+                    <p>Таны цагийн хуваарь дараах ажлуудтай давхцаж байна:</p>
+                    <ul>
+                        ${conflictingJobs.map(item => `
+                            <li>
+                                <strong>${item.job.title}</strong> - ${item.companyName}
+                                <br><small>${CalendarUtils.scheduleToDisplayText(item.job.schedule)}</small>
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <p><small>Эдгээр ажлууд таны хайлтын үр дүнд харагдахгүй.</small></p>
+                </div>
+            `;
+        } else {
+            conflictsContainer.innerHTML = `
+                <div class="no-conflicts">
+                    <p>✅ Цагийн хуваарийн давхцал байхгүй</p>
+                </div>
+            `;
+        }
+    }
 }
 
 window.customElements.define("calendar-component", CalendarComponent);

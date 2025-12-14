@@ -5,7 +5,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ажилд орох хүсэлтүүд</title>
   <link rel="stylesheet" href="../Css/style.css">
-  <script src="../comp/main-header.js" defer></script> <!-- main-header.js -->
+  <link rel="stylesheet" href="../Css/components.css">
+  <script src="../js/data-manager.js"></script>
+  <script src="../data/sampleData.js"></script>
+  <script src="../models/Student.js"></script>
+  <script src="../models/Company.js"></script>
+  <script src="../models/Job.js"></script>
+  <script src="../comp/main-header.js" defer></script>
   <script src="../comp/ad-card.js" defer></script>
   <script src="../comp/main-footer.js" defer></script>
   <script src="../comp/student-section.js" defer></script>
@@ -21,36 +27,207 @@
   <!-- Main content -->
   <main class="request-container">
     <!-- Left: job info -->
-     <section class="accepted-users-wrapper">
-    <ad-card-box
-    title="Борлуулалтын ажилтан"
-    location="Улаанбаатар, Сүхбаатар дүүрэг"
-    time="09:00–19:00"
-    salary="1,200,000₮"
-    desc="Дэлгүүрт бараа байршуулж борлуулалт хийх ажилтан."
-    rate="4.8★"
-    request-url="">
-    </ad-card-box>
-     <div class="accepted-users-title">
-      <h3>Хүлээн авсан хэрэглэгчид</h3>
-    </div>
-     <student-section no-title>
-    [
-      { "name": "Ананд", "email": "anand@gmail.com", "phone": "8822 1122", "gender":"Эрэгтэй", "age":"21", "img":"../pics/profile.jpg" },
-      { "name": "Зулаа", "email": "zulaa@gmail.com", "phone": "9911 2233", "gender":"Эмэгтэй", "age":"22", "img":"../pics/profile.jpg" }
-    ]
-    </student-section>
+    <section class="accepted-users-wrapper">
+      <div id="job-info">
+        <!-- Job info will be loaded dynamically -->
+      </div>
+      
+      <div class="accepted-users-title">
+        <h3>Хүлээн авсан хэрэглэгчид</h3>
+      </div>
+      
+      <div id="accepted-students">
+        <!-- Accepted students will be loaded dynamically -->
+      </div>
     </section>
-    <!-- Right: students -->
-    <student-section>
-    [
-     { "name": "Oyutnaa1", "email": "oyutnaa1@gmail.com", "phone": "0444 1111" },
-     { "name": "Oyutnaa2", "email": "oyutnaa2@gmail.com", "phone": "0444 2222" },
-     { "name": "Oyutnaa3", "email": "oyutnaa3@gmail.com", "phone": "0444 3333" }
-    ]
-    </student-section>
-
+    
+    <!-- Right: pending applications -->
+    <section class="pending-applications">
+      <h3>Хүлээгдэж буй хүсэлтүүд</h3>
+      <div id="pending-applications">
+        <!-- Pending applications will be loaded dynamically -->
+      </div>
+    </section>
   </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      DataManager.initializeData();
+      loadJobApplications();
+    });
+
+    function loadJobApplications() {
+      const jobId = sessionStorage.getItem('viewingJobId');
+      if (!jobId) {
+        document.querySelector('.request-container').innerHTML = '<p>Ажлын мэдээлэл олдсонгүй</p>';
+        return;
+      }
+
+      const jobData = DataManager.getJobById(jobId);
+      if (!jobData) {
+        document.querySelector('.request-container').innerHTML = '<p>Ажлын мэдээлэл олдсонгүй</p>';
+        return;
+      }
+
+      // Convert to Job instance to access methods
+      const job = new Job(jobData);
+
+      // Load job info
+      loadJobInfo(job);
+      
+      // Load accepted students
+      loadAcceptedStudents(job);
+      
+      // Load pending applications
+      loadPendingApplications(job);
+    }
+
+    function loadJobInfo(job) {
+      const jobInfoContainer = document.getElementById('job-info');
+      
+      // Clear existing content to prevent duplicates
+      jobInfoContainer.innerHTML = '';
+      
+      const adCard = document.createElement('ad-card-box');
+      adCard.setAttribute('job-id', job.id);
+      jobInfoContainer.appendChild(adCard);
+    }
+
+    function loadAcceptedStudents(job) {
+      const container = document.getElementById('accepted-students');
+      
+      if (job.acceptedStudents.length === 0) {
+        container.innerHTML = '<p class="no-data">Хүлээн авсан оюутан байхгүй</p>';
+        return;
+      }
+
+      const studentsData = job.acceptedStudents.map(studentId => {
+        const studentData = DataManager.getStudentById(studentId);
+        if (!studentData) return null;
+        
+        // Convert to Student instance to access methods
+        const student = new Student(studentData);
+        
+        return {
+          id: student.id,
+          name: student.name,
+          email: student.email,
+          phone: student.phone,
+          img: student.profilePicture,
+          rating: student.getAverageRating()
+        };
+      }).filter(Boolean);
+
+      container.innerHTML = studentsData.map(student => `
+        <div class="accepted-student-card">
+          <img src="${student.img}" alt="${student.name}" class="student-avatar">
+          <div class="student-info">
+            <h4>${student.name}</h4>
+            <p>📧 ${student.email}</p>
+            <p>📞 ${student.phone}</p>
+            <p>⭐ ${student.rating}</p>
+          </div>
+          <div class="student-actions">
+            <button class="remove-btn" onclick="removeAcceptedStudent('${job.id}', '${student.id}')">
+              ❌ Хасах
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function loadPendingApplications(job) {
+      const container = document.getElementById('pending-applications');
+      const pendingApps = job.getPendingApplications();
+      
+      if (pendingApps.length === 0) {
+        container.innerHTML = '<p class="no-data">Хүлээгдэж буй хүсэлт байхгүй</p>';
+        return;
+      }
+
+      container.innerHTML = pendingApps.map(app => {
+        const studentData = DataManager.getStudentById(app.studentId);
+        if (!studentData) return '';
+
+        // Convert to Student instance to access methods
+        const student = new Student(studentData);
+
+        return `
+          <div class="application-card" data-student-id="${student.id}">
+            <img src="${student.profilePicture}" alt="${student.name}" class="student-avatar">
+            <div class="student-info">
+              <h4>${student.name}</h4>
+              <p>📧 ${student.email}</p>
+              <p>📞 ${student.phone}</p>
+              <p>⭐ ${student.getAverageRating()}</p>
+              <p class="application-date">Хүсэлт илгээсэн: ${new Date(app.appliedAt).toLocaleDateString('mn-MN')}</p>
+              ${app.message ? `<p class="application-message">"${app.message}"</p>` : ''}
+            </div>
+            <div class="application-actions">
+              <button class="accept-btn" onclick="handleApplication('${job.id}', '${student.id}', 'accept')">
+                Зөвшөөрөх
+              </button>
+              <button class="reject-btn" onclick="handleApplication('${job.id}', '${student.id}', 'reject')">
+                Татгалзах
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function handleApplication(jobId, studentId, action) {
+      const jobData = DataManager.getJobById(jobId);
+      if (!jobData) return;
+
+      // Convert to Job instance to access methods
+      const job = new Job(jobData);
+
+      let success = false;
+      let message = '';
+
+      if (action === 'accept') {
+        success = job.acceptStudent(studentId);
+        message = success ? 'Хүсэлт зөвшөөрөгдлөө' : 'Орон тоо дүүрсэн эсвэл алдаа гарлаа';
+      } else if (action === 'reject') {
+        success = job.rejectStudent(studentId);
+        message = success ? 'Хүсэлт татгалзагдлаа' : 'Алдаа гарлаа';
+      }
+
+      if (success) {
+        DataManager.saveJob(job.toJSON());
+        alert(message);
+        loadJobApplications(); // Refresh the display
+      } else {
+        alert(message);
+      }
+    }
+
+    function removeAcceptedStudent(jobId, studentId) {
+      const confirmRemove = confirm('Та энэ оюутныг хүлээн авсан жагсаалтаас хасахыг хүсэж байна уу?\n\nОюутан дахин хүсэлт илгээгчдийн жагсаалтад орно.');
+      if (!confirmRemove) return;
+
+      const jobData = DataManager.getJobById(jobId);
+      if (!jobData) return;
+
+      // Convert to Job instance
+      const job = new Job(jobData);
+
+      // Use the Job model method to remove accepted student
+      const success = job.removeAcceptedStudent(studentId);
+
+      if (success) {
+        // Save updated job
+        DataManager.saveJob(job.toJSON());
+        alert('Оюутан амжилттай хасагдлаа. Тэд дахин хүсэлт илгээгчдийн жагсаалтад орлоо.');
+        
+        // Refresh the page to show updated data
+        loadJobApplications();
+      } else {
+        alert('Алдаа гарлаа');
+      }
+    }
+  </script>
       
   <student-popup></student-popup>
   <main-footer></main-footer>

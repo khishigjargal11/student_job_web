@@ -1,4 +1,3 @@
-/* ===== Reset & Base ===== */
 * {
   margin: 0;
   padding: 0;
@@ -7,7 +6,7 @@
 }
 
 html, body {
-  height: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: #f8f9fa;
@@ -78,11 +77,10 @@ nav a:after {
 nav a:hover:after {
     width: 100%;
 }
-
 /* ===== Layout ===== */
 .container {
   display: flex;
-  min-height: calc(100vh - 100px);
+  min-height: 100vh;
 }
 
 /* ===== Sidebar ===== */
@@ -106,16 +104,12 @@ side-bar {
 
 /* Profile */
 .profile img {
-              width: 150px;
-            height: 150px;
-            background: white;
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  width: 170px;
+  height: 160px;
+  border-radius: 50%;
+  background: #ddd;
+  margin-bottom: 15px;
+  border: 1px solid #fff;
 }
 
 .profile figcaption h2 {
@@ -309,7 +303,7 @@ side-bar {
   align-items: flex-start;
   gap: 40px;
   padding: 40px;
-  background-color: #f8f9fa;
+  background-color: white;
 }
 
 /* Left side (Job info) */
@@ -576,26 +570,3 @@ side-bar {
   from { opacity: 0; transform: translateY(-8px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
-.accepted-users-title h3 {
-  margin-top: 20px;
-  margin-bottom: 10px;
-  font-size: 1.3rem;
-  font-weight: 600;
-}
-
-.accepted-users-wrapper {
-  flex: 0 0 auto;
-  width: 1000px;
-}
-
-.accepted-users-wrapper .ad-card {
-  width: 100%;
-  max-width: 100%;
-}
-
-.accepted-users-wrapper .student-section {
-  width: auto;
-  max-width: 450px;
-}
-

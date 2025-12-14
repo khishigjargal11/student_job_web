@@ -82,6 +82,24 @@ class Job {
         return this.applications.some(app => app.studentId === studentId);
     }
 
+    // Remove accepted student and revert to pending
+    removeAcceptedStudent(studentId) {
+        // Remove from accepted list
+        const index = this.acceptedStudents.indexOf(studentId);
+        if (index > -1) {
+            this.acceptedStudents.splice(index, 1);
+        }
+
+        // Find and update application status back to pending
+        const application = this.applications.find(app => app.studentId === studentId);
+        if (application) {
+            application.status = 'pending';
+        }
+
+        this.updatedAt = new Date().toISOString();
+        return true;
+    }
+
     // Get pending applications
     getPendingApplications() {
         return this.applications.filter(app => app.status === 'pending');
@@ -95,6 +113,8 @@ class Job {
                 return `${formatter.format(this.salary)}₮ / цаг`;
             case 'daily':
                 return `${formatter.format(this.salary)}₮ / өдөр`;
+            case 'weekly':
+                return `${formatter.format(this.salary)}₮ / 7 хоног`;
             case 'monthly':
                 return `${formatter.format(this.salary)}₮ / сар`;
             default:

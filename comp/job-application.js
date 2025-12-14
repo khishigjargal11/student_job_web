@@ -43,7 +43,7 @@ class JobApplication extends HTMLElement {
         const formData = new FormData(this.querySelector('#application-form'));
         const applicationData = Object.fromEntries(formData);
         
-        // Store application (in real app, send to backend)
+        // Store application 
         const applications = JSON.parse(localStorage.getItem('applications') || '[]');
         applications.push({
             id: Date.now(),
