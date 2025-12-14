@@ -4,9 +4,20 @@
     <meta charset="UTF-8">
     <title>Нэвтрэх</title>
     <link rel="stylesheet" href="../Css/login.css">
+    <script src="../js/data-manager.js"></script>
+    <script src="../data/sampleData.js"></script>
+    <script src="../models/Student.js"></script>
+    <script src="../models/Company.js"></script>
+    <script src="../models/Job.js"></script>
     <script type="module" src="../comp/main-header.js"></script>
     <script type="module" src="../comp/login-form.js"></script>
     <script type="module" src="../comp/login-page.js"></script>
+    <script>
+        // Initialize sample data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            DataManager.initializeData();
+        });
+    </script>
 </head>
 <body>
     <login-page></login-page>

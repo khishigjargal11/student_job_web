@@ -5,63 +5,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../Css/login.css">
         <title>Оюутнаар бүртгүүлэх</title>
+        <script type="module" src="../comp/data-manager.js"></script>
+        <script type="module" src="../comp/student-registration-form.js"></script>
     </head>
 
     <body>
-            <header class="header">
-                <div class="logo">
-                    <div class="user-icon">👤</div>
-                    <span onclick="location.href='Login.html'">Гарах</span>
-                </div>
-                <nav>
-                        <a href="comphome.html">Нүүр хуудас</a>
-                        <a href="contact.html">Холбогдох</a>
-                        <a href="about.html">Бидний тухай</a>
-                </nav>
-            </header>
-            <main class="container">
-                <form class="login-box">
-                    <p>Оюутнаар бүртгүүлэх</p>
-                    <div class="form">
-                        <label for="username">Хэрэглэгчийн нэр:</label>
-                        <input type="text" id="username" name="username" required>
-                    </div>
-                    <div class="form">
-                        <label for="email">Имэйл:</label>
-                        <input type="email" id="email" name="email" required>
-                    <div class="form">
-                        <label for="phone">Утасны дугаар: </label>
-                        <input type="tel" id="phone" name="phone" required>
-                    </div>
-                    <div class="form">
-                        <label for="age">Нас: </label>
-                    <input  id="age" name="age" required>
-                    </div>
-                    <div class="form-select">
-                         <label for="gender">Хүйс: </label>
-                    <select id="gender" name="gender" required>
-                        <option value="" disabled selected>Сонгох</option>
-                        <option value="male">Эрэгтэй</option>
-                        <option value="female">Эмэгтэй</option>
-                    </select>
-                    </div>
-                    <div class="form">
-                        <label for="password">Нууц үг:</label>
-                        <input type="password" id="password" name="password" required>
-                    </div>
-                    <div class="form">
-                        <label for="password">Нууц үг давтах:</label>
-                        <input type="password" name="password" required>
-                    </div>
-                    <button class="login-btn" type="submit">Бүртгүүлэх</button>
-                    <div class="divider">
-                        <span class="divider-text">эсвэл</span>
-                    </div>
-                    <div class="login-link">
-                        Бүртгэлтэй юу? <a href="Login.html">Нэвтрэх</a>
-                    </div>
-                
-                </form>
-            </main>
-        </body>
+        <header class="header">
+            <div class="logo">
+                <div class="user-icon">👤</div>
+                <span onclick="location.href='Login.html'">Гарах</span>
+            </div>
+            <nav>
+                <a href="Login.html">Нүүр хуудас</a>
+                <a href="contact.html">Холбогдох</a>
+                <a href="about.html">Бидний тухай</a>
+            </nav>
+        </header>
+        <main class="container">
+            <student-registration-form></student-registration-form>
+        </main>
+    </body>
 </html>

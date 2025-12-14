@@ -38,14 +38,32 @@ class LoginForm extends HTMLElement {
         `;
 
         this.querySelector("#login-btn").addEventListener("click", () => {
-            const user = this.querySelector("#username").value.trim();
+            const username = this.querySelector("#username").value.trim();
+            const password = this.querySelector("#password").value.trim();
 
-            if (user === "Company") {
-                window.location.href = "Main_Company.html";
-            } else if (user === "Student") {
-                window.location.href = "studhome.html";
+            if (!username || !password) {
+                alert("Хэрэглэгчийн нэр болон нууц үгээ оруулна уу");
+                return;
+            }
+
+            // Authenticate user using new DataManager method
+            const authResult = DataManager.authenticateUser(username, password);
+            
+            if (authResult) {
+                // Set current user with full user data
+                DataManager.setCurrentUser({ 
+                    type: authResult.type, 
+                    ...authResult.user 
+                });
+
+                // Redirect based on user type
+                if (authResult.type === 'student') {
+                    window.location.href = "studhome.html";
+                } else if (authResult.type === 'company') {
+                    window.location.href = "Main_Company.html";
+                }
             } else {
-                alert("invalid username");
+                alert("Хэрэглэгчийн нэр эсвэл нууц үг буруу байна");
             }
         });
     }

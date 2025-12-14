@@ -50,11 +50,24 @@
         </section>
     </div>
 
+    <script src="../js/data-manager.js"></script>
+    <script src="../js/route-guard.js"></script>
+    <script src="../data/sampleData.js"></script>
+    <script src="../models/Student.js"></script>
+    <script src="../models/Company.js"></script>
+    <script src="../models/Job.js"></script>
     <script src="../comp/main-header.js"></script>
     <script src="../comp/student-profile.js"></script>
     <script src="../comp/info-card.js"></script>
     <script src="../comp/job-search.js"></script>
     <script src="../comp/job-card.js"></script>
+    
+    <script>
+        // Check authentication
+        if (!RouteGuard.requireStudentAuth()) {
+            // Will redirect if not authenticated
+        }
+    </script>
 
 </body>
 </html>
