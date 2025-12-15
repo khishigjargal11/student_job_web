@@ -122,7 +122,7 @@ class JobForm extends HTMLElement {
   handleJobSubmission() {
     const currentUser = DataManager.getCurrentUser();
     if (!currentUser || currentUser.type !== 'company') {
-      alert('Зөвхөн компанийн хэрэглэгч зар нэмэх боломжтой');
+      console.log('Only company users can create job posts');
       return;
     }
 
@@ -137,14 +137,14 @@ class JobForm extends HTMLElement {
 
     // Validation
     if (!title || !location || !description || !salary || gender === 'Сонгох' || salaryType === 'Сонгох') {
-      alert('Шаардлагатай талбаруудыг бөглөнө үү');
+      console.log('Please fill in all required fields');
       return;
     }
 
     // Get schedule from session storage
     const jobSchedule = sessionStorage.getItem('jobSchedule');
     if (!jobSchedule) {
-      alert('Ажлын цагийн хуваарь оруулна уу');
+      console.log('Please set job schedule');
       return;
     }
 
@@ -199,7 +199,7 @@ class JobForm extends HTMLElement {
     sessionStorage.removeItem('jobFormData');
     sessionStorage.removeItem('jobSchedule');
 
-    alert('Зар амжилттай нэмэгдлээ!');
+    console.log('Job created successfully');
     
     // Redirect to company dashboard
     window.location.href = 'Main_company.html';

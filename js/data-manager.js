@@ -105,6 +105,11 @@ class DataManager {
         return jobs.filter(job => job.status === 'active');
     }
 
+    static getFinishedJobs() {
+        const jobs = this.getJobs();
+        return jobs.filter(job => job.status === 'finished');
+    }
+
     static saveJob(jobData) {
         const jobs = this.getJobs();
         const existingIndex = jobs.findIndex(j => j.id === jobData.id);

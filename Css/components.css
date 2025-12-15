@@ -17,76 +17,65 @@
 }
 
 .job .applied-btn {
-    background-color: #28a745;
+    background: #28a745;
     color: white;
     border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
+    padding: 12px 24px;
+    border-radius: 12px;
     cursor: not-allowed;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
 .job .full-btn {
-    background-color: #6c757d;
+    background: #6c757d;
     color: white;
     border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
+    padding: 12px 24px;
+    border-radius: 12px;
     cursor: not-allowed;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
 .job .info-btn {
-    background-color: #17a2b8;
+    background: #17a2b8;
     color: white;
     border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
+    padding: 12px 24px;
+    border-radius: 12px;
     cursor: not-allowed;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
 .job .accepted-btn {
-    background-color: #28a745;
+    background: #28a745;
     color: white;
     border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
+    padding: 12px 24px;
+    border-radius: 12px;
     cursor: not-allowed;
-    font-weight: bold;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
-.job .pending-btn {
-    background-color: #ffc107;
-    color: #212529;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: not-allowed;
-    margin-bottom: 5px;
-    display: block;
-    width: 100%;
-}
 
-.job .withdraw-btn {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: background-color 0.2s;
-}
-
-.job .withdraw-btn:hover {
-    background-color: #c82333;
-}
 
 .job .rejected-btn {
-    background-color: #6c757d;
+    background: #6c757d;
     color: white;
     border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
+    padding: 12px 24px;
+    border-radius: 12px;
     cursor: not-allowed;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
 /* Student Profile Enhancements - Non-intrusive */
@@ -222,47 +211,31 @@ student-profile .no-data {
     font-size: 12px;
 }
 
-/* Student Profile Actions */
-student-profile .profile-actions {
-    margin-top: 15px;
-    padding: 10px;
-}
 
-student-profile .schedule-btn {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-    transition: background-color 0.2s;
-}
-
-student-profile .schedule-btn:hover {
-    background-color: #0056b3;
-}
 
 /* Job Search Refresh Button */
 .refresh-btn {
-    background-color: #28a745;
+    background: #000;
     color: white;
     border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
+    padding: 12px 20px;
+    border-radius: 12px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: 700;
     margin-left: 10px;
-    transition: background-color 0.2s;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
 }
 
 .refresh-btn:hover {
-    background-color: #1e7e34;
+    background: #00ff88;
+    color: #000;
+    transform: translateY(-2px);
 }
 
 .refresh-btn:active {
-    transform: rotate(180deg);
+    transform: translateY(-2px) rotate(180deg);
     transition: transform 0.3s;
 }
 
@@ -328,6 +301,17 @@ student-profile .schedule-btn:hover {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     border-left: 4px solid #007bff;
+}
+
+.application-card.clickable-card {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.application-card.clickable-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    border-left-color: #0056b3;
 }
 
 .student-avatar {
@@ -411,6 +395,27 @@ student-profile .schedule-btn:hover {
     background-color: #c82333;
 }
 
+.finished-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.2s;
+    margin-left: 5px;
+}
+
+.finished-btn:hover {
+    background-color: #1e7e34;
+}
+
+.job-status.finished {
+    background-color: #6f42c1;
+    color: white;
+}
+
 .student-actions {
     display: flex;
     align-items: center;
@@ -440,6 +445,117 @@ student-profile .schedule-btn:hover {
     background-color: #d4edda;
     border-radius: 6px;
     border-left: 4px solid #28a745;
+}
+
+.finished-student-card {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #6f42c1;
+}
+
+.rating-section {
+    margin-top: 10px;
+}
+
+.rating-section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.star-rating {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 5px;
+}
+
+.star {
+    font-size: 20px;
+    cursor: pointer;
+    color: #000;
+    transition: color 0.2s;
+}
+
+.star.active {
+    color: #ffc107;
+}
+
+.star:hover {
+    color: #ffc107;
+}
+
+.star:hover ~ .star {
+    color: #000;
+}
+
+.current-rating {
+    font-size: 12px;
+    color: #666;
+    margin: 0;
+}
+
+/* Clickable cards for profile editing */
+.clickable-info-card,
+.clickable-profile-card {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.clickable-info-card:hover,
+.clickable-profile-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.click-hint {
+    font-size: 11px;
+    color: #007bff;
+    margin-top: 8px;
+    text-align: center;
+    font-style: italic;
+}
+
+/* Profile editing form styles */
+.edit-form {
+    margin-top: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+.form-group select {
+    background-color: white;
+    cursor: pointer;
 }
 
 /* Calendar Enhancements */

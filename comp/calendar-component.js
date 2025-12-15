@@ -122,20 +122,20 @@ class CalendarComponent extends HTMLElement {
             // Save as job schedule
             sessionStorage.setItem('jobSchedule', JSON.stringify(this.schedule));
             sessionStorage.removeItem('returnToJobForm');
-            alert('Ажлын цагийн хуваарь хадгалагдлаа');
+            console.log('Job schedule saved');
             window.location.href = 'AddNews.html';
             return;
         }
         
         // Regular student schedule save
         if (!currentUser || currentUser.type !== 'student') {
-            alert('Зөвхөн оюутан хэрэглэгч цагийн хуваарь хадгалах боломжтой');
+            console.log('Only students can save schedule');
             return;
         }
 
         const student = DataManager.getStudentById(currentUser.id);
         if (!student) {
-            alert('Оюутны мэдээлэл олдсонгүй');
+            console.log('Student data not found');
             return;
         }
 
@@ -149,7 +149,7 @@ class CalendarComponent extends HTMLElement {
         // Update current user session
         DataManager.setCurrentUser({ ...currentUser, schedule: student.schedule });
 
-        alert('Цагийн хуваарь амжилттай хадгалагдлаа');
+        console.log('Schedule saved successfully');
         
         // Show updated conflicts
         this.checkScheduleConflicts();
@@ -167,7 +167,7 @@ class CalendarComponent extends HTMLElement {
             // Clear conflicts
             this.querySelector('#scheduleConflicts').innerHTML = '';
             
-            alert('Цагийн хуваарь цэвэрлэгдлээ');
+            console.log('Schedule cleared');
         }
     }
 

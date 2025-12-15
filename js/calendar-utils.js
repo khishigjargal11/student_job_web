@@ -68,13 +68,13 @@ class CalendarUtils {
     static saveSchedule() {
         const currentUser = DataManager.getCurrentUser();
         if (!currentUser || currentUser.type !== 'student') {
-            alert('Зөвхөн оюутан хэрэглэгч цагийн хуваарь хадгалах боломжтой');
+            console.log('Only students can save schedule');
             return false;
         }
 
         const student = DataManager.getStudentById(currentUser.id);
         if (!student) {
-            alert('Оюутны мэдээлэл олдсонгүй');
+            console.log('Student data not found');
             return false;
         }
 
@@ -88,7 +88,7 @@ class CalendarUtils {
         // Update current user session
         DataManager.setCurrentUser({ ...currentUser, schedule: student.schedule });
 
-        alert('Цагийн хуваарь амжилттай хадгалагдлаа');
+        console.log('Schedule saved successfully');
         return true;
     }
 

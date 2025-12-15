@@ -11,7 +11,8 @@ class Job {
         this.requirements = data.requirements || [];
         this.benefits = data.benefits || [];
         this.category = data.category || '';
-        this.status = data.status || 'active'; // 'active', 'paused', 'closed'
+        this.status = data.status || 'active'; // 'active', 'paused', 'closed', 'finished'
+        this.finishedAt = data.finishedAt || null;
         this.applications = data.applications || []; // Array of application objects
         this.acceptedStudents = data.acceptedStudents || []; // Array of accepted student IDs
         this.maxPositions = data.maxPositions || 1;
@@ -158,7 +159,8 @@ class Job {
             totalRatings: this.totalRatings,
             createdAt: this.createdAt,
             updatedAt: this.updatedAt,
-            deadline: this.deadline
+            deadline: this.deadline,
+            finishedAt: this.finishedAt
         };
     }
 }

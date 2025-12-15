@@ -27,7 +27,7 @@ class InfoCard extends HTMLElement {
         console.log('Info card rendering with:', { title, period, rating });
 
         this.innerHTML = `
-            <section class="info-card">
+            <section class="info-card clickable-info-card" onclick="showWorkHistory()">
                 <p><strong>ӨМНӨ ХИЙСЭН АЖИЛ</strong></p>
 
                 <p>
@@ -43,6 +43,8 @@ class InfoCard extends HTMLElement {
                 ${rating > 0 ? `<p class="rating">
                     <strong>Үнэлгээ:</strong> ${"⭐".repeat(rating)}
                 </p>` : ''}
+
+                <p class="click-hint">Дэлгэрэнгүй харах</p>
             </section>
         `;
     }

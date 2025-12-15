@@ -8,6 +8,8 @@ const sampleStudents = [
         email: 'student@example.com',
         phone: '88998899',
         name: 'Бат Сараа',
+        age: 20,
+        gender: 'Эмэгтэй',
         profilePicture: 'pics/profile.jpg',
         schedule: {
             monday: { '9-10': 1, '10-11': 1, '14-15': 1, '15-16': 1 },
@@ -45,6 +47,8 @@ const sampleStudents = [
         email: 'boldoo@student.edu.mn',
         phone: '99887766',
         name: 'Болдбаатар',
+        age: 22,
+        gender: 'Эрэгтэй',
         profilePicture: 'pics/profile.jpg',
         schedule: {
             monday: { '8-9': 1, '9-10': 1, '16-17': 1, '17-18': 1 },

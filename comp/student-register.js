@@ -56,12 +56,12 @@ class StudentRegister extends HTMLElement {
       const form = e.target;
 
       if (form.password.value !== form.confirm.value) {
-        alert("Нууц үг таарахгүй байна");
+        console.log("Passwords do not match");
         return;
       }
 
       console.log(Object.fromEntries(new FormData(form)));
-      alert("Амжилттай бүртгэгдлээ");
+      console.log("Student registration successful");
     });
   }
 }

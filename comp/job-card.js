@@ -64,6 +64,7 @@ class JobCard extends HTMLElement {
                 </p>
 
                 <div class="job-details">
+                    <strong>🏢 Компани:</strong> ${this.getAttribute("company") || 'Тодорхойгүй'}<br>
                     <strong>📍 Байршил:</strong> ${this.getAttribute("location")}<br>
                     <strong>⏰ Цаг:</strong> ${this.getAttribute("time")}<br>
                     <strong>💰 Цалин:</strong> ${this.getAttribute("salary")}

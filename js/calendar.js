@@ -52,5 +52,5 @@ function toggleCell(day, hour) {
 function saveCalendar() {
     console.log("Saving schedule...");
     console.log(schedule);
-    alert("JSON saved in console.");
+    console.log("Schedule data logged to console");
 }

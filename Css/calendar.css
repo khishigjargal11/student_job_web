@@ -69,7 +69,7 @@ nav a:hover:after {
 /* ===== LAYOUT ===== */
 .layout {
     display: flex;
-    height: calc(100vh - 80px);
+    min-height: 100vh;
     width: 100%;
 }
 
@@ -158,4 +158,23 @@ nav a:hover:after {
     border: none;
     border-radius: 40px;
     cursor: pointer;
+}
+.back-bar {
+  background: #cfe5f6;
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-bar button {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.back-bar h2 {
+  font-size: 22px;
+  font-weight: 600;
 }

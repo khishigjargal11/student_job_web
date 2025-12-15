@@ -55,7 +55,7 @@ class JobApplication extends HTMLElement {
         });
         localStorage.setItem('applications', JSON.stringify(applications));
         
-        alert('Хүсэлт амжилттай илгээгдлээ!');
+        console.log('Application submitted successfully');
         this.close();
     }
 

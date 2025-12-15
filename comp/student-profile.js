@@ -6,12 +6,10 @@ class StudentProfile extends HTMLElement {
         console.log('Student profile connecting:', { hasDataManager });
         
         if (hasDataManager) {
-            // Add a small delay to ensure DataManager is fully initialized
             setTimeout(() => {
                 this.loadStudentData();
             }, 50);
         } else {
-            // Fallback to attribute-based rendering
             this.renderFromAttributes();
         }
     }
@@ -75,7 +73,7 @@ class StudentProfile extends HTMLElement {
                 <div class="profile-header">
                     <div class="profile-title">ХУВИЙН МЭДЭЭЛЭЛ</div>
                 <div class="profile-image-wrapper">
-                    <img src="${student.profilePicture || '../pics/profile.jpg'}" class="profile-image" alt="Profile" onerror="this.src='pics/profile.jpg'">
+                    <img src="../pics/profile.jpg" class="profile-image" alt="Profile">
                     <div class="camera-icon">📷</div>
                 </div>
                     <div class="profile-name">${student.name}</div>

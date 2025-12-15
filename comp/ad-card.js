@@ -53,15 +53,20 @@ class AdCard extends HTMLElement {
 
             <footer class="ad-footer">
                 <span class="rating">${this.getAverageRating()}⭐</span>
-                <button class="gray-btn" onclick="this.closest('ad-card-box').toggleJobStatus()">
-                    ${this.jobData.status === 'active' ? 'Түр зогсоох' : 'Идэвхжүүлэх'}
-                </button>
-                <button class="black-btn" onclick="this.closest('ad-card-box').viewApplications()">
-                    Хүсэлтүүд (${pendingApplications.length})
-                </button>
-                <button class="delete-btn" onclick="this.closest('ad-card-box').deleteJob()">
-                     Устгах
-                </button>
+                ${this.jobData.status === 'finished' ? 
+                    `<button class="black-btn" onclick="this.closest('ad-card-box').viewFinishedJobDetails()">
+                        Дэлгэрэнгүй
+                    </button>` :
+                    `<button class="gray-btn" onclick="this.closest('ad-card-box').toggleJobStatus()">
+                        ${this.jobData.status === 'active' ? 'Түр зогсоох' : 'Идэвхжүүлэх'}
+                    </button>
+                    <button class="black-btn" onclick="this.closest('ad-card-box').viewApplications()">
+                        Хүсэлтүүд (${pendingApplications.length})
+                    </button>
+                    <button class="finished-btn" onclick="this.closest('ad-card-box').finishJob()">
+                        Дуусгах
+                    </button>`
+                }
             </footer>
         </article>
         `;
@@ -127,6 +132,7 @@ class AdCard extends HTMLElement {
             case 'active': return 'Идэвхтэй';
             case 'paused': return 'Түр зогссон';
             case 'closed': return 'Хаагдсан';
+            case 'finished': return 'Дууссан';
             default: return 'Тодорхойгүй';
         }
     }
@@ -166,7 +172,7 @@ class AdCard extends HTMLElement {
         this.render(); // Re-render to show updated status
         
         const statusText = newStatus === 'active' ? 'идэвхжүүлэгдлээ' : 'түр зогсоогдлоо';
-        alert(`Зар ${statusText}`);
+        console.log(`Job ${statusText}`);
     }
 
     renderError() {
@@ -180,36 +186,71 @@ class AdCard extends HTMLElement {
         `;
     }
 
-    deleteJob() {
+    finishJob() {
         if (!this.jobData) return;
 
-        const confirmDelete = confirm(
-            `Та "${this.jobData.title}" зарыг бүрмөсөн устгахыг хүсэж байна уу?\n\n` +
-            'Энэ үйлдлийг буцаах боломжгүй!'
+        const confirmFinish = confirm(
+            `Та "${this.jobData.title}" ажлыг дуусгахыг хүсэж байна уу?\n\n` +
+            'Энэ ажил дууссан гэж тэмдэглэгдэж, ажилчдын туршлагад нэмэгдэнэ.'
         );
 
-        if (!confirmDelete) return;
+        if (!confirmFinish) return;
 
-        // Remove job from storage
-        const jobs = DataManager.getJobs();
-        const updatedJobs = jobs.filter(job => job.id !== this.jobData.id);
-        DataManager.saveJobs(updatedJobs);
+        // Change job status to finished
+        this.jobData.status = 'finished';
+        this.jobData.finishedAt = new Date().toISOString();
+        this.jobData.updatedAt = new Date().toISOString();
 
-        // Remove job from company's posted jobs
-        const currentUser = DataManager.getCurrentUser();
-        if (currentUser && currentUser.type === 'company') {
-            const company = DataManager.getCompanyById(currentUser.id);
-            if (company) {
-                company.postedJobs = company.postedJobs.filter(jobId => jobId !== this.jobData.id);
-                company.updatedAt = new Date().toISOString();
-                DataManager.saveCompany(company);
-            }
-        }
+        // Add work experience to accepted students
+        this.jobData.acceptedStudents.forEach(studentId => {
+            this.addWorkExperienceToStudent(studentId);
+        });
 
-        alert('Зар амжилттай устгагдлаа');
+        // Save updated job
+        const jobToSave = this.jobData instanceof Job ? this.jobData.toJSON() : this.jobData;
+        DataManager.saveJob(jobToSave);
+
+        console.log('Job finished successfully');
         
-        this.remove();     
+        // Re-render to show updated status
+        this.render();
+    }
 
+    addWorkExperienceToStudent(studentId) {
+        const studentData = DataManager.getStudentById(studentId);
+        if (!studentData) return;
+
+        const student = new Student(studentData);
+        const company = DataManager.getCompanyById(this.jobData.companyId);
+        
+        const workEntry = {
+            id: 'work_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+            jobId: this.jobData.id,
+            jobTitle: this.jobData.title,
+            companyName: company ? company.companyName : 'Тодорхойгүй компани',
+            startDate: this.jobData.createdAt.split('T')[0], // Use job creation date as start
+            endDate: new Date().toISOString().split('T')[0], // Today as end date
+            rating: 0, // Will be set when company rates
+            review: '',
+            salary: this.jobData.salary,
+            salaryType: this.jobData.salaryType,
+            addedAt: new Date().toISOString()
+        };
+
+        student.workHistory.push(workEntry);
+        student.updatedAt = new Date().toISOString();
+
+        DataManager.saveStudent(student.toJSON());
+        console.log(`Work experience added to student ${student.name}`);
+    }
+
+    viewFinishedJobDetails() {
+        if (!this.jobData) return;
+        
+        // Store job ID and mark as finished job view
+        sessionStorage.setItem('viewingJobId', this.jobData.id);
+        sessionStorage.setItem('isFinishedJobView', 'true');
+        window.location.href = 'ReqForMarket.html';
     }
 
     viewApplications() {

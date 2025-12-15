@@ -10,12 +10,23 @@
 
     <main-header></main-header>
 
+    <!-- Debug button -->
+
     <div class="container">
 
     <aside class="sidebar">
         <student-profile></student-profile>
 
         <info-card></info-card>
+        
+        <div class="work-experience-actions">
+            <button class="profile-btn edit-profile-btn" onclick="editProfile()">
+                 Профайл засах
+            </button>
+            <button class="profile-btn work-history-btn" onclick="showWorkHistory()">
+                🧳 Ажлын туршлага
+            </button>
+        </div>
     </aside>
 
     <section class="main-content">
@@ -23,6 +34,7 @@
 
         <job-card
             title="Агуулахын цагийн ажилтан"
+            company="Мега Маркет"
             location="Чингэлтэй дүүрэг"
             time="10:00 – 18:00"
             salary="10,000₮ / цаг"
@@ -31,6 +43,7 @@
 
         <job-card
             title="Кофе шопын ажилтан"
+            company="Coffee Time"
             location="Сүхбаатар дүүрэг"
             time="09:00 – 17:00"
             salary="9,000₮ / цаг"
@@ -40,6 +53,8 @@
 
 </div>
 
+    <!-- Popup for profile editing and work history -->
+    <student-popup></student-popup>
 
     <!-- Data and Models -->
     <script src="../js/data-manager.js"></script>
@@ -55,306 +70,10 @@
     <script src="../comp/info-card.js"></script>
     <script src="../comp/job-search.js"></script>
     <script src="../comp/job-card.js"></script>
+    <script src="../comp/student-popup.js"></script>
     
-    <script>
-        // Initialize data and load student content
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Page loaded, checking auth...');
-            
-            // Check authentication
-            if (!RouteGuard.requireStudentAuth()) {
-                return; // Will redirect if not authenticated
-            }
-            
-            console.log('Auth passed, initializing data...');
-            DataManager.initializeData();
-            
-            // Add a small delay to ensure everything is loaded
-            setTimeout(() => {
-                console.log('Loading student data...');
-                loadStudentData();
-            }, 100);
-        });
-
-        function loadStudentData() {
-            const currentUser = DataManager.getCurrentUser();
-            if (!currentUser || currentUser.type !== 'student') return;
-
-            // Update student profile with real data
-            updateStudentProfile(currentUser);
-            
-            // Load available jobs
-            loadAvailableJobs(currentUser);
-        }
-
-        function updateStudentProfile(currentUser) {
-            const student = DataManager.getStudentById(currentUser.id);
-            if (!student) return;
-
-            // Update the student-profile attributes with real data
-            const profileElement = document.querySelector('student-profile');
-            if (profileElement) {
-                profileElement.setAttribute('name', student.name);
-                profileElement.setAttribute('phone', student.phone);
-                profileElement.setAttribute('email', student.email);
-            }
-
-            // Update work history info-card
-            updateWorkHistoryCard(student);
-        }
-
-        function updateWorkHistoryCard(student) {
-            console.log('Updating work history card for student:', student);
-            const infoCard = document.querySelector('info-card');
-            console.log('Found info-card element:', infoCard);
-            
-            if (!infoCard) {
-                console.log('No info-card element found!');
-                return;
-            }
-
-            if (!student.workHistory || student.workHistory.length === 0) {
-                console.log('No work history found, setting default values');
-                infoCard.setAttribute('title', 'Ажлын туршлага байхгүй');
-                infoCard.setAttribute('period', '');
-                infoCard.setAttribute('rating', '0');
-                return;
-            }
-
-            // Show the most recent work history
-            const recentWork = student.workHistory[student.workHistory.length - 1];
-            console.log('Setting work history:', recentWork);
-            
-            infoCard.setAttribute('title', recentWork.jobTitle);
-            infoCard.setAttribute('period', `${recentWork.startDate} – ${recentWork.endDate}`);
-            infoCard.setAttribute('rating', recentWork.rating.toString());
-            
-            console.log('Work history card updated with attributes:', {
-                title: recentWork.jobTitle,
-                period: `${recentWork.startDate} – ${recentWork.endDate}`,
-                rating: recentWork.rating.toString()
-            });
-        }
-
-        function loadAvailableJobs(currentUser) {
-            try {
-                const availableJobs = DataManager.getAvailableJobsForStudent(currentUser.id);
-                const mainContent = document.querySelector('.main-content');
-                
-                // Remove existing job cards (keep job-search)
-                const existingJobCards = mainContent.querySelectorAll('job-card');
-                existingJobCards.forEach(card => card.remove());
-
-                if (availableJobs.length === 0) {
-                    // Add a message if no jobs available
-                    const noJobsMsg = document.createElement('div');
-                    noJobsMsg.className = 'no-jobs-message';
-                    noJobsMsg.innerHTML = '<p>Таны цагийн хуваарьтай тохирох ажил олдсонгүй. <a href="Calendar.html">Цагийн хуваарь тохируулах</a></p>';
-                    mainContent.appendChild(noJobsMsg);
-                    return;
-                }
-
-                // Add job cards for available jobs
-                availableJobs.forEach(job => {
-                    console.log('Creating job card for:', job.id, job.title);
-                    
-                    const company = DataManager.getCompanyById(job.companyId);
-                    const companyName = company ? company.companyName : 'Компани';
-                    
-                    const jobCard = document.createElement('job-card');
-                    jobCard.setAttribute('title', job.title);
-                    jobCard.setAttribute('location', job.location);
-                    jobCard.setAttribute('time', getJobTimeDisplay(job.schedule));
-                    jobCard.setAttribute('salary', getJobSalaryDisplay(job));
-                    jobCard.setAttribute('rating', getJobRating(job));
-                    jobCard.setAttribute('job-id', job.id); // This is crucial!
-                    
-                    console.log('Job card attributes set:', {
-                        title: job.title,
-                        jobId: job.id,
-                        hasJobId: jobCard.getAttribute('job-id')
-                    });
-                    
-                    mainContent.appendChild(jobCard);
-                });
-            } catch (error) {
-                console.error('Error loading jobs:', error);
-            }
-        }
-
-        function getJobTimeDisplay(schedule) {
-            if (!schedule || Object.keys(schedule).length === 0) {
-                return 'Цагийн хуваарь тодорхойлоогүй';
-            }
-
-            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-            const dayNames = ['Да', 'Мя', 'Лх', 'Пү', 'Ба', 'Бя', 'Ня'];
-            
-            let minHour = 24, maxHour = 0;
-            let activeDays = [];
-            
-            days.forEach((day, index) => {
-                if (schedule[day] && Object.keys(schedule[day]).length > 0) {
-                    activeDays.push(dayNames[index]);
-                    const times = Object.keys(schedule[day]);
-                    const dayMinHour = Math.min(...times.map(t => parseInt(t.split('-')[0])));
-                    const dayMaxHour = Math.max(...times.map(t => parseInt(t.split('-')[1])));
-                    minHour = Math.min(minHour, dayMinHour);
-                    maxHour = Math.max(maxHour, dayMaxHour);
-                }
-            });
-            
-            return activeDays.length > 0 ? `${minHour}:00 – ${maxHour}:00` : 'Тодорхойгүй';
-        }
-
-        function getJobSalaryDisplay(job) {
-            const formatter = new Intl.NumberFormat('mn-MN');
-            switch (job.salaryType) {
-                case 'hourly':
-                    return `${formatter.format(job.salary)}₮ / цаг`;
-                case 'daily':
-                    return `${formatter.format(job.salary)}₮ / өдөр`;
-                case 'weekly':
-                    return `${formatter.format(job.salary)}₮ / 7 хоног`;
-                case 'monthly':
-                    return `${formatter.format(job.salary)}₮ / сар`;
-                default:
-                    return `${formatter.format(job.salary)}₮`;
-            }
-        }
-
-        function getJobRating(job) {
-            return job.totalRatings > 0 ? (job.rating / job.totalRatings).toFixed(1) : '0';
-        }
-
-        // Global function for job application
-        function applyForJob(jobId) {
-            const currentUser = DataManager.getCurrentUser();
-            if (!currentUser || currentUser.type !== 'student') {
-                alert('Зөвхөн оюутан хүсэлт илгээх боломжтой');
-                return;
-            }
-
-            const job = DataManager.getJobById(jobId);
-            const student = DataManager.getStudentById(currentUser.id);
-            
-            if (!job || !student) {
-                alert('Мэдээлэл олдсонгүй');
-                return;
-            }
-
-            // Check schedule conflict
-            if (DataManager.hasScheduleConflict(student.schedule, job.schedule)) {
-                const confirmApply = confirm(
-                    'Таны цагийн хуваарь энэ ажлын цагтай давхцаж байна. ' +
-                    'Та үргэлжлүүлэн хүсэлт илгээхийг хүсэж байна уу?'
-                );
-                if (!confirmApply) return;
-            }
-
-            // Show application modal or simple prompt
-            const message = prompt('Хүсэлтийн мессеж (сонголттой):');
-            if (message === null) return; // User cancelled
-
-            // Apply for job
-            const success = DataManager.applyForJob(currentUser.id, jobId, message || '');
-            
-            if (success) {
-                alert('Хүсэлт амжилттай илгээгдлээ!');
-                // Refresh the job cards to show updated state
-                loadStudentData();
-            } else {
-                alert('Хүсэлт илгээхэд алдаа гарлаа. Та аль хэдийн энэ ажилд хүсэлт илгээсэн байж магадгүй.');
-            }
-        }
-
-        // Auto-refresh jobs every 30 seconds
-        setInterval(() => {
-            console.log('Auto-refreshing jobs...');
-            refreshJobs();
-        }, 30000);
-
-        // Manual refresh function
-        function refreshJobs() {
-            const currentUser = DataManager.getCurrentUser();
-            if (currentUser && currentUser.type === 'student') {
-                console.log('Refreshing job listings...');
-                loadAvailableJobs(currentUser);
-            }
-        }
-
-        // Make refresh function available globally
-        window.refreshJobs = refreshJobs;
-
-        // Refresh jobs when page becomes visible (user returns to tab)
-        document.addEventListener('visibilitychange', function() {
-            if (!document.hidden) {
-                console.log('Page became visible, refreshing jobs...');
-                refreshJobs();
-            }
-        });
-
-        // Global function for editing student profile
-        function editStudentProfile() {
-            const currentUser = DataManager.getCurrentUser();
-            const student = DataManager.getStudentById(currentUser.id);
-            
-            const newName = prompt('Нэр:', student.name);
-            const newPhone = prompt('Утасны дугаар:', student.phone);
-            const newEmail = prompt('И-мэйл:', student.email);
-
-            if (newName !== null && newPhone !== null && newEmail !== null) {
-                student.name = newName.trim();
-                student.phone = newPhone.trim();
-                student.email = newEmail.trim();
-                student.updatedAt = new Date().toISOString();
-
-                DataManager.saveStudent(student);
-                DataManager.setCurrentUser({ ...currentUser, ...student });
-                
-                // Refresh the profile display
-                loadStudentData();
-                alert('Мэдээлэл амжилттай шинэчлэгдлээ');
-            }
-        }
-
-        // Global function for withdrawing job application
-        function withdrawApplication(jobId) {
-            const confirmWithdraw = confirm('Та энэ ажлын хүсэлтээ цуцлахыг хүсэж байна уу?');
-            if (!confirmWithdraw) return;
-
-            const currentUser = DataManager.getCurrentUser();
-            if (!currentUser || currentUser.type !== 'student') {
-                alert('Алдаа гарлаа');
-                return;
-            }
-
-            const job = DataManager.getJobById(jobId);
-            const student = DataManager.getStudentById(currentUser.id);
-            
-            if (!job || !student) {
-                alert('Мэдээлэл олдсонгүй');
-                return;
-            }
-
-            // Remove application from job
-            job.applications = job.applications.filter(app => app.studentId !== currentUser.id);
-            job.updatedAt = new Date().toISOString();
-
-            // Remove job from student's applications
-            student.applications = student.applications.filter(id => id !== jobId);
-            student.updatedAt = new Date().toISOString();
-
-            // Save both
-            DataManager.saveJob(job);
-            DataManager.saveStudent(student);
-
-            alert('Хүсэлт амжилттай цуцлагдлаа');
-            
-            // Refresh the job cards to show updated state
-            loadStudentData();
-        }
-    </script>
+    <!-- Page-specific JavaScript -->
+    <script src="../js/student-home.js"></script>
 
 </body>
 </html>

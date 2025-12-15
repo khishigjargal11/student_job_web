@@ -47,7 +47,7 @@ class CompanyRegister extends HTMLElement {
       const form = e.target;
 
       if (form.password.value !== form.confirm.value) {
-        alert("Нууц үг таарахгүй байна");
+        console.log("Passwords do not match");
         return;
       }
 
@@ -55,7 +55,7 @@ class CompanyRegister extends HTMLElement {
       delete data.confirm;
 
       console.log("Company register:", data);
-      alert("Компани амжилттай бүртгэгдлээ");
+      console.log("Company registration successful");
     });
   }
 }

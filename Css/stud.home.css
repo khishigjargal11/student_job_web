@@ -313,6 +313,87 @@
             transform: translateY(-2px);
         }
 
+        /* Student Profile Schedule Button */
+        student-profile .profile-actions {
+            margin-top: 15px;
+            padding: 10px;
+        }
+
+        student-profile .schedule-btn {
+            width: 100%;
+            background: #000;
+            color: white;
+            border: none;
+            padding: 16px 36px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        student-profile .schedule-btn:hover {
+            background: #00ff88;
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        /* Job Card Button States */
+        .job .pending-btn {
+            background: #ffc107;
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: not-allowed;
+            margin-bottom: 8px;
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .job .withdraw-btn {
+            background: #000;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .job .withdraw-btn:hover {
+            background: #00ff88;
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        /* Job Search Refresh Button */
+        .refresh-btn {
+            background: #000;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .refresh-btn:hover {
+            background: #00ff88;
+            color: #000;
+            transform: translateY(-2px);
+        }
+
         /* Design Options Panel */
         .design-panel {
             position: fixed;
@@ -423,4 +504,341 @@
 
 .calendar-btn:hover {
     background: #333;
+}
+
+/* Student Popup Styles */
+#studentPopup {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+    display: none;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 99999 !important;
+    backdrop-filter: blur(5px) !important;
+    inset: 0 !important;
+}
+
+student-popup .popup-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+    display: none;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 99999 !important;
+    backdrop-filter: blur(5px) !important;
+    inset: 0 !important;
+}
+
+#studentPopup .popup,
+student-popup .popup-overlay .popup {
+    background: white !important;
+    border-radius: 20px !important;
+    padding: 30px !important;
+    max-width: 600px !important;
+    width: 90% !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    position: relative !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
+    animation: popupSlideIn 0.3s ease-out !important;
+    border: none !important;
+    z-index: 100000 !important;
+}
+
+@keyframes popupSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+student-popup .popup-close {
+    position: absolute !important;
+    top: 20px !important;
+    right: 20px !important;
+    background: #f0f0f0 !important;
+    border: none !important;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    font-size: 18px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+    color: #666 !important;
+}
+
+student-popup .popup-close:hover {
+    background: #e0e0e0 !important;
+    color: #000 !important;
+    transform: rotate(90deg) !important;
+}
+
+student-popup .popup-header-large {
+    display: flex !important;
+    gap: 20px !important;
+    margin-bottom: 30px !important;
+    align-items: flex-start !important;
+}
+
+student-popup .popup-header-large img {
+    width: 100px !important;
+    height: 100px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    border: 3px solid #f0f0f0 !important;
+}
+
+student-popup .popup-info {
+    flex: 1 !important;
+}
+
+student-popup .popup-info h2 {
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    margin-bottom: 15px !important;
+    color: #000 !important;
+    letter-spacing: -0.5px !important;
+}
+
+student-popup .popup-info p {
+    margin: 8px 0 !important;
+    font-size: 14px !important;
+    color: #666 !important;
+    line-height: 1.6 !important;
+}
+
+student-popup .popup-info strong {
+    color: #000 !important;
+    font-weight: 600 !important;
+}
+
+student-popup .popup-stats-large {
+    display: flex !important;
+    gap: 20px !important;
+    margin-bottom: 30px !important;
+    background: #f8f9fa !important;
+    padding: 20px !important;
+    border-radius: 15px !important;
+}
+
+student-popup .popup-stats-large > div {
+    flex: 1 !important;
+    text-align: center !important;
+}
+
+student-popup .popup-stats-large h3 {
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    color: #000 !important;
+    margin-bottom: 5px !important;
+}
+
+student-popup .popup-stats-large p {
+    font-size: 12px !important;
+    color: #666 !important;
+    font-weight: 500 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+student-popup .popup-work-history-large {
+    margin-bottom: 30px !important;
+}
+
+student-popup .popup-work-history-large h4 {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    margin-bottom: 20px !important;
+    color: #000 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+student-popup .job-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+    gap: 15px !important;
+}
+
+student-popup .job-card-large {
+    background: white !important;
+    border: 2px solid #f0f0f0 !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+    transition: all 0.3s ease !important;
+}
+
+student-popup .job-card-large:hover {
+    border-color: #000 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+}
+
+student-popup .job-card-large h5 {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    margin-bottom: 10px !important;
+    color: #000 !important;
+}
+
+student-popup .job-card-large p {
+    font-size: 13px !important;
+    color: #666 !important;
+    margin: 5px 0 !important;
+    line-height: 1.5 !important;
+}
+
+student-popup .work-period {
+    font-size: 11px !important;
+    color: #999 !important;
+    font-style: italic !important;
+}
+
+student-popup .no-work-history {
+    text-align: center !important;
+    padding: 40px 20px !important;
+    color: #999 !important;
+    font-style: italic !important;
+}
+
+student-popup .popup-actions {
+    display: flex !important;
+    gap: 15px !important;
+    justify-content: flex-end !important;
+    margin-top: 20px !important;
+}
+
+student-popup .approve-btn, student-popup .reject-btn {
+    padding: 12px 24px !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    letter-spacing: 0.5px !important;
+}
+
+student-popup .approve-btn {
+    background: #000 !important;
+    color: white !important;
+}
+
+student-popup .approve-btn:hover {
+    background: #00ff88 !important;
+    color: #000 !important;
+    transform: translateY(-2px) !important;
+}
+
+student-popup .reject-btn {
+    background: #f0f0f0 !important;
+    color: #666 !important;
+}
+
+student-popup .reject-btn:hover {
+    background: #e0e0e0 !important;
+    color: #000 !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Edit Form Styles */
+student-popup .edit-form {
+    margin-top: 20px !important;
+}
+
+student-popup .form-group {
+    margin-bottom: 20px !important;
+}
+
+student-popup .form-group label {
+    display: block !important;
+    margin-bottom: 8px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #000 !important;
+}
+
+student-popup .form-group input,
+student-popup .form-group select {
+    width: 100% !important;
+    padding: 12px 16px !important;
+    border: 2px solid #f0f0f0 !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    background: #fafafa !important;
+    transition: all 0.3s ease !important;
+}
+
+student-popup .form-group input:focus,
+student-popup .form-group select:focus {
+    outline: none !important;
+    border-color: #000 !important;
+    background: white !important;
+}
+
+/* Profile Action Buttons */
+.profile-actions {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Work Experience Action Buttons */
+.work-experience-actions {
+    margin-top: 20px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile-btn {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.edit-profile-btn {
+    background: #000;
+    color: white;
+}
+
+.edit-profile-btn:hover {
+    background: #00ff88;
+    color: #000;
+    transform: translateY(-2px);
+}
+
+.work-history-btn {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.work-history-btn:hover {
+    background: #e0e0e0;
+    color: #000;
+    transform: translateY(-2px);
 }

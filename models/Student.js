@@ -25,6 +25,18 @@ class Student {
         return this.totalRatings > 0 ? (this.rating / this.totalRatings).toFixed(1) : 0;
     }
 
+    // Calculate completion rate (percentage of completed jobs)
+    getCompletionRate() {
+        if (this.workHistory.length === 0) return 100;
+        
+        // For now, assume all work history entries are completed jobs
+        // In a real system, you'd track incomplete/abandoned jobs
+        const completedJobs = this.workHistory.length;
+        const totalJobs = this.applications.length || completedJobs;
+        
+        return totalJobs > 0 ? Math.round((completedJobs / totalJobs) * 100) : 100;
+    }
+
     // Add work history entry
     addWorkHistory(jobData) {
         const workEntry = {

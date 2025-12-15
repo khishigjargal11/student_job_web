@@ -42,7 +42,7 @@ class LoginForm extends HTMLElement {
             const password = this.querySelector("#password").value.trim();
 
             if (!username || !password) {
-                alert("Хэрэглэгчийн нэр болон нууц үгээ оруулна уу");
+                console.log("Please enter username and password");
                 return;
             }
 
@@ -63,7 +63,7 @@ class LoginForm extends HTMLElement {
                     window.location.href = "Main_Company.html";
                 }
             } else {
-                alert("Хэрэглэгчийн нэр эсвэл нууц үг буруу байна");
+                console.log("Invalid username or password");
             }
         });
     }
