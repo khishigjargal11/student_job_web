@@ -1,36 +1,34 @@
 /**
- * Student Home Page JavaScript Functions
- * Contains all the JavaScript functionality for the student home page
+ * Оюутны нүүр хуудасны JavaScript функцүүд
+ * Оюутны нүүр хуудасны бүх JavaScript функцийг агуулна
  */
 
 class StudentHome {
+    /**
+     * Системийг эхлүүлэх функц - DOM ачаалагдсаны дараа ажиллана
+     */
     static init() {
-        // Initialize data and load student content
-        document.addEventListener('DOMContentLoaded', function() {
+        // Мэдээлэл эхлүүлж, оюутны контентыг ачаалах
+        document.addEventListener('DOMContentLoaded', async function() {
             console.log('Page loaded, checking auth...');
             
-            // Check authentication
-            if (!RouteGuard.requireStudentAuth()) {
-                return; // Will redirect if not authenticated
+            // API-аар нэвтрэх эрхийг шалгах
+            const isAuthenticated = await ApiClient.ensureAuthenticated();
+            if (!isAuthenticated) {
+                return; // Нэвтрээгүй бол нэвтрэх хуудас руу шилжүүлнэ
             }
             
-            console.log('Auth passed, initializing data...');
-            DataManager.initializeData();
+            const currentUser = ApiClient.getCurrentUser();
+            if (!currentUser || currentUser.type !== 'student') {
+                window.location.href = '/login';
+                return;
+            }
             
-            // Add a small delay to ensure everything is loaded
-            setTimeout(() => {
-                console.log('Loading student data...');
-                StudentHome.loadStudentData();
-            }, 100);
+            console.log('Auth passed, loading student data...');
+            StudentHome.loadStudentData();
         });
 
-        // Auto-refresh jobs every 30 seconds
-        setInterval(() => {
-            console.log('Auto-refreshing jobs...');
-            StudentHome.refreshJobs();
-        }, 30000);
-
-        // Refresh jobs when page becomes visible (user returns to tab)
+        // Хуудас харагдахад ажлын байрнуудыг шинэчлэх (хэрэглэгч таб руу буцаж ирэхэд)
         document.addEventListener('visibilitychange', function() {
             if (!document.hidden) {
                 console.log('Page became visible, refreshing jobs...');
@@ -38,13 +36,13 @@ class StudentHome {
             }
         });
 
-        // Listen for profile updates
+        // Профайл шинэчлэгдсэн үед сонсох
         window.addEventListener('profileUpdated', function() {
             console.log('Profile updated, refreshing page data...');
             StudentHome.loadStudentData();
         });
 
-        // Make functions available globally
+        // Функцүүдийг глобал хүрээнд ашиглах боломжтой болгох
         window.editProfile = StudentHome.editProfile;
         window.showWorkHistory = StudentHome.showWorkHistory;
         window.testPopup = StudentHome.testPopup;
@@ -54,34 +52,54 @@ class StudentHome {
         window.editStudentProfile = StudentHome.editStudentProfile;
     }
 
-    static loadStudentData() {
-        const currentUser = DataManager.getCurrentUser();
+    /**
+     * Оюутны мэдээлэл ачаалах функц
+     */
+    static async loadStudentData() {
+        const currentUser = ApiClient.getCurrentUser();
         if (!currentUser || currentUser.type !== 'student') return;
 
-        // Update student profile with real data
-        StudentHome.updateStudentProfile(currentUser);
+        // API-аас бодит мэдээллээр оюутны профайлыг шинэчлэх
+        await StudentHome.updateStudentProfile(currentUser);
         
-        // Load available jobs
-        StudentHome.loadAvailableJobs(currentUser);
+        // API-аас боломжтой ажлын байрнуудыг ачаалах
+        await StudentHome.loadAvailableJobs(currentUser);
     }
 
-    static updateStudentProfile(currentUser) {
-        const student = DataManager.getStudentById(currentUser.id);
-        if (!student) return;
+    /**
+     * Оюутны профайл шинэчлэх функц
+     * @param {Object} currentUser - Одоогийн хэрэглэгч
+     */
+    static async updateStudentProfile(currentUser) {
+        try {
+            const response = await ApiClient.getStudentProfile();
+            if (!response.success) {
+                console.error('Failed to get student profile:', response.message);
+                return;
+            }
 
-        // Update the student-profile attributes with real data
-        const profileElement = document.querySelector('student-profile');
-        if (profileElement) {
-            profileElement.setAttribute('name', student.name);
-            profileElement.setAttribute('phone', student.phone);
-            profileElement.setAttribute('email', student.email);
+            const student = response.student;
+
+            // Бодит мэдээллээр student-profile атрибутуудыг шинэчлэх
+            const profileElement = document.querySelector('student-profile');
+            if (profileElement) {
+                profileElement.setAttribute('name', student.name);
+                profileElement.setAttribute('phone', student.phone);
+                profileElement.setAttribute('email', student.email);
+            }
+
+            // Ажлын туршлагын info-card-ыг шинэчлэх
+            await StudentHome.updateWorkHistoryCard(student);
+        } catch (error) {
+            console.error('Error updating student profile:', error);
         }
-
-        // Update work history info-card
-        StudentHome.updateWorkHistoryCard(student);
     }
 
-    static updateWorkHistoryCard(student) {
+    /**
+     * Ажлын туршлагын карт шинэчлэх функц
+     * @param {Object} student - Оюутны мэдээлэл
+     */
+    static async updateWorkHistoryCard(student) {
         console.log('Updating work history card for student:', student);
         const infoCard = document.querySelector('info-card');
         console.log('Found info-card element:', infoCard);
@@ -91,62 +109,91 @@ class StudentHome {
             return;
         }
 
-        if (!student.workHistory || student.workHistory.length === 0) {
-            console.log('No work history found, setting default values');
+        try {
+            // API-аас ажлын туршлага авах
+            const response = await ApiClient.getStudentWorkHistory();
+            if (!response.success) {
+                console.log('No work history found, setting default values');
+                infoCard.setAttribute('title', 'Ажлын туршлага байхгүй');
+                infoCard.setAttribute('period', '');
+                infoCard.setAttribute('rating', '0');
+                return;
+            }
+
+            const workHistory = response.workHistory;
+            if (!workHistory || workHistory.length === 0) {
+                console.log('No work history found, setting default values');
+                infoCard.setAttribute('title', 'Ажлын туршлага байхгүй');
+                infoCard.setAttribute('period', '');
+                infoCard.setAttribute('rating', '0');
+                return;
+            }
+
+            // Хамгийн сүүлийн ажлын туршлагыг харуулах
+            const recentWork = workHistory[0]; // start_date DESC-ээр эрэмбэлэгдсэн
+            console.log('Setting work history:', recentWork);
+            
+            infoCard.setAttribute('title', recentWork.job_title);
+            infoCard.setAttribute('period', `${recentWork.start_date} – ${recentWork.end_date}`);
+            infoCard.setAttribute('rating', recentWork.rating.toString());
+            
+            console.log('Work history card updated with attributes:', {
+                title: recentWork.job_title,
+                period: `${recentWork.start_date} – ${recentWork.end_date}`,
+                rating: recentWork.rating.toString()
+            });
+        } catch (error) {
+            console.error('Error updating work history card:', error);
             infoCard.setAttribute('title', 'Ажлын туршлага байхгүй');
             infoCard.setAttribute('period', '');
             infoCard.setAttribute('rating', '0');
-            return;
         }
-
-        // Show the most recent work history
-        const recentWork = student.workHistory[student.workHistory.length - 1];
-        console.log('Setting work history:', recentWork);
-        
-        infoCard.setAttribute('title', recentWork.jobTitle);
-        infoCard.setAttribute('period', `${recentWork.startDate} – ${recentWork.endDate}`);
-        infoCard.setAttribute('rating', recentWork.rating.toString());
-        
-        console.log('Work history card updated with attributes:', {
-            title: recentWork.jobTitle,
-            period: `${recentWork.startDate} – ${recentWork.endDate}`,
-            rating: recentWork.rating.toString()
-        });
     }
 
-    static loadAvailableJobs(currentUser) {
+    /**
+     * Боломжтой ажлын байрнуудыг ачаалах функц
+     * @param {Object} currentUser - Одоогийн хэрэглэгч
+     */
+    static async loadAvailableJobs(currentUser) {
         try {
-            const availableJobs = DataManager.getAvailableJobsForStudent(currentUser.id);
+            console.log('🔍 DEBUG: Loading available jobs...');
+            const response = await ApiClient.getAvailableJobs();
+            console.log('🔍 DEBUG: Available jobs response:', response);
+            
+            if (!response.success) {
+                console.error('Failed to get available jobs:', response.message);
+                return;
+            }
+
+            const availableJobs = response.jobs;
+            console.log('🔍 DEBUG: Available jobs count:', availableJobs.length);
+            console.log('🔍 DEBUG: Available jobs:', availableJobs);
             const mainContent = document.querySelector('.main-content');
             
-            // Remove existing job cards (keep job-search)
+            // Одоо байгаа ажлын картуудыг устгах (job-search-ыг үлдээх)
             const existingJobCards = mainContent.querySelectorAll('job-card');
             existingJobCards.forEach(card => card.remove());
 
             if (availableJobs.length === 0) {
-                // Add a message if no jobs available
+                // Ажил байхгүй бол мессеж нэмэх
                 const noJobsMsg = document.createElement('div');
                 noJobsMsg.className = 'no-jobs-message';
-                noJobsMsg.innerHTML = '<p>Таны цагийн хуваарьтай тохирох ажил олдсонгүй. <a href="Calendar.html">Цагийн хуваарь тохируулах</a></p>';
+                noJobsMsg.innerHTML = '<p>Таны цагийн хуваарьтай тохирох ажил олдсонгүй. <a href="/student/calendar">Цагийн хуваарь тохируулах</a></p>';
                 mainContent.appendChild(noJobsMsg);
                 return;
             }
 
-            // Add job cards for available jobs
+            // Боломжтой ажлуудын картуудыг нэмэх
             availableJobs.forEach(job => {
                 console.log('Creating job card for:', job.id, job.title);
                 
-                const company = DataManager.getCompanyById(job.companyId);
-                const companyName = company ? company.companyName : 'Компани';
-                
                 const jobCard = document.createElement('job-card');
                 jobCard.setAttribute('title', job.title);
-                jobCard.setAttribute('company', companyName);
+                jobCard.setAttribute('company', job.company_name);
                 jobCard.setAttribute('location', job.location);
                 jobCard.setAttribute('time', StudentHome.getJobTimeDisplay(job.schedule));
                 jobCard.setAttribute('salary', StudentHome.getJobSalaryDisplay(job));
-                jobCard.setAttribute('rating', StudentHome.getJobRating(job));
-                jobCard.setAttribute('job-id', job.id); // This is crucial!
+                jobCard.setAttribute('job-id', job.id); // Энэ чухал!
                 
                 console.log('Job card attributes set:', {
                     title: job.title,
@@ -161,6 +208,11 @@ class StudentHome {
         }
     }
 
+    /**
+     * Ажлын цагийн хуваарь харуулах функц
+     * @param {Object} schedule - Цагийн хуваарь
+     * @returns {string} Цагийн хуваарийн текст
+     */
     static getJobTimeDisplay(schedule) {
         if (!schedule || Object.keys(schedule).length === 0) {
             return 'Цагийн хуваарь тодорхойлоогүй';
@@ -186,6 +238,11 @@ class StudentHome {
         return activeDays.length > 0 ? `${minHour}:00 – ${maxHour}:00` : 'Тодорхойгүй';
     }
 
+    /**
+     * Ажлын цалин харуулах функц
+     * @param {Object} job - Ажлын мэдээлэл
+     * @returns {string} Цалингийн текст
+     */
     static getJobSalaryDisplay(job) {
         const formatter = new Intl.NumberFormat('mn-MN');
         switch (job.salaryType) {
@@ -202,67 +259,254 @@ class StudentHome {
         }
     }
 
-    static getJobRating(job) {
-        return job.totalRatings > 0 ? (job.rating / job.totalRatings).toFixed(1) : '0';
-    }
-
-    // Global function for job application
-    static applyForJob(jobId) {
-        const currentUser = DataManager.getCurrentUser();
+    /**
+     * Ажилд хүсэлт илгээх глобал функц
+     * @param {string} jobId - Ажлын ID
+     */
+    static async applyForJob(jobId) {
+        const currentUser = ApiClient.getCurrentUser();
         if (!currentUser || currentUser.type !== 'student') {
             console.log('Only students can apply for jobs');
             return;
         }
 
-        const job = DataManager.getJobById(jobId);
-        const student = DataManager.getStudentById(currentUser.id);
-        
-        if (!job || !student) {
-            console.log('Job or student data not found for application');
-            return;
-        }
+        try {
+            // Эхлээд ажлын дэлгэрэнгүй мэдээлэл авах
+            const jobResponse = await ApiClient.getJobById(jobId);
+            if (!jobResponse.success) {
+                console.log('Job not found');
+                return;
+            }
 
-        // Check schedule conflict
-        if (DataManager.hasScheduleConflict(student.schedule, job.schedule)) {
-            const confirmApply = confirm(
-                'Таны цагийн хуваарь энэ ажлын цагтай давхцаж байна. ' +
-                'Та үргэлжлүүлэн хүсэлт илгээхийг хүсэж байна уу?'
-            );
-            if (!confirmApply) return;
-        }
+            const job = jobResponse.job;
 
-        // Show application modal or simple prompt
-        const message = prompt('Хүсэлтийн мессеж (сонголттой):');
-        if (message === null) return; // User cancelled
-
-        // Apply for job
-        const success = DataManager.applyForJob(currentUser.id, jobId, message || '');
-        
-        if (success) {
-            console.log('Application submitted successfully');
-            // Refresh the job cards to show updated state
-            StudentHome.loadStudentData();
-        } else {
-            console.log('Failed to submit application - may already be applied');
+            // Prompt-ын оронд хүсэлтийн popup харуулах
+            StudentHome.showApplicationPopup(jobId, job);
+        } catch (error) {
+            console.error('Error applying for job:', error);
+            StudentHome.showMessagePopup('Хүсэлт илгээхэд алдаа гарлаа', 'error');
         }
     }
 
+    /**
+     * Хүсэлт илгээх popup харуулах функц
+     * @param {string} jobId - Ажлын ID
+     * @param {Object} job - Ажлын мэдээлэл
+     */
+    static showApplicationPopup(jobId, job) {
+        // Create popup overlay
+        const popupOverlay = document.createElement('div');
+        popupOverlay.className = 'popup-overlay';
+        popupOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        `;
+
+        popupOverlay.innerHTML = `
+            <div class="popup" style="
+                background: white;
+                border-radius: 10px;
+                padding: 30px;
+                max-width: 500px;
+                width: 90%;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            ">
+                <button class="popup-close" style="
+                    position: absolute;
+                    top: 15px;
+                    right: 15px;
+                    background: none;
+                    border: none;
+                    font-size: 20px;
+                    cursor: pointer;
+                    color: #666;
+                ">✕</button>
+
+                <div class="popup-header-large" style="margin-bottom: 20px;">
+                    <h2 style="color: #333; margin-bottom: 10px;">Ажилд хүсэлт илгээх</h2>
+                    <p style="color: #666; line-height: 1.5;">
+                        <strong>${job.title}</strong> ажилд хүсэлт илгээх
+                    </p>
+                    <p style="color: #888; font-size: 14px; margin-top: 10px;">
+                        Компани: ${job.companies?.company_name || 'Тодорхойгүй'}
+                    </p>
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                        Хүсэлтийн мессеж (сонголттой):
+                    </label>
+                    <textarea id="applicationMessage" 
+                              placeholder="Та өөрийн талаар товч мэдээлэл, туршлага эсвэл энэ ажилд яагаад сонирхож байгаагаа бичиж болно..."
+                              style="
+                                  width: 100%;
+                                  height: 100px;
+                                  padding: 10px;
+                                  border: 1px solid #ddd;
+                                  border-radius: 5px;
+                                  font-family: inherit;
+                                  font-size: 14px;
+                                  resize: vertical;
+                              "></textarea>
+                </div>
+
+                <div class="popup-actions" style="
+                    display: flex;
+                    gap: 15px;
+                    justify-content: center;
+                    margin-top: 25px;
+                ">
+                    <button class="approve-btn" id="submitApplicationBtn" style="
+                        background: #28a745;
+                        color: white;
+                        border: none;
+                        padding: 12px 25px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        font-size: 16px;
+                    ">Хүсэлт илгээх</button>
+                    <button class="reject-btn" id="cancelApplicationBtn" style="
+                        background: #dc3545;
+                        color: white;
+                        border: none;
+                        padding: 12px 25px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        font-size: 16px;
+                    ">Цуцлах</button>
+                </div>
+            </div>
+        `;
+
+        // Add to document
+        document.body.appendChild(popupOverlay);
+
+        // Event listeners
+        const closeBtn = popupOverlay.querySelector('.popup-close');
+        const submitBtn = popupOverlay.querySelector('#submitApplicationBtn');
+        const cancelBtn = popupOverlay.querySelector('#cancelApplicationBtn');
+        const messageTextarea = popupOverlay.querySelector('#applicationMessage');
+
+        const closePopup = () => {
+            document.body.removeChild(popupOverlay);
+        };
+
+        closeBtn.addEventListener('click', closePopup);
+        cancelBtn.addEventListener('click', closePopup);
+        
+        // Close on overlay click
+        popupOverlay.addEventListener('click', (e) => {
+            if (e.target === popupOverlay) closePopup();
+        });
+
+        // Submit application
+        submitBtn.addEventListener('click', async () => {
+            const message = messageTextarea.value.trim();
+            closePopup();
+            
+            try {
+                // Apply for job via API
+                const response = await ApiClient.applyForJob(jobId, message || '');
+                
+                if (response.success) {
+                    console.log('Application submitted successfully');
+                    StudentHome.showMessagePopup('Хүсэлт амжилттай илгээгдлээ!', 'success');
+                    // Refresh the job cards to show updated state
+                    StudentHome.loadStudentData();
+                } else {
+                    console.log('Failed to submit application:', response.message);
+                    StudentHome.showMessagePopup(response.message || 'Хүсэлт илгээхэд алдаа гарлаа', 'error');
+                }
+            } catch (error) {
+                console.error('Error submitting application:', error);
+                StudentHome.showMessagePopup('Хүсэлт илгээхэд алдаа гарлаа', 'error');
+            }
+        });
+
+        // Focus on textarea
+        setTimeout(() => messageTextarea.focus(), 100);
+    }
+
+    static showMessagePopup(message, type = 'info') {
+        const popupOverlay = document.createElement('div');
+        popupOverlay.className = 'popup-overlay';
+        popupOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        `;
+
+        const bgColor = type === 'success' ? '#d4edda' : type === 'error' ? '#f8d7da' : '#d1ecf1';
+        const textColor = type === 'success' ? '#155724' : type === 'error' ? '#721c24' : '#0c5460';
+        const icon = type === 'success' ? '✓' : type === 'error' ? '✗' : 'i';
+
+        popupOverlay.innerHTML = `
+            <div class="popup" style="
+                background: ${bgColor};
+                border-radius: 10px;
+                padding: 30px;
+                max-width: 400px;
+                width: 90%;
+                text-align: center;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                color: ${textColor};
+            ">
+                <div style="font-size: 48px; margin-bottom: 15px; font-weight: bold;">${icon}</div>
+                <h3 style="margin-bottom: 15px; color: ${textColor};">${message}</h3>
+                <button id="closeMessageBtn" style="
+                    background: ${textColor};
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 16px;
+                ">Хаах</button>
+            </div>
+        `;
+
+        document.body.appendChild(popupOverlay);
+
+        // Auto close after 3 seconds or on button click
+        const closePopup = () => {
+            document.body.removeChild(popupOverlay);
+        };
+
+        popupOverlay.querySelector('#closeMessageBtn').addEventListener('click', closePopup);
+        setTimeout(closePopup, 3000);
+    }
+
     // Manual refresh function
-    static refreshJobs() {
-        const currentUser = DataManager.getCurrentUser();
+    static async refreshJobs() {
+        const currentUser = ApiClient.getCurrentUser();
         if (currentUser && currentUser.type === 'student') {
             console.log('Refreshing job listings...');
-            StudentHome.loadAvailableJobs(currentUser);
+            await StudentHome.loadAvailableJobs(currentUser);
         }
     }
 
     // Global function for editing profile
-    static editProfile() {
+    static async editProfile() {
         console.log('editProfile function called');
         
         // Wait a bit for DOM to be ready
-        setTimeout(() => {
-            const currentUser = DataManager.getCurrentUser();
+        setTimeout(async () => {
+            const currentUser = ApiClient.getCurrentUser();
             console.log('Current user:', currentUser);
             
             if (!currentUser || currentUser.type !== 'student') {
@@ -270,37 +514,49 @@ class StudentHome {
                 return;
             }
 
-            const studentData = DataManager.getStudentById(currentUser.id);
-            console.log('Student data:', studentData);
-            
-            if (!studentData) {
-                console.log('Student data not found');
-                return;
-            }
+            try {
+                const response = await ApiClient.getStudentProfile();
+                if (!response.success) {
+                    console.log('Failed to get student data:', response.message);
+                    return;
+                }
 
-            const student = new Student(studentData);
-            console.log('Student instance:', student);
-            
-            const popup = document.querySelector('student-popup');
-            console.log('Popup element:', popup);
-            console.log('All student-popup elements:', document.querySelectorAll('student-popup'));
-            
-            if (popup) {
-                console.log('Calling showProfileEditor');
-                popup.showProfileEditor(student);
-            } else {
-                console.log('Popup element not found!');
+                const studentData = response.student;
+                console.log('Student data:', studentData);
+                
+                // Create a Student-like object for the popup
+                const student = {
+                    id: studentData.id,
+                    name: studentData.name,
+                    email: studentData.email,
+                    phone: studentData.phone,
+                    gender: studentData.gender,
+                    age: studentData.age,
+                    schedule: studentData.schedule || {}
+                };
+                
+                const popup = document.querySelector('student-popup');
+                console.log('Popup element:', popup);
+                
+                if (popup) {
+                    console.log('Calling showProfileEditor');
+                    popup.showProfileEditor(student);
+                } else {
+                    console.log('Popup element not found!');
+                }
+            } catch (error) {
+                console.error('Error loading student data for editing:', error);
             }
         }, 100);
     }
 
     // Global function for showing work history
-    static showWorkHistory() {
+    static async showWorkHistory() {
         console.log('showWorkHistory function called');
         
         // Wait a bit for DOM to be ready
-        setTimeout(() => {
-            const currentUser = DataManager.getCurrentUser();
+        setTimeout(async () => {
+            const currentUser = ApiClient.getCurrentUser();
             console.log('Current user:', currentUser);
             
             if (!currentUser || currentUser.type !== 'student') {
@@ -308,26 +564,42 @@ class StudentHome {
                 return;
             }
 
-            const studentData = DataManager.getStudentById(currentUser.id);
-            console.log('Student data:', studentData);
-            
-            if (!studentData) {
-                console.log('Student data not found');
-                return;
-            }
+            try {
+                const response = await ApiClient.getStudentProfile();
+                if (!response.success) {
+                    console.log('Failed to get student data:', response.message);
+                    return;
+                }
 
-            const student = new Student(studentData);
-            console.log('Student instance:', student);
-            
-            const popup = document.querySelector('student-popup');
-            console.log('Popup element:', popup);
-            console.log('All student-popup elements:', document.querySelectorAll('student-popup'));
-            
-            if (popup) {
-                console.log('Calling showWorkHistoryOnly');
-                popup.showWorkHistoryOnly(student);
-            } else {
-                console.log('Popup element not found!');
+                const studentData = response.student;
+                console.log('Student data:', studentData);
+                
+                // Get work history
+                const workHistoryResponse = await ApiClient.getStudentWorkHistory();
+                const workHistory = workHistoryResponse.success ? workHistoryResponse.workHistory : [];
+                
+                // Create a Student-like object for the popup
+                const student = {
+                    id: studentData.id,
+                    name: studentData.name,
+                    email: studentData.email,
+                    phone: studentData.phone,
+                    gender: studentData.gender,
+                    age: studentData.age,
+                    workHistory: workHistory
+                };
+                
+                const popup = document.querySelector('student-popup');
+                console.log('Popup element:', popup);
+                
+                if (popup) {
+                    console.log('Calling showWorkHistoryOnly');
+                    popup.showWorkHistoryOnly(student);
+                } else {
+                    console.log('Popup element not found!');
+                }
+            } catch (error) {
+                console.error('Error loading student data for work history:', error);
             }
         }, 100);
     }
@@ -350,64 +622,182 @@ class StudentHome {
     }
 
     // Global function for editing student profile
-    static editStudentProfile() {
-        const currentUser = DataManager.getCurrentUser();
-        const student = DataManager.getStudentById(currentUser.id);
+    static async editStudentProfile() {
+        const currentUser = ApiClient.getCurrentUser();
         
-        const newName = prompt('Нэр:', student.name);
-        const newPhone = prompt('Утасны дугаар:', student.phone);
-        const newEmail = prompt('И-мэйл:', student.email);
+        try {
+            const response = await ApiClient.getStudentProfile();
+            if (!response.success) {
+                StudentHome.showMessagePopup('Профайл мэдээлэл авахад алдаа гарлаа', 'error');
+                return;
+            }
 
-        if (newName !== null && newPhone !== null && newEmail !== null) {
-            student.name = newName.trim();
-            student.phone = newPhone.trim();
-            student.email = newEmail.trim();
-            student.updatedAt = new Date().toISOString();
-
-            DataManager.saveStudent(student);
-            DataManager.setCurrentUser({ ...currentUser, ...student });
+            const student = response.student;
             
-            // Refresh the profile display
-            StudentHome.loadStudentData();
-            console.log('Profile updated successfully');
+            const newName = prompt('Нэр:', student.name);
+            const newPhone = prompt('Утасны дугаар:', student.phone);
+            const newEmail = prompt('И-мэйл:', student.email);
+
+            if (newName !== null && newPhone !== null && newEmail !== null) {
+                const updateResponse = await ApiClient.updateStudentProfile({
+                    name: newName.trim(),
+                    phone: newPhone.trim(),
+                    email: newEmail.trim(),
+                    gender: student.gender,
+                    age: student.age
+                });
+
+                if (updateResponse.success) {
+                    // Update local user data
+                    const updatedUser = { ...currentUser, name: newName.trim(), email: newEmail.trim() };
+                    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+                    
+                    // Refresh the profile display
+                    StudentHome.loadStudentData();
+                    console.log('Profile updated successfully');
+                    StudentHome.showMessagePopup('Профайл амжилттай шинэчлэгдлээ', 'success');
+                } else {
+                    StudentHome.showMessagePopup(updateResponse.message || 'Профайл шинэчлэхэд алдаа гарлаа', 'error');
+                }
+            }
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            StudentHome.showMessagePopup('Профайл шинэчлэхэд алдаа гарлаа', 'error');
         }
     }
 
     // Global function for withdrawing job application
-    static withdrawApplication(jobId) {
-        const confirmWithdraw = confirm('Та энэ ажлын хүсэлтээ цуцлахыг хүсэж байна уу?');
-        if (!confirmWithdraw) return;
+    static async withdrawApplication(jobId) {
+        // Show confirmation popup instead of confirm dialog
+        StudentHome.showWithdrawConfirmation(jobId);
+    }
 
-        const currentUser = DataManager.getCurrentUser();
+    static showWithdrawConfirmation(jobId) {
+        // Create popup overlay
+        const popupOverlay = document.createElement('div');
+        popupOverlay.className = 'popup-overlay';
+        popupOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        `;
+
+        popupOverlay.innerHTML = `
+            <div class="popup" style="
+                background: white;
+                border-radius: 10px;
+                padding: 30px;
+                max-width: 500px;
+                width: 90%;
+                text-align: center;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            ">
+                <button class="popup-close" style="
+                    position: absolute;
+                    top: 15px;
+                    right: 15px;
+                    background: none;
+                    border: none;
+                    font-size: 20px;
+                    cursor: pointer;
+                    color: #666;
+                ">✕</button>
+
+                <div class="popup-header-large" style="margin-bottom: 20px;">
+                    <h2 style="color: #333; margin-bottom: 10px;">Хүсэлт цуцлах</h2>
+                    <p style="color: #666; line-height: 1.5;">
+                        Та энэ ажлын хүсэлтээ цуцлахыг хүсэж байна уу?
+                    </p>
+                    <p style="color: #888; font-size: 14px; margin-top: 10px;">
+                        Цуцлагдсан хүсэлтийг дахин сэргээх боломжгүй.
+                    </p>
+                </div>
+
+                <div class="popup-actions" style="
+                    display: flex;
+                    gap: 15px;
+                    justify-content: center;
+                    margin-top: 25px;
+                ">
+                    <button class="approve-btn" id="confirmWithdrawBtn" style="
+                        background: #dc3545;
+                        color: white;
+                        border: none;
+                        padding: 12px 25px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        font-size: 16px;
+                    ">Тийм, цуцлах</button>
+                    <button class="reject-btn" id="cancelWithdrawBtn" style="
+                        background: #6c757d;
+                        color: white;
+                        border: none;
+                        padding: 12px 25px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        font-size: 16px;
+                    ">Үгүй</button>
+                </div>
+            </div>
+        `;
+
+        // Add to document
+        document.body.appendChild(popupOverlay);
+
+        // Event listeners
+        const closeBtn = popupOverlay.querySelector('.popup-close');
+        const confirmBtn = popupOverlay.querySelector('#confirmWithdrawBtn');
+        const cancelBtn = popupOverlay.querySelector('#cancelWithdrawBtn');
+
+        const closePopup = () => {
+            document.body.removeChild(popupOverlay);
+        };
+
+        closeBtn.addEventListener('click', closePopup);
+        cancelBtn.addEventListener('click', closePopup);
+        
+        // Close on overlay click
+        popupOverlay.addEventListener('click', (e) => {
+            if (e.target === popupOverlay) closePopup();
+        });
+
+        // Confirm withdraw
+        confirmBtn.addEventListener('click', async () => {
+            closePopup();
+            await StudentHome.executeWithdraw(jobId);
+        });
+    }
+
+    static async executeWithdraw(jobId) {
+        const currentUser = ApiClient.getCurrentUser();
         if (!currentUser || currentUser.type !== 'student') {
             console.log('Authentication error');
             return;
         }
 
-        const job = DataManager.getJobById(jobId);
-        const student = DataManager.getStudentById(currentUser.id);
-        
-        if (!job || !student) {
-            console.log('Job or student data not found for withdrawal');
-            return;
+        try {
+            const response = await ApiClient.withdrawJobApplication(jobId);
+            
+            if (response.success) {
+                console.log('Application withdrawn successfully');
+                StudentHome.showMessagePopup('Хүсэлт амжилттай цуцлагдлаа', 'success');
+                // Refresh the job cards to show updated state
+                StudentHome.loadStudentData();
+            } else {
+                console.log('Failed to withdraw application:', response.message);
+                StudentHome.showMessagePopup(response.message || 'Хүсэлт цуцлахад алдаа гарлаа', 'error');
+            }
+        } catch (error) {
+            console.error('Error withdrawing application:', error);
+            StudentHome.showMessagePopup('Хүсэлт цуцлахад алдаа гарлаа', 'error');
         }
-
-        // Remove application from job
-        job.applications = job.applications.filter(app => app.studentId !== currentUser.id);
-        job.updatedAt = new Date().toISOString();
-
-        // Remove job from student's applications
-        student.applications = student.applications.filter(id => id !== jobId);
-        student.updatedAt = new Date().toISOString();
-
-        // Save both
-        DataManager.saveJob(job);
-        DataManager.saveStudent(student);
-
-        console.log('Application withdrawn successfully');
-        
-        // Refresh the job cards to show updated state
-        StudentHome.loadStudentData();
     }
 }
 

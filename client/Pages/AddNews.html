@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Зар нэмэх</title>
+  <link rel="stylesheet" href="../Css/style2.css" />
+  <script src="../js/api-client.js"></script>
+  <script src="../comp/main-header.js" defer></script> 
+  <script src="../comp/ad-card.js" defer></script>
+  <script src="../comp/main-footer.js" defer></script>
+  <script src="../comp/back-bar.js" defer></script>
+  <script src="../comp/job-form.js" defer></script>
+  <script>
+    // Initialize page when loaded
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Check authentication
+      const isAuthenticated = await ApiClient.ensureAuthenticated();
+      if (!isAuthenticated) {
+        return; // Will redirect if not authenticated
+      }
+      
+      const currentUser = ApiClient.getCurrentUser();
+      if (!currentUser || currentUser.type !== 'company') {
+        window.location.href = '/login';
+        return;
+      }
+    });
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <main-header></main-header>
+
+  <back-bar title="Зар оруулах"></back-bar>
+  <!-- Main -->
+  <job-form></job-form>
+  <!-- Footer -->
+  <main-footer></main-footer>
+</body>
+</html>

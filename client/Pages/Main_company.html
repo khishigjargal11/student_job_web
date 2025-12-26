@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таны зар</title>
+    <link rel="stylesheet" href="../Css/style.css">
+    <link rel="stylesheet" href="../Css/components.css">
+    <script src="../js/api-client.js"></script>
+    <script src="../models/Student.js"></script>
+    <script src="../models/Company.js"></script>
+    <script src="../models/Job.js"></script>
+    <script src="../comp/main-header.js" defer></script>
+    <script src="../comp/sidebar-component.js" defer></script>
+    <script src="../comp/ad-card.js" defer></script>
+    <script src="../comp/main-footer.js" defer></script>
+    <script src="../comp/company-popup.js" defer></script>
+    
+    <!-- Page-specific JavaScript -->
+    <script src="../js/company-main.js"></script>
+</head>
+<body>
+
+    <!-- ===== Header Component ===== -->
+    <main-header></main-header>
+
+    <!-- ===== Main Content ===== -->
+    <main class="container">
+
+        <!-- Sidebar Component -->
+        <side-bar></side-bar>
+
+        <!-- User Ads -->
+        <section class="content">
+            <header>
+                <h2>Таны зар:</h2>
+            </header>
+
+            <div id="company-jobs">
+                <!-- Company jobs will be loaded dynamically -->
+            </div>
+
+        </section>
+    </main>
+
+    <!-- ===== Footer Component ===== -->
+    <main-footer></main-footer>
+
+    <!-- Company Profile Popup -->
+    <company-popup></company-popup>
+
+</body>
+</html>

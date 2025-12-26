@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цагийн хуваарь</title>
+    <link rel="stylesheet" href="../Css/calendar.css">
+    <link rel="stylesheet" href="../Css/components.css">
+</head>
+<body>
+
+    <!-- header component -->
+    <main-header></main-header>
+
+    <!-- Back bar -->
+    <back-bar title="Цагийн хуваарь"></back-bar>
+
+    <!-- Page layout -->
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="profile">
+                <img src="../pics/profile.jpg" alt="Profile" id="profileImage">
+                <figcaption>
+                    <h2 id="profileName">Loading...</h2>
+                </figcaption>
+                <p class="email" id="profileEmail">Loading...</p>
+            </div>
+        </aside>
+
+        <!-- Calendar content -->
+        <main class="calendar">
+            <div class="calendar-header">
+                <h2 id="calendarTitle">Цагийн хуваарь</h2>
+                <div class="calendar-info">
+                    <p id="calendarInfo">Та ажиллах боломжтой цагуудаа сонгоно уу</p>
+                </div>
+            </div>
+            <div class="save-btn-container">
+                <button class="save-btn" onclick="saveCalendar()">Хадгалах</button>
+                <button class="clear-btn" onclick="clearSchedule()">Цэвэрлэх</button>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+            <div class="schedule-conflicts" id="scheduleConflicts"></div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/api-client.js"></script>
+    <script src="../comp/main-header.js"></script>
+    <script src="../comp/back-bar.js"></script>
+    <script src="../js/calendar.js"></script>
+    <script>
+        // Initialize page when loaded
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication
+            const isAuthenticated = await ApiClient.ensureAuthenticated();
+            if (!isAuthenticated) {
+                return; // Will redirect if not authenticated
+            }
+            
+            const currentUser = ApiClient.getCurrentUser();
+            if (!currentUser) {
+                window.location.href = '/login';
+                return;
+            }
+            
+            // Update profile info in sidebar
+            document.getElementById('profileName').textContent = currentUser.name;
+            document.getElementById('profileEmail').textContent = currentUser.email || '';
+        });
+    </script>
+
+</body>
+</html>

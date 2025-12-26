@@ -7,8 +7,13 @@ class CalendarUtils {
 
     // Build calendar grid HTML
     static buildCalendarGrid(containerId, schedule = {}) {
+        console.log('CalendarUtils: Building grid for container:', containerId, 'with schedule:', schedule);
+        
         const grid = document.getElementById(containerId);
-        if (!grid) return;
+        if (!grid) {
+            console.error('CalendarUtils: Grid container not found:', containerId);
+            return;
+        }
 
         grid.innerHTML = ""; // clear grid first
 
@@ -26,9 +31,15 @@ class CalendarUtils {
                 const id = `${day}_${timeKey}`;
                 const isActive = schedule[dayKey] && schedule[dayKey][timeKey] ? 'active' : '';
                 
+                if (isActive) {
+                    console.log('CalendarUtils: Setting active cell:', id, 'for', dayKey, timeKey);
+                }
+                
                 grid.innerHTML += `<div class="cell ${isActive}" id="${id}" onclick="CalendarUtils.toggleCell('${day}', ${hour})"></div>`;
             });
         }
+        
+        console.log('CalendarUtils: Grid building complete');
     }
 
     // Toggle cell selection
@@ -64,46 +75,46 @@ class CalendarUtils {
         }));
     }
 
-    // Save schedule for current user
-    static saveSchedule() {
-        const currentUser = DataManager.getCurrentUser();
+    // Save schedule for current user (using API)
+    static async saveSchedule() {
+        const currentUser = ApiClient.getCurrentUser();
         if (!currentUser || currentUser.type !== 'student') {
             console.log('Only students can save schedule');
             return false;
         }
 
-        const student = DataManager.getStudentById(currentUser.id);
-        if (!student) {
-            console.log('Student data not found');
+        try {
+            const response = await ApiClient.updateStudentSchedule(window.currentSchedule || {});
+            
+            if (response.success) {
+                console.log('Schedule saved successfully');
+                return true;
+            } else {
+                console.error('Failed to save schedule:', response.message);
+                return false;
+            }
+        } catch (error) {
+            console.error('Error saving schedule:', error);
             return false;
         }
-
-        // Update student schedule
-        student.schedule = window.currentSchedule || {};
-        student.updatedAt = new Date().toISOString();
-
-        // Save to storage
-        DataManager.saveStudent(student);
-
-        // Update current user session
-        DataManager.setCurrentUser({ ...currentUser, schedule: student.schedule });
-
-        console.log('Schedule saved successfully');
-        return true;
     }
 
-    // Load schedule for current user
-    static loadUserSchedule() {
-        const currentUser = DataManager.getCurrentUser();
+    // Load schedule for current user (using API)
+    static async loadUserSchedule() {
+        const currentUser = ApiClient.getCurrentUser();
         if (!currentUser || currentUser.type !== 'student') {
             window.currentSchedule = {};
             return {};
         }
 
-        const student = DataManager.getStudentById(currentUser.id);
-        if (student && student.schedule) {
-            window.currentSchedule = student.schedule;
-            return student.schedule;
+        try {
+            const response = await ApiClient.getStudentProfile();
+            if (response.success && response.student.schedule) {
+                window.currentSchedule = response.student.schedule;
+                return response.student.schedule;
+            }
+        } catch (error) {
+            console.error('Error loading user schedule:', error);
         }
 
         window.currentSchedule = {};
@@ -156,9 +167,9 @@ class CalendarUtils {
         return availableSlots;
     }
 
-    // Initialize calendar with user's schedule
-    static initializeCalendar(containerId) {
-        const schedule = this.loadUserSchedule();
+    // Initialize calendar with user's schedule (using API)
+    static async initializeCalendar(containerId) {
+        const schedule = await this.loadUserSchedule();
         this.buildCalendarGrid(containerId, schedule);
         
         // Add save button functionality if it exists
