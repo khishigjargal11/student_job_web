@@ -18,7 +18,7 @@ class JobSearch extends HTMLElement {
                 </select>
 
                 <button class="refresh-btn" onclick="refreshJobs()" title="Шинэчлэх">
-                    🔄 Шинэчлэх
+                     Шинэчлэх
                 </button>
             </div>
         `;

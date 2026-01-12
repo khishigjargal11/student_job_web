@@ -1,7 +1,7 @@
 class CalendarComponent extends HTMLElement {
     constructor() {
         super();
-        this.schedule = {};
+        this.schedule = {}; // SINGLE SOURCE OF TRUTH
     }
 
     connectedCallback() {
@@ -81,16 +81,8 @@ class CalendarComponent extends HTMLElement {
             }
         }
 
-        // Build calendar with existing schedule
-        console.log('Calendar: Building grid with schedule:', this.schedule);
-        CalendarUtils.buildCalendarGrid('calendarGrid', this.schedule);
-        
-        // Set global schedule for CalendarUtils
-        window.currentSchedule = this.schedule;
-        console.log('Calendar: Set global schedule:', window.currentSchedule);
-
-        // Override CalendarUtils.toggleCell AFTER the grid is built
-        this.setupCellClickHandling();
+        // Build calendar grid manually (no more CalendarUtils dependency)
+        this.buildCalendarGrid();
 
         // Check for conflicts (only for students)
         if (returnToJobForm !== 'true') {
@@ -100,17 +92,45 @@ class CalendarComponent extends HTMLElement {
         }
     }
 
-    setupCellClickHandling() {
-        console.log('Calendar: Setting up cell click handling...');
-        const self = this;
+    buildCalendarGrid() {
+        console.log('Calendar: Building grid with schedule:', this.schedule);
         
-        // Override the global CalendarUtils.toggleCell function
-        CalendarUtils.toggleCell = (day, hour) => {
-            console.log('Calendar: CalendarUtils.toggleCell called for', day, hour);
-            self.handleCellClick(day, hour);
-        };
+        const grid = this.querySelector('#calendarGrid');
+        const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        const startHour = 8;
+        const endHour = 20;
+
+        grid.innerHTML = ""; // Clear grid first
+
+        // Top row: empty cell + day headers
+        grid.innerHTML += `<div></div>`;
+        days.forEach(d => grid.innerHTML += `<div class="day-header">${d}</div>`);
+
+        // Iterate through hours
+        for (let hour = startHour; hour < endHour; hour++) {
+            grid.innerHTML += `<div class="hour-label">${hour}:00</div>`;
+
+            days.forEach(day => {
+                const dayKey = day.toLowerCase();
+                const timeKey = `${hour}-${hour+1}`;
+                const id = `${day}_${timeKey}`;
+                const isActive = this.schedule[dayKey] && this.schedule[dayKey][timeKey] ? 'active' : '';
+                
+                grid.innerHTML += `<div class="cell ${isActive}" id="${id}"></div>`;
+            });
+        }
         
-        console.log('Calendar: Cell click handling setup complete');
+        console.log('Calendar: Grid building complete');
+        
+        // Debug: Check if cells were created
+        setTimeout(() => {
+            const cells = this.querySelectorAll('.cell');
+            console.log('Calendar: Created', cells.length, 'cells');
+            if (cells.length > 0) {
+                console.log('Calendar: First cell ID:', cells[0].id);
+                console.log('Calendar: First cell classes:', cells[0].classList.toString());
+            }
+        }, 100);
     }
 
     addEventListeners() {
@@ -120,61 +140,60 @@ class CalendarComponent extends HTMLElement {
         // Clear button
         this.querySelector("#clearBtn").addEventListener("click", () => this.clearSchedule());
 
-        // Listen for schedule changes from CalendarUtils
-        window.addEventListener('scheduleChanged', (event) => {
-            console.log('Calendar: Schedule changed event received:', event.detail.schedule);
-            this.schedule = event.detail.schedule;
+        // Handle cell clicks with event delegation (SINGLE SOURCE OF TRUTH)
+        this.querySelector('#calendarGrid').addEventListener('click', (event) => {
+            console.log('Calendar: Grid clicked, target:', event.target);
+            console.log('Calendar: Target classes:', event.target.classList.toString());
+            
+            const cell = event.target;
+            if (!cell.classList.contains('cell')) {
+                console.log('Calendar: Not a cell, ignoring click');
+                return;
+            }
+            
+            console.log('Calendar: Cell clicked:', cell.id);
+            
+            // Extract day and hour from cell ID
+            const match = cell.id.match(/^(\w+)_(\d+)-(\d+)$/);
+            if (!match) {
+                console.log('Calendar: Cell ID does not match pattern:', cell.id);
+                return;
+            }
+            
+            const day = match[1];
+            const hour = parseInt(match[2]);
+            const dayKey = day.toLowerCase();
+            const timeKey = `${hour}-${hour+1}`;
+
+            console.log('Calendar: Parsed cell data - day:', day, 'hour:', hour, 'dayKey:', dayKey, 'timeKey:', timeKey);
+
+            // Initialize day if not exists
+            if (!this.schedule[dayKey]) {
+                this.schedule[dayKey] = {};
+            }
+
+            if (cell.classList.contains("active")) {
+                console.log('Calendar: Removing time slot:', dayKey, timeKey);
+                cell.classList.remove("active");
+                delete this.schedule[dayKey][timeKey];
+                // Clean up empty day objects
+                if (Object.keys(this.schedule[dayKey]).length === 0) {
+                    delete this.schedule[dayKey];
+                }
+            } else {
+                console.log('Calendar: Adding time slot:', dayKey, timeKey);
+                cell.classList.add("active");
+                this.schedule[dayKey][timeKey] = 1;
+            }
+
+            console.log('Calendar: Updated schedule:', this.schedule);
+            console.log('Calendar: Schedule keys count:', Object.keys(this.schedule).length);
+            
+            // Check conflicts only for students
             if (sessionStorage.getItem('returnToJobForm') !== 'true') {
                 this.checkScheduleConflicts();
             }
         });
-    }
-
-    handleCellClick(day, hour, cellElement = null) {
-        console.log('Calendar: Handle cell click for', day, hour);
-        
-        const cellId = `${day}_${hour}-${hour+1}`;
-        const cell = cellElement || document.getElementById(cellId);
-        if (!cell) {
-            console.log('Calendar: Cell not found:', cellId);
-            return;
-        }
-
-        const dayKey = day.toLowerCase();
-        const timeKey = `${hour}-${hour+1}`;
-
-        // Initialize day if not exists
-        if (!this.schedule[dayKey]) {
-            this.schedule[dayKey] = {};
-        }
-
-        if (cell.classList.contains("active")) {
-            console.log('Calendar: Removing time slot:', dayKey, timeKey);
-            cell.classList.remove("active");
-            delete this.schedule[dayKey][timeKey];
-            // Clean up empty day objects
-            if (Object.keys(this.schedule[dayKey]).length === 0) {
-                delete this.schedule[dayKey];
-            }
-        } else {
-            console.log('Calendar: Adding time slot:', dayKey, timeKey);
-            cell.classList.add("active");
-            this.schedule[dayKey][timeKey] = 1;
-        }
-
-        // Update global schedule
-        window.currentSchedule = this.schedule;
-        console.log('Calendar: Updated schedule:', this.schedule);
-
-        // Check conflicts only for students
-        if (sessionStorage.getItem('returnToJobForm') !== 'true') {
-            this.checkScheduleConflicts();
-        }
-
-        // Trigger custom event
-        window.dispatchEvent(new CustomEvent('scheduleChanged', {
-            detail: { schedule: this.schedule }
-        }));
     }
 
     async saveCalendar() {
@@ -185,9 +204,7 @@ class CalendarComponent extends HTMLElement {
         
         console.log('Calendar: Save button clicked');
         console.log('Calendar: returnToJobForm flag:', returnToJobForm);
-        console.log('Calendar: Current schedule:', this.schedule);
-        console.log('Calendar: Schedule keys count:', Object.keys(this.schedule).length);
-        console.log('Calendar: Current user:', currentUser);
+        console.log('Calendar: Schedule to save:', this.schedule);
         
         // Validate schedule has content
         const hasScheduleContent = Object.keys(this.schedule).some(day => 
@@ -202,7 +219,7 @@ class CalendarComponent extends HTMLElement {
         }
         
         if (returnToJobForm === 'true') {
-            // Save as job schedule
+            // Save as job schedule - SINGLE SOURCE OF TRUTH
             console.log('Calendar: Saving as job schedule...');
             const scheduleJson = JSON.stringify(this.schedule);
             sessionStorage.setItem('jobSchedule', scheduleJson);
@@ -222,7 +239,7 @@ class CalendarComponent extends HTMLElement {
 
         try {
             console.log('Calendar: Saving student schedule via API...');
-            // Update student schedule via API
+            // Update student schedule via API - SINGLE SOURCE OF TRUTH
             const response = await ApiClient.updateStudentSchedule(this.schedule);
             
             if (response.success) {
@@ -243,8 +260,7 @@ class CalendarComponent extends HTMLElement {
 
     clearSchedule() {
         if (confirm('Та цагийн хуваарьаа бүрэн цэвэрлэхийг хүсэж байна уу?')) {
-            this.schedule = {};
-            window.currentSchedule = {};
+            this.schedule = {}; // SINGLE SOURCE OF TRUTH
             
             // Clear all active cells
             const activeCells = this.querySelectorAll('.cell.active');
@@ -279,7 +295,7 @@ class CalendarComponent extends HTMLElement {
             const conflictingJobs = [];
 
             availableJobs.forEach(job => {
-                if (CalendarUtils.hasConflict(this.schedule, job.schedule)) {
+                if (this.hasConflict(this.schedule, job.schedule)) {
                     conflictingJobs.push({
                         job: job,
                         companyName: job.company_name || 'Тодорхойгүй'
@@ -296,7 +312,7 @@ class CalendarComponent extends HTMLElement {
                             ${conflictingJobs.map(item => `
                                 <li>
                                     <strong>${item.job.title}</strong> - ${item.companyName}
-                                    <br><small>${CalendarUtils.scheduleToDisplayText(item.job.schedule)}</small>
+                                    <br><small>${this.scheduleToDisplayText(item.job.schedule)}</small>
                                 </li>
                             `).join('')}
                         </ul>
@@ -318,6 +334,37 @@ class CalendarComponent extends HTMLElement {
                 </div>
             `;
         }
+    }
+
+    // Helper methods (self-contained, no external dependencies)
+    hasConflict(schedule1, schedule2) {
+        for (const day in schedule2) {
+            if (schedule1[day]) {
+                for (const timeSlot in schedule2[day]) {
+                    if (schedule1[day][timeSlot]) {
+                        return true; // Conflict found
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    scheduleToDisplayText(schedule) {
+        const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        const scheduleEntries = [];
+        
+        for (const day in schedule) {
+            const times = Object.keys(schedule[day]);
+            if (times.length > 0) {
+                const dayName = days.find(d => d.toLowerCase() === day) || day;
+                const startTime = Math.min(...times.map(t => parseInt(t.split('-')[0])));
+                const endTime = Math.max(...times.map(t => parseInt(t.split('-')[1])));
+                scheduleEntries.push(`${dayName}: ${startTime}:00–${endTime}:00`);
+            }
+        }
+        
+        return scheduleEntries.join(', ') || 'Цагийн хуваарь тодорхойлоогүй';
     }
 }
 

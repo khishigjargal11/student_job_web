@@ -1,6 +1,13 @@
+/**
+ * Оюутны профайл компонент
+ * Оюутны хувийн мэдээлэл, үнэлгээ, ажлын туршлагыг харуулах
+ */
 class StudentProfile extends HTMLElement {
+    /**
+     * Компонент DOM-д холбогдох үед ажиллах функц
+     */
     connectedCallback() {
-        // Check if we have ApiClient available
+        // ApiClient боломжтой эсэхийг шалгах
         const hasApiClient = typeof ApiClient !== 'undefined';
         
         console.log('Student profile connecting:', { hasApiClient });
@@ -14,6 +21,9 @@ class StudentProfile extends HTMLElement {
         }
     }
 
+    /**
+     * Оюутны мэдээллийг API-аас ачаалах функц
+     */
     async loadStudentData() {
         const currentUser = ApiClient.getCurrentUser();
         console.log('Loading student data:', { currentUser });
@@ -25,7 +35,7 @@ class StudentProfile extends HTMLElement {
         }
 
         try {
-            // Get student profile from API
+            // API-аас оюутны профайл авах
             const response = await ApiClient.getStudentProfile();
             console.log('Student profile response:', response);
             
@@ -43,6 +53,9 @@ class StudentProfile extends HTMLElement {
         }
     }
 
+    /**
+     * HTML атрибутуудаас профайл харуулах функц
+     */
     renderFromAttributes() {
         const name = this.getAttribute("name") || "Хэрэглэгч";
         const phone = this.getAttribute("phone") || "";
@@ -73,6 +86,10 @@ class StudentProfile extends HTMLElement {
         `;
     }
 
+    /**
+     * Оюутны профайлыг API мэдээллээр харуулах функц
+     * @param {Object} student - Оюутны мэдээлэл
+     */
     renderProfile(student) {
         this.innerHTML = `
                 <div class="profile-header">
@@ -101,6 +118,11 @@ class StudentProfile extends HTMLElement {
         `;
     }
 
+    /**
+     * Ажлын туршлагыг харуулах функц
+     * @param {Array} workHistory - Ажлын туршлагын жагсаалт
+     * @returns {string} HTML мөр
+     */
     renderWorkHistory(workHistory) {
         if (!workHistory || workHistory.length === 0) {
             return '';
@@ -120,6 +142,10 @@ class StudentProfile extends HTMLElement {
         `;
     }
 
+    /**
+     * Илгээсэн хүсэлтүүдийг харуулах функц
+     * @returns {string} HTML мөр
+     */
     async renderAppliedJobs() {
         try {
             const response = await ApiClient.getStudentApplications();
@@ -127,7 +153,7 @@ class StudentProfile extends HTMLElement {
                 return '';
             }
 
-            const recentApplications = response.applications.slice(-2); // Show last 2 applications
+            const recentApplications = response.applications.slice(-2); // Сүүлийн 2 хүсэлтийг харуулах
             const jobsHtml = recentApplications.map(application => {
                 const statusText = this.getStatusText(application.status);
 
@@ -151,6 +177,11 @@ class StudentProfile extends HTMLElement {
         }
     }
 
+    /**
+     * Хүсэлтийн статусыг монгол хэл рүү хөрвүүлэх функц
+     * @param {string} status - Хүсэлтийн статус
+     * @returns {string} Монгол хэл дээрх статус
+     */
     getStatusText(status) {
         switch (status) {
             case 'pending': return 'Хүлээгдэж байна';
@@ -160,6 +191,11 @@ class StudentProfile extends HTMLElement {
         }
     }
 
+    /**
+     * Оюутны дундаж үнэлгээ тооцоолох функц
+     * @param {Object} student - Оюутны мэдээлэл
+     * @returns {string} Дундаж үнэлгээ
+     */
     getAverageRating(student) {
         if (!student || !student.total_ratings || student.total_ratings === 0) {
             return '0';
