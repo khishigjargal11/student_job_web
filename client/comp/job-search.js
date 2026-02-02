@@ -1,54 +1,97 @@
 class JobSearch extends HTMLElement {
 
     connectedCallback() {
-        // Search UI-г гаргах
         this.innerHTML = `
             <div class="search-bar">
                 <input type="text" class="search-input" placeholder="🔍 Ажил хайх...">
 
                 <select class="dropdown location-filter">
-                    <option value="">Байршлаар</option>
-                    <option value="чингэлтэй">Чингэлтэй</option>
-                    <option value="сүхбаатар">Сүхбаатар</option>
+                    <option value="">Байршил сонгох</option>
+                    <option value="багануур">Багануур</option>
+                    <option value="багахангай">Багахангай</option>
+                    <option value="баянгол">Баянгол</option>
                     <option value="баянзүрх">Баянзүрх</option>
+                    <option value="налайх">Налайх</option>
+                    <option value="сонгинохайрхан">Сонгинохайрхан</option>
+                    <option value="сүхбаатар">Сүхбаатар</option>
+                    <option value="хан-уул">Хан-Уул</option>
+                    <option value="чингэлтэй">Чингэлтэй</option>
                 </select>
+
 
                 <select class="dropdown sort-filter">
                     <option value="">Эрэмбэлэх</option>
-                    <option value="new">Шинэ эхэнд</option>
                     <option value="salary">Өндөр цалинтай</option>
                 </select>
 
-                <button class="refresh-btn" title="Шинэчлэх">
-                    Шинэчлэх
-                </button>
+                <button class="refresh-btn">Шинэчлэх</button>
             </div>
         `;
 
-        // DOM элементүүдийг component дотроос авна
+        // Component доторх element-үүд
         const searchInput = this.querySelector(".search-input");
+        const locationFilter = this.querySelector(".location-filter");
+        const sortFilter = this.querySelector(".sort-filter");
         const refreshBtn = this.querySelector(".refresh-btn");
 
-        const jobs = document.querySelectorAll(".job");
+        //  Job card
+        const jobsContainer = document.querySelector(".main-content");
+        let jobs = Array.from(document.querySelectorAll(".job"));
 
-        // Search engine
-        searchInput.addEventListener("input", () => {
+        // SEARCH + FILTER FUNCTION
+        const filterJobs = () => {
             const searchText = searchInput.value.toLowerCase();
+            const selectedLocation = locationFilter.value;
 
             jobs.forEach(job => {
                 const jobText = job.innerText.toLowerCase();
 
-                if (jobText.includes(searchText)) {
+                const matchSearch = jobText.includes(searchText);
+                const matchLocation =
+                    selectedLocation === "" ||
+                    jobText.includes(selectedLocation);
+
+                if (matchSearch && matchLocation) {
                     job.style.display = "block";
                 } else {
                     job.style.display = "none";
                 }
             });
+        };
+
+        // SORT BY SALARY FUNCTION
+        const sortBySalary = () => {
+            jobs.sort((a, b) => {
+                const salaryA = extractSalary(a);
+                const salaryB = extractSalary(b);
+                return salaryB - salaryA; 
+            });
+
+            jobs.forEach(job => jobsContainer.appendChild(job));
+        };
+
+        // Цалин авах
+        const extractSalary = (job) => {
+            const text = job.innerText;
+            const match = text.match(/([\d,]+)₮/);
+            if (!match) return 0;
+            return parseInt(match[1].replace(/,/g, ""));
+        };
+
+        // EVENTS
+        searchInput.addEventListener("input", filterJobs);
+        locationFilter.addEventListener("change", filterJobs);
+
+        sortFilter.addEventListener("change", () => {
+            if (sortFilter.value === "salary") {
+                sortBySalary();
+            }
         });
 
-        // Refresh товч 
         refreshBtn.addEventListener("click", () => {
             searchInput.value = "";
+            locationFilter.value = "";
+            sortFilter.value = "";
 
             jobs.forEach(job => {
                 job.style.display = "block";
