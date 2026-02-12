@@ -1,6 +1,5 @@
 /**
  * Company Main Page JavaScript Functions
- * Contains all the JavaScript functionality for the company main page
  */
 
 class CompanyMain {

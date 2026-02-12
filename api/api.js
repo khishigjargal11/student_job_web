@@ -3,7 +3,7 @@ const { supabase } = require('../database/supabase');
 
 const router = express.Router();
 
-// Middleware to check if user is authenticated
+// Middleware 
 const requireAuth = (req, res, next) => {
     if (!req.session.user) {
         return res.status(401).json({ 
@@ -84,7 +84,7 @@ router.get('/dashboard/stats', requireAuth, async (req, res) => {
 // Search jobs
 router.get('/search/jobs', requireAuth, async (req, res) => {
     const { q, location, salary_min, salary_max, salary_type } = req.query;
-    
+  
     try {
         let query = supabase
             .from('jobs')

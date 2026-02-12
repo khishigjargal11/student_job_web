@@ -77,12 +77,11 @@ router.post('/login', async (req, res) => {
                     isValidPassword = false;
                 }
             } else {
-                // Энэ бол энгийн текст нууц үг (хөгжүүлэлтийн хувьд)
+                // Энэ бол энгийн текст нууц үг 
                 isValidPassword = cleanInputPassword === cleanStoredPassword;
                 console.log('Used plain text comparison, result:', isValidPassword);
             }
         } else {
-            // Тестийн хувьд fallback
             isValidPassword = password === 'password123';
             console.log('Used fallback comparison');
         }
@@ -99,7 +98,7 @@ router.post('/login', async (req, res) => {
             });
         }
 
-        // Сессийн мэдээлэл үүсгэх
+        // Session-iin мэдээлэл үүсгэх
         req.session.user = {
             id: user.id,
             username: user.username,

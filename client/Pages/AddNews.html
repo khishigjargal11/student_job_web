@@ -17,7 +17,7 @@
       // Check authentication
       const isAuthenticated = await ApiClient.ensureAuthenticated();
       if (!isAuthenticated) {
-        return; // Will redirect if not authenticated
+        return; 
       }
       
       const currentUser = ApiClient.getCurrentUser();

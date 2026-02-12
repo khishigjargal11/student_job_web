@@ -3,7 +3,7 @@ require('dotenv').config();
 
 // Supabase configuration
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY; // Use service key for server-side operations
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY; 
 
 if (!supabaseUrl || !supabaseServiceKey) {
     throw new Error('Missing Supabase environment variables. Please check your .env file.');
@@ -17,7 +17,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
     }
 });
 
-// Client-side Supabase client (for browser)
+// Client-side Supabase client 
 const createClientSideSupabase = () => {
     const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
     if (!supabaseAnonKey) {

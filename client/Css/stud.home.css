@@ -1,3 +1,106 @@
+    /* ===== CSS CUSTOM PROPERTIES ===== */
+    :root {
+        /* Colors */
+        --color-primary: #000000;
+        --color-primary-light: #1a1a1a;
+        --color-accent: #00ff88;
+        --color-accent-dark: #00cc6a;
+        --color-white: #ffffff;
+        --color-bg-light: #f8f9fa;
+        --color-bg-sidebar: #b8daf5;
+        --color-bg-sidebar-end: #a5cde8;
+        --color-bg-card: #fafafa;
+        --color-bg-hover: #e0e0e0;
+        --color-text: #2c3e50;
+        --color-text-secondary: #34495e;
+        --color-text-light: rgba(255,255,255,0.85);
+        --color-text-gray: #666;
+        --color-text-dark: #999;
+        --color-border: #f0f0f0;
+        --color-border-light: #e0e0e0;
+        --color-warning: #ffc107;
+        --color-warning-bg: #fff3cd;
+        --color-warning-text: #856404;
+        --color-success: #28a745;
+        --color-success-dark: #1e7e34;
+        --color-danger: #dc3545;
+        --color-danger-dark: #c82333;
+        --color-info: #17a2b8;
+        --color-purple: #6f42c1;
+        --color-blue: #4285f4;
+        --color-blue-dark: #3367d6;
+        
+        /* Spacing */
+        --spacing-xs: 0.5rem;
+        --spacing-sm: 1rem;
+        --spacing-md: 1.5rem;
+        --spacing-lg: 2rem;
+        --spacing-xl: 2.5rem;
+        
+        /* Border Radius */
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 14px;
+        --radius-xl: 20px;
+        --radius-circle: 50%;
+        
+        /* Shadows */
+        --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+        --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+        --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+        --shadow-xl: 0 12px 48px rgba(0,0,0,0.15);
+        
+        /* Transitions */
+        --transition-fast: 0.2s ease;
+        --transition-normal: 0.3s ease;
+    }
+
+    /* Dark Mode */
+    [data-theme="dark"] {
+        --color-primary: #ffffff;
+        --color-primary-light: #e0e0e0;
+        --color-white: #1a1a1a;
+        --color-bg-light: #121212;
+        --color-bg-sidebar: #1e3a52;
+        --color-bg-sidebar-end: #152d3f;
+        --color-bg-card: #2a2a2a;
+        --color-bg-hover: #3a3a3a;
+        --color-text: #e0e0e0;
+        --color-text-secondary: #d0d0d0;
+        --color-text-gray: #b0b0b0;
+        --color-text-dark: #808080;
+        --color-border: #333;
+        --color-border-light: #2a2a2a;
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+        background: transparent;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50% !important;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition-normal);
+        margin-left: var(--spacing-md);
+        color: rgba(255, 255, 255, 0.85);
+    }
+
+    .theme-toggle:hover {
+        background: var(--color-accent);
+        border-color: var(--color-accent);
+        transform: scale(1.1);
+        color: #000;
+    }
+
+    .theme-icon {
+        font-size: 1.2rem;
+        line-height: 1;
+    }
+
     * {
             margin: 0;
             padding: 0;
@@ -6,7 +109,7 @@
 
         body {
             font-family: 'Inter', 'Segoe UI', sans-serif;
-            background: #f8f9fa;
+            background: var(--color-bg-light);
         }
 
         /* Header */
@@ -22,22 +125,22 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: var(--spacing-md);
         }
 
         .user-icon {
             width: 38px;
             height: 38px;
             background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
-            border-radius: 50%;
+            border-radius: var(--radius-circle);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
         }
 
-        .logo span {
-            color: white;
+        .logo a {
+            color: #ffffff;
             font-weight: 700;
             font-size: 22px;
             letter-spacing: -0.5px;
@@ -50,10 +153,10 @@
 
         nav a {
             text-decoration: none;
-            color: rgba(255,255,255,0.85);
+            color: rgba(255, 255, 255, 0.85);
             font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 8px 0;
+            transition: var(--transition-normal);
+            padding: var(--spacing-xs) 0;
             position: relative;
         }
 
@@ -80,7 +183,7 @@
         /* Profile Section - Өнгө ХЭВЭЭР үлдээх */
         .sidebar {
             width: 350px;
-            background: linear-gradient(to bottom, #b8daf5 0%, #a5cde8 100%);
+            background: linear-gradient(to bottom, var(--color-bg-sidebar) 0%, var(--color-bg-sidebar-end) 100%);
             overflow-y: auto;
             padding: 20px;
         }
@@ -95,39 +198,39 @@
             font-size: 12px;
             font-weight: 700;
             margin-bottom: 25px;
-            color: #2c3e50;
+            color: var(--color-text);
             letter-spacing: 2px;
         }
 
         .profile-image {
             width: 150px;
             height: 150px;
-            background: white;
-            border-radius: 50%;
+            background: var(--color-white);
+            border-radius: var(--radius-circle);
             margin: 0 auto 15px;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            box-shadow: var(--shadow-lg);
         }
 
         .camera-icon {
             position: absolute;
             bottom: 5px;
             right: 5px;
-            background: linear-gradient(135deg, #4285f4 0%, #3367d6 100%);
+            background: linear-gradient(135deg, var(--color-blue) 0%, var(--color-blue-dark) 100%);
             width: 40px;
             height: 40px;
-            border-radius: 50%;
+            border-radius: var(--radius-circle);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: var(--color-white);
             cursor: pointer;
             font-size: 20px;
-            border: 3px solid white;
-            transition: transform 0.3s ease;
+            border: 3px solid var(--color-white);
+            transition: transform var(--transition-normal);
         }
 
         .camera-icon:hover {
@@ -135,30 +238,30 @@
         }
 
         .profile-name {
-            margin-top: 12px;
-            color: #34495e;
+            margin-top: var(--spacing-md);
+            color: var(--color-text-secondary);
             font-weight: 600;
             font-size: 16px;
         }
 
         .info-card {
-            background: white;
-            border-radius: 14px;
+            background: var(--color-white);
+            border-radius: var(--radius-lg);
             padding: 20px;
             margin-bottom: 18px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            transition: transform var(--transition-normal);
         }
 
         .info-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            box-shadow: var(--shadow-md);
         }
 
         .info-card p {
-            margin: 12px 0;
+            margin: var(--spacing-md) 0;
             font-size: 14px;
-            color: #2c3e50;
+            color: var(--color-text);
             line-height: 1.7;
         }
         .sidebar > .info-card {
@@ -199,7 +302,7 @@
         /* Main Content */
         .main-content {
             flex: 1;
-            background: #ffffff;
+            background: var(--color-white);
             padding: 35px;
             overflow-y: auto;
         }
@@ -213,49 +316,49 @@
         .search-input {
             flex: 1;
             padding: 16px 24px;
-            border: 2px solid #f0f0f0;
-            border-radius: 12px;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
             font-size: 15px;
-            background: #fafafa;
-            transition: all 0.3s ease;
+            background: var(--color-bg-card);
+            transition: var(--transition-normal);
         }
 
         .search-input:focus {
             outline: none;
-            border-color: #000;
-            background: white;
+            border-color: var(--color-primary);
+            background: var(--color-white);
         }
 
         .dropdown {
             padding: 16px 24px;
-            border: 2px solid #f0f0f0;
-            border-radius: 12px;
-            background: #fafafa;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-bg-card);
             cursor: pointer;
             min-width: 140px;
             font-size: 14px;
-            transition: all 0.3s ease;
+            transition: var(--transition-normal);
             font-weight: 500;
         }
 
         .dropdown:hover {
-            border-color: #000;
-            background: white;
+            border-color: var(--color-primary);
+            background: var(--color-white);
         }
 
         .job {
-            background: white;
-            border: 2px solid #f0f0f0;
-            border-radius: 20px;
+            background: var(--color-white);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-xl);
             padding: 32px;
             margin-bottom: 20px;
             position: relative;
-            transition: all 0.3s ease;
+            transition: var(--transition-normal);
         }
 
         .job:hover {
             transform: translateY(-4px);
-            border-color: #000;
+            border-color: var(--color-primary);
             box-shadow: 0 12px 40px rgba(0,0,0,0.08);
         }
 
@@ -263,9 +366,9 @@
             position: absolute;
             top: 25px;
             right: 25px;
-            background: #000;
-            color: #00ff88;
-            padding: 8px 16px;
+            background: var(--color-primary);
+            color: var(--color-accent);
+            padding: var(--spacing-xs) 16px;
             border-radius: 24px;
             font-size: 13px;
             font-weight: 700;
@@ -275,19 +378,19 @@
             font-size: 20px;
             font-weight: 700;
             margin-bottom: 20px;
-            color: #000;
+            color: var(--color-primary);
             padding-right: 120px;
             letter-spacing: -0.5px;
         }
 
         .job-details {
             line-height: 2;
-            color: #666;
+            color: var(--color-text-gray);
             font-size: 14px;
         }
 
         .job-details strong {
-            color: #000;
+            color: var(--color-primary);
             font-weight: 600;
         }
 
@@ -295,21 +398,21 @@
             position: absolute;
             bottom: 28px;
             right: 28px;
-            background: #000;
-            color: white;
+            background: var(--color-primary);
+            color: var(--color-white);
             border: none;
             padding: 16px 36px;
-            border-radius: 12px;
+            border-radius: var(--radius-md);
             cursor: pointer;
             font-size: 14px;
             font-weight: 700;
-            transition: all 0.3s ease;
+            transition: var(--transition-normal);
             letter-spacing: 0.5px;
         }
 
         .apply-btn:hover {
-            background: #00ff88;
-            color: #000;
+            background: var(--color-accent);
+            color: var(--color-primary);
             transform: translateY(-2px);
         }
 

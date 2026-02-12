@@ -29,7 +29,6 @@ class AdCard extends HTMLElement {
                 this.renderError();
             }
         } else {
-            // Буцах нийцтэй байдлын атрибут дээр суурилсан харуулалт
             this.renderFromAttributes();
         }
     }

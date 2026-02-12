@@ -1,71 +1,163 @@
+/* ===== CSS CUSTOM PROPERTIES ===== */
+:root {
+    /* Colors */
+    --color-primary: #000000;
+    --color-primary-light: #1a1a1a;
+    --color-accent: #00ff88;
+    --color-accent-dark: #00cc6a;
+    --color-white: #ffffff;
+    --color-bg-light: #f8f9fa;
+    --color-bg-sidebar: #b8daf5;
+    --color-bg-sidebar-end: #a5cde8;
+    --color-bg-back: #cfe5f6;
+    --color-text-dark: #444;
+    --color-text-light: rgba(255,255,255,0.85);
+    --color-border: #ddd;
+    --color-border-light: #eee;
+    
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-circle: 50%;
+    --radius-pill: 40px;
+    
+    /* Transitions */
+    --transition-fast: 0.2s;
+    --transition-normal: 0.3s ease;
+    
+    /* Sizes */
+    --icon-size: 2.5rem;
+    --sidebar-width: 24%;
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+    --color-primary: #ffffff;
+    --color-primary-light: #e0e0e0;
+    --color-accent: #00ff88;
+    --color-accent-dark: #00cc6a;
+    --color-white: #1a1a1a;
+    --color-bg-light: #121212;
+    --color-bg-sidebar: #1e3a52;
+    --color-bg-sidebar-end: #152d3f;
+    --color-bg-back: #1a2f3f;
+    --color-text-dark: #e0e0e0;
+    --color-text-light: rgba(27, 21, 21, 0.85);
+    --color-border: #333;
+    --color-border-light: #2a2a2a;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50% !important;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-normal);
+    margin-left: var(--spacing-md);
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.theme-toggle:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    transform: scale(1.1);
+    color: #000;
+}
+
+.theme-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
 /* RESET */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
+    min-height: 100vh;
     font-family: 'Inter', sans-serif;
-    background: #f8f9fa;
+    background: var(--color-bg-light);
 }
 
 /* ===== HEADER  ===== */
 .topbar {
     background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
-    padding: 1rem 3rem;
+    padding: var(--spacing-md) var(--spacing-xl);
     display: flex;
     justify-content: space-between;
     align-items: center;
     backdrop-filter: blur(10px);
 }
 
+/* Logo section */
 .logo {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: var(--spacing-md);
 }
 
+/* User icon */
 .user-icon {
     width: 2.5rem;
     height: 2.5rem;
     background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
 }
 
-.logo span {
-    color: white;
+/* Logout text */
+.logo a {
+    color: #ffffff;
     font-weight: 600;
     font-size: 1.2rem;
 }
 
+/* Navigation menu */
 nav {
     display: flex;
-    gap: 1rem;
+    gap: var(--spacing-md);
 }
 
 nav a {
     text-decoration: none;
-    color: rgba(255,255,255,0.85);
+    color: rgba(255, 255, 255, 0.85);
     font-weight: 500;
     position: relative;
-    padding: 1rem 0;
-    transition: 0.3s ease;
+    padding: var(--spacing-md) 0;
+    transition: var(--transition-slow);
 }
 
+/* Hover underline */
 nav a:after {
     content: '';
     position: absolute;
-    bottom: 0; left: 0;
-    width: 0; height: 2px;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
     background: #00ff88;
-    transition: 0.3s ease;
+    transition: width 0.3s ease;
 }
 
 nav a:hover:after {
     width: 100%;
 }
-
 /* ===== LAYOUT ===== */
 .layout {
     display: flex;
@@ -75,8 +167,8 @@ nav a:hover:after {
 
 /* ===== SIDEBAR ===== */
 .sidebar {
-    width: 24%;
-    background: linear-gradient(to bottom, #b8daf5 0%, #a5cde8 100%);
+    width: var(--sidebar-width);
+    background: linear-gradient(to bottom, var(--color-bg-sidebar) 0%, var(--color-bg-sidebar-end) 100%);
     padding: 30px;
     text-align: center;
 }
@@ -84,18 +176,18 @@ nav a:hover:after {
 .profile img {
     width: 150px;
     height: 150px;
-    border-radius: 50%;
-    border: 3px solid #fff;
+    border-radius: var(--radius-circle);
+    border: 3px solid var(--color-white);
     margin-bottom: 10px;
 }
 
 .profile h2 {
     font-size: 22px;
-    margin-top: 8px;
+    margin-top: var(--spacing-xs);
 }
 
 .email {
-    color: #444;
+    color: var(--color-text-dark);
     font-size: 14px;
 }
 
@@ -114,9 +206,9 @@ nav a:hover:after {
 
 .save-btn {
     padding: 10px 25px;
-    background: #000;
-    color: white;
-    border-radius: 8px;
+    background: var(--color-primary);
+    color: var(--color-white);
+    border-radius: var(--radius-sm);
     border: none;
     cursor: pointer;
     font-weight: 600;
@@ -126,12 +218,12 @@ nav a:hover:after {
 .calendar-grid {
     display: grid;
     grid-template-columns: 70px repeat(7, 1fr);
-    border: 1px solid #ddd;
-    background: white;
+    border: 1px solid var(--color-border);
+    background: var(--color-white);
 }
 
 .calendar-grid div {
-    border: 1px solid #eee;
+    border: 1px solid var(--color-border-light);
     padding: 10px;
     min-height: 60px;
 }
@@ -139,12 +231,12 @@ nav a:hover:after {
 /* Clickable hour cells */
 .cell {
     cursor: pointer;
-    transition: 0.2s;
+    transition: var(--transition-fast);
 }
 
 .cell.active {
-    background: #000;
-    border-radius: 8px;
+    background: var(--color-primary);
+    border-radius: var(--radius-sm);
 }
 
 /* Add lesson button */
@@ -153,14 +245,14 @@ nav a:hover:after {
     bottom: 20px;
     right: 40px;
     padding: 15px 25px;
-    background: #000;
-    color: white;
+    background: var(--color-primary);
+    color: var(--color-white);
     border: none;
-    border-radius: 40px;
+    border-radius: var(--radius-pill);
     cursor: pointer;
 }
 .back-bar {
-  background: #cfe5f6;
+  background: var(--color-bg-back);
   padding: 20px 40px;
   display: flex;
   align-items: center;

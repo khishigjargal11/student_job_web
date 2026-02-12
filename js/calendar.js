@@ -8,12 +8,12 @@ days.forEach(d => schedule[d.toLowerCase()] = {});
 // Initialize schedule based on context
 async function initializeSchedule() {
     const returnToJobForm = sessionStorage.getItem('returnToJobForm');
-    
+
     if (returnToJobForm === 'true') {
         // Load existing job schedule if any
         const jobSchedule = sessionStorage.getItem('jobSchedule');
         console.log('Loading job schedule from sessionStorage:', jobSchedule);
-        
+
         if (jobSchedule) {
             try {
                 const loadedSchedule = JSON.parse(jobSchedule);
@@ -23,7 +23,7 @@ async function initializeSchedule() {
                 console.error('Error parsing job schedule:', error);
             }
         }
-        
+
         // Update UI for job creation
         document.getElementById('calendarTitle').textContent = 'Ажлын цагийн хуваарь';
         document.getElementById('calendarInfo').textContent = 'Ажлын цагийн хуваарьг тодорхойлно уу';
@@ -48,7 +48,7 @@ async function initializeSchedule() {
 async function buildCalendar() {
     // Initialize schedule first
     await initializeSchedule();
-    
+
     const grid = document.getElementById("calendarGrid");
     grid.innerHTML = ""; // clear grid first
 
@@ -58,9 +58,9 @@ async function buildCalendar() {
 
     // Start and end times
     const startTime = new Date();
-    startTime.setHours(startHour, 0, 0, 0); 
+    startTime.setHours(startHour, 0, 0, 0);
     const endTime = new Date();
-    endTime.setHours(endHour, 0, 0, 0); 
+    endTime.setHours(endHour, 0, 0, 0);
 
     // Iterate through hours using Date
     for (let time = new Date(startTime); time < endTime; time.setHours(time.getHours() + 1)) {
@@ -75,7 +75,7 @@ async function buildCalendar() {
             grid.innerHTML += `<div class="cell ${isActive}" id="${id}" onclick="toggleCell('${day}', ${hour})"></div>`;
         });
     }
-    
+
     console.log('Calendar grid built with schedule:', schedule);
 }
 
@@ -97,17 +97,17 @@ function toggleCell(day, hour) {
         delete schedule[day.toLowerCase()][key];
     } else {
         cell.classList.add("active");
-        schedule[day.toLowerCase()][key] = 1; 
+        schedule[day.toLowerCase()][key] = 1;
     }
 }
 
 function saveCalendar() {
     console.log("Saving schedule...");
     console.log('Schedule data:', schedule);
-    
+
     // Check if this is for job creation
     const returnToJobForm = sessionStorage.getItem('returnToJobForm');
-    
+
     if (returnToJobForm === 'true') {
         // Save as job schedule
         console.log('Saving as job schedule...');
@@ -119,7 +119,7 @@ function saveCalendar() {
         window.location.href = '/company/add-job';
         return;
     }
-    
+
     // Regular student schedule save
     const currentUser = ApiClient.getCurrentUser();
     if (!currentUser || currentUser.type !== 'student') {
@@ -144,14 +144,14 @@ function saveCalendar() {
 }
 
 function clearSchedule() {
-    if (confirm('Та цагийн хуваарьаа бүрэн цэвэрлэхийг хүсэж байна уу?')) {
+    if (confirm('Та цагийн хуваарьаа бүрэн цэвэрлэхдээ итгэлтэй байна уу?')) {
         // Clear schedule object
         days.forEach(d => schedule[d.toLowerCase()] = {});
-        
+
         // Clear all active cells
         const activeCells = document.querySelectorAll('.cell.active');
         activeCells.forEach(cell => cell.classList.remove('active'));
-        
+
         console.log('Schedule cleared');
     }
 }

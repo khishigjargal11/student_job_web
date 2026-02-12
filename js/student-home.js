@@ -5,7 +5,7 @@
 
 class StudentHome {
     /**
-     * Системийг эхлүүлэх функц - DOM ачаалагдсаны дараа ажиллана
+     * Системийг эхлүүлэх функц 
      */
     static init() {
         // Мэдээлэл эхлүүлж, оюутны контентыг ачаалах
@@ -668,7 +668,6 @@ class StudentHome {
 
     // Global function for withdrawing job application
     static async withdrawApplication(jobId) {
-        // Show confirmation popup instead of confirm dialog
         StudentHome.showWithdrawConfirmation(jobId);
     }
 

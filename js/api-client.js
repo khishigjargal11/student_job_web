@@ -28,7 +28,6 @@ class ApiClient {
             const data = await response.json();
             
             if (data.success) {
-                // Хэрэглэгчийн мэдээллийг localStorage-д хадгалах
                 localStorage.setItem('currentUser', JSON.stringify({
                     id: data.user.id,
                     username: data.user.username,

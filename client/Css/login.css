@@ -1,3 +1,81 @@
+/* ===== CSS CUSTOM PROPERTIES ===== */
+:root {
+    /* Colors */
+    --color-primary: #000000;
+    --color-primary-light: #1a1a1a;
+    --color-accent: #00ff88;
+    --color-accent-dark: #00cc6a;
+    --color-white: #ffffff;
+    --color-bg-light: #f8f9fa;
+    --color-bg-card: #fafafa;
+    --color-text: #555;
+    --color-text-dark: #000;
+    --color-text-light: rgba(255,255,255,0.85);
+    --color-border: #ccc;
+    --color-border-light: #f0f0f0;
+    --color-focus: #000000;
+    
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 2.5rem;
+    
+    /* Border Radius */
+    --radius-sm: 0.7rem;
+    --radius-md: 7px;
+    --radius-lg: 12px;
+    --radius-xl: 24px;
+    
+    /* Shadows */
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.1);
+    
+    /* Transitions */
+    --transition-normal: all 0.3s ease;
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+    --color-primary: #ffffff;
+    --color-primary-light: #e0e0e0;
+    --color-white: #1a1a1a;
+    --color-bg-light: #121212;
+    --color-bg-card: #2a2a2a;
+    --color-text: #e0e0e0;
+    --color-text-dark: #ffffff;
+    --color-border: #444;
+    --color-border-light: #333;
+    --color-focus: #ffffff;
+}
+/* Theme Toggle Button */
+.theme-toggle {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50% !important;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-normal);
+    margin-left: var(--spacing-md);
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.theme-toggle:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    transform: scale(1.1);
+    color: #000;
+}
+
+.theme-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
 * {margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -5,11 +83,11 @@
 
     body {
             font-family: 'Inter', 'Segoe UI', sans-serif;
-            background: #f8f9fa;
+            background: var(--color-bg-light);
     }
     header {
         background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
-        padding: 1rem 3rem;
+        padding: var(--spacing-sm) var(--spacing-xl);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -18,7 +96,7 @@
     .logo {
         display: flex;
         align-items: center;
-        gap: 1rem;
+        gap: var(--spacing-sm);
     }
     .user-icon {
         width: 2.5rem;
@@ -30,21 +108,21 @@
         justify-content: center;
         font-size: 1.2rem;
     }
-    .logo span {
-        color: white;
+    .logo a {
+        color: #ffffff;
         font-weight: 600;
         font-size: 1.2rem;
     }
     nav{
         display: flex;
-        gap: 1rem;
+        gap: var(--spacing-sm);
     }
     a{
         text-decoration: none;
-        color: rgba(255,255,255,0.85);
+        color: rgba(255, 255, 255, 0.85);
         font-weight: 500;
-        transition: all 0.3s ease;
-        padding: 1rem 0;
+        transition: var(--transition-normal);
+        padding: var(--spacing-sm) 0;
         position: relative;
     }
        nav a:after {
@@ -70,42 +148,42 @@
 
         }
     .login-box {
-        background: white;  
+        background: var(--color-white);  
         padding: 30px;
-        border-radius: 7px;
-        border:#000000 1px solid;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: var(--radius-md);
+        border: var(--color-primary) 1px solid;
+        box-shadow: var(--shadow-sm);
         width:100%;
         max-width: 480px;
-        transition: all 0.3s ease;
+        transition: var(--transition-normal);
     }
     .login-box p {
         font-weight: 600;
-        margin-bottom: 2rem;
-        color: #000000;
+        margin-bottom: var(--spacing-lg);
+        color: var(--color-primary);
         text-align: center;
         font-size: 1.5rem;
     }
     .form {
         display: flex;
         flex-direction: column;
-        margin-bottom: 1.5rem;
+        margin-bottom: var(--spacing-md);
     }
     .form label {
-        margin-bottom: 0.5rem;
-        color: #555;
+        margin-bottom: var(--spacing-xs);
+        color: var(--color-text);
         font-weight: 600;
     }
     .form input {
         padding: 0.75rem;
-        border: 0.01rem solid #ccc;
-        border-radius: 0.7rem;
+        border: 0.01rem solid var(--color-border);
+        border-radius: var(--radius-sm);
         font-size: 1rem;
         transition: border-color 0.3s ease;
     }
 
     .form input:focus {
-        border-color: #000000;
+        border-color: var(--color-focus);
     }
      .options {
             display: flex;
@@ -125,12 +203,12 @@
         .remember input[type="checkbox"] {
             width: 18px;
             height: 18px;
-            accent-color: #000;
+            accent-color: var(--color-primary);
         }
         .forgot-password {
-            color: #000;
+            color: var(--color-primary);
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: var(--transition-normal);
         }
 
         .forgot-password:hover {
@@ -141,19 +219,19 @@
         .login-btn {
             width: 100%;
             padding: 18px;
-            background: #000;
-            color: white;
+            background: var(--color-primary);
+            color: var(--color-white);
             border: none;
-            border-radius: 12px;
+            border-radius: var(--radius-lg);
             font-size: 16px;
             font-weight: 700;
-            transition: all 0.3s ease;
+            transition: var(--transition-normal);
             margin-bottom: 30px;
         }
 
         .login-btn:hover {
-            background: #00ff88;
-            color: #000;
+            background: var(--color-accent);
+            color: var(--color-primary);
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(0,255,136,0.3);
         }
@@ -170,7 +248,7 @@
             top: 50%;
             width: 42%;
             height: 2px;
-            background: #f0f0f0;
+            background: var(--color-border-light);
         }
 
         .divider::before {
@@ -182,7 +260,7 @@
         }
 
         .divider-text {
-            background: white;
+            background: var(--color-white);
             padding: 0 15px;
             color: #999;
             font-size: 14px;
@@ -197,14 +275,14 @@
         .signup-link {
             text-align: center;
             padding: 18px;
-            border: 2px solid #f0f0f0;
-            border-radius: 12px;
+            border: 2px solid var(--color-border-light);
+            border-radius: var(--radius-lg);
             text-decoration: none;
-            color: #000;
+            color: var(--color-primary);
             font-weight: 600;
             font-size: 15px;
-            transition: all 0.3s ease;
-            background: #fafafa;
+            transition: var(--transition-normal);
+            background: var(--color-bg-card);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -212,10 +290,10 @@
         }
 
         .signup-link:hover {
-            border-color:  #000 ;
-            background: white;
+            border-color: var(--color-primary);
+            background: var(--color-white);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-sm);
         }
 
         .signup-link-icon {
@@ -269,26 +347,26 @@
     .login-link {
         text-align: center;
         font-size: 14px;
-        color: #666;
+        color: var(--color-text-light);
     }
     .login-link a {
-        color: #000;
+        color: var(--color-primary);
         font-weight: 600;
         transition: color 0.3s ease;
     }
     .login-link a:hover {
-        color: #00ff88;
+        color: var(--color-accent);
     }
     .form-select {
         display: flex;
         flex-direction: column;
-        margin-bottom: 1.5rem;
+        margin-bottom: var(--spacing-md);
     }
    
     .form-select select {
         padding: 0.75rem;
-        border: 0.01rem solid #ccc;
-        border-radius: 0.7rem;
+        border: 0.01rem solid var(--color-border);
+        border-radius: var(--radius-sm);
        
         font-size: 1rem;
         transition: border-color 0.3s ease;

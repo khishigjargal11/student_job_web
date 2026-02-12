@@ -425,8 +425,6 @@ class StudentPopup extends HTMLElement {
     this.overlay.addEventListener("click", e => {
       if (e.target === this.overlay) this.hide();
     });
-
-    // Action buttons
     if (approveBtn) {
       approveBtn.addEventListener("click", () => this.handleApprove());
     }
@@ -445,7 +443,6 @@ class StudentPopup extends HTMLElement {
 
   // Helper methods for working with plain student objects from API
   getAverageRating(student) {
-    // The student.rating field now stores the average rating directly
     if (!student.rating || student.rating === 0) {
       return '0.0';
     }
@@ -454,7 +451,6 @@ class StudentPopup extends HTMLElement {
 
   getCompletionRate(student) {
     // For now, return a default completion rate
-    // In the future, this could be calculated based on completed jobs
     return '100';
   }
 }

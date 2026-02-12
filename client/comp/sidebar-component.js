@@ -1,6 +1,5 @@
 class SideBar extends HTMLElement {
     connectedCallback() {
-        // Check if we have API client available
         const hasApiClient = typeof ApiClient !== 'undefined';
         
         if (hasApiClient) {
@@ -10,8 +9,6 @@ class SideBar extends HTMLElement {
         } else {
             this.renderDefault();
         }
-
-        // Listen for company profile updates
         this.setupProfileUpdateListener();
     }
 
